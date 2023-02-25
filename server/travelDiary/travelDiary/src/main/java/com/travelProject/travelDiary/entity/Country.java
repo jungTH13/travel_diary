@@ -1,48 +1,45 @@
 package com.travelProject.travelDiary.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
+
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Getter
-@Table(name="tbl_user")
-public class User {
-
+@Table(name="tbl_country")
+public class Country {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(columnDefinition = "BINARY(16)")
-    private UUID id;
+    @Column(name = "c_id")
+    private Long id;
 
-    @Column
-    private String email;
+    @Column(name = "c_name")
+    private String name;
 
-    @Column(nullable = false)
-    private String auth;
+    @Column(name = "c_code")
+    private String code;
 
-    @Column
-    private  String publisher;
+    @Column(name = "c_thumbnail_url")
+    private String thumbnailUrl;
 
-    @Column(nullable = false)
-    private boolean status;
+    @Column(name = "c_ex_rate_name")
+    private String exRateName;
 
-    public void patch(User user){
-        this.status = user.status;
-    }
+    @Column(name = "c_ex_rate_code")
+    private String exRateCode;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -51,5 +48,4 @@ public class User {
     @LastModifiedDate
     @Column(name = "modified_at", nullable = false)
     private LocalDateTime modifiedDate;
-
 }

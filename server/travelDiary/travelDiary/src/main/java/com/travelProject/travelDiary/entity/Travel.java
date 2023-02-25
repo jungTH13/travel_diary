@@ -5,12 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -18,31 +17,25 @@ import java.util.UUID;
 @NoArgsConstructor
 @ToString
 @Getter
-@Table(name="tbl_user")
-public class User {
+@Table(name="tbl_travel")
+public class Travel {
 
+    @Id()
+    @Column(name="t_id")
+    private Long id;
 
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(columnDefinition = "BINARY(16)")
-    private UUID id;
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JoinColumn(name="id")
+    private UUID user_id;
 
-    @Column
-    private String email;
+    @Column(name = "t_title")
+    private String title;
 
-    @Column(nullable = false)
-    private String auth;
+    @Column(name="t_start_date")
+    private Date startDate;
 
-    @Column
-    private  String publisher;
-
-    @Column(nullable = false)
-    private boolean status;
-
-    public void patch(User user){
-        this.status = user.status;
-    }
+    @Column(name = "t_end_date")
+    private Date endDate;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -51,5 +44,4 @@ public class User {
     @LastModifiedDate
     @Column(name = "modified_at", nullable = false)
     private LocalDateTime modifiedDate;
-
 }
