@@ -30,14 +30,24 @@ jobs:
       run: ./gradlew clean build
       working-directory: "./server/travelDiary/travelDiary"
       
-      # 디렉토리 생성
+    # 디렉토리 생성
     - name: Make Directory
       run: mkdir -p deploy
         
     # Jar 파일 복사
-    - name: Copy file
-      run: cp -r ./server ./deploy
+    - name: Jar file Copy
+      run: cp -r ./build/libs/*.jar ./deploy
+      working-directory: "./server/travelDiary/travelDiary"
+    
+    # appspec.yml 파일 복사
+    - name: appspec.yml Copy
+      run: cp ./appspec.yml ./deploy
 
+    # script files 복사
+    - name: Copy script
+      run: cp ./scripts/*.sh ./deploy
+
+    # 폴더 압축
     - name: Make zip file
       run: zip -r ./travel.zip ./deploy
       shell: bash
@@ -49,6 +59,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-northeast-2
 
+    # S3 로 전송
     - name: Upload to S3
       run: aws s3 cp --region ap-northeast-2 ./travel.zip s3://travel-repo/
 
