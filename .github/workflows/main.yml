@@ -27,4 +27,5 @@ jobs:
       run: chmod +x ./server/travelDiary/travelDiary/gradlew
     
     - name: Build with Gradle
-      run: ./server/travelDiary/travelDiary/gradlew clean build
+      run: ./gradlew clean build
+      working-directory: "./server/travelDiary/travelDiary"
