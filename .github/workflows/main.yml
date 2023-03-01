@@ -28,4 +28,4 @@ jobs:
     
     - name: Build with Gradle
       run: gradlew clean build
-        working-directory:"./server/travelDiary/travelDiary"
+      working-directory: "./server/travelDiary/travelDiary"
