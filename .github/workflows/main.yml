@@ -36,7 +36,7 @@ jobs:
         
     # Jar 파일 복사
     - name: Copy file
-      run: cp ./ ./deploy
+      run: cp ./server ./deploy
 
     - name: Make zip file
       run: zip -r ./travel.zip ./deploy
