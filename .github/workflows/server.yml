@@ -48,7 +48,7 @@ jobs:
 
     # 폴더 압축
     - name: Make zip file
-      run: zip -r ./travel.zip ./deploy
+      run: zip -r ./travel.zip ./deploy/*
       shell: bash
 
     - name: Configure AWS credentials
