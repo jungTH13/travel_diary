@@ -7,13 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CommonService {
     @Autowired
     private CommonRepository commonRepository;
 
-    public List<Country> selectListCountry() {
+    public List<Map<String, Object>> selectListCountry() {
         return commonRepository.selectListCountry();
     }
 }

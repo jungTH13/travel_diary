@@ -3,6 +3,7 @@ package com.travelProject.travelDiary.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @ToString
 @Getter
+@Setter
 @Table(name="tbl_travel")
 public class Travel {
 
