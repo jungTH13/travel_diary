@@ -6,10 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 public class TravelService {
@@ -24,16 +22,8 @@ public class TravelService {
         return travelRepository.selectEndTravelList();
     }
 
-    public void travelInsert(Map<String, Object> param) {
-        Date date = new Date();
+    public void travelInsert(Travel travel) {
         LocalDateTime time = LocalDateTime.now();
-
-        Travel travel = null;
-        travel.setId(travel.getId());
-        travel.setTitle("test");
-        travel.setUser_id(UUID.randomUUID());
-        travel.setStartDate(date);
-        travel.setEndDate(date);
         travel.setCreatedDate(time);
         travel.setModifiedDate(time);
         travelRepository.save(travel);

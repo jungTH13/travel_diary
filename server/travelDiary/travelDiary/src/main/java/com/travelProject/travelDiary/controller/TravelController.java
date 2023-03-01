@@ -1,5 +1,6 @@
 package com.travelProject.travelDiary.controller;
 
+import com.travelProject.travelDiary.entity.Travel;
 import com.travelProject.travelDiary.service.TravelService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,8 @@ public class TravelController {
     }
 
     @PostMapping("/travel/setTravelInsert")
-    public String setTravelInsert(@RequestBody Map<String, Object> param) {
-        //travelService.travelInsert(param);
+    public String setTravelInsert(@RequestBody Travel travel) {
+        travelService.travelInsert(travel);
         return "";
     }
 }

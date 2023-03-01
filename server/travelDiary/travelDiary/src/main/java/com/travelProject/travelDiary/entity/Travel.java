@@ -22,8 +22,9 @@ import java.util.UUID;
 @Table(name="tbl_travel")
 public class Travel {
 
-    @Id()
-    @Column(name="t_id")
+    @Id
+    @Column(name = "t_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
