@@ -32,23 +32,23 @@ jobs:
       
     # 디렉토리 생성
     - name: Make Directory
-      run: mkdir -p deploy
+      run: mkdir -p travelServer
         
     # Jar 파일 복사
     - name: Jar file Copy
-      run: cp -r ./server/travelDiary/travelDiary/build/libs/*.jar ./deploy
+      run: cp -r ./server/travelDiary/travelDiary/build/libs/*.jar ./travelServer
     
     # appspec.yml 파일 복사
     - name: appspec.yml Copy
-      run: cp ./appspec.yml ./deploy
+      run: cp ./appspec.yml ./travelServer
 
     # script files 복사
     - name: Copy script
-      run: cp ./scripts/*.sh ./deploy
+      run: cp ./scripts/*.sh ./travelServer
 
     # 폴더 압축
     - name: Make zip file
-      run: zip -r ./travel.zip ./deploy/*
+      run: zip -r ./travelServer.zip ./travelServer
       shell: bash
 
     - name: Configure AWS credentials
@@ -63,12 +63,12 @@ jobs:
       run: aws s3 cp --region ap-northeast-2 ./travel.zip s3://travel-repo/
 
      # Deploy
-    - name: Deploy
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      run: |
-        aws deploy create-deployment --application-name travel-server-develop --deployment-group-name travel-server-develop-group --file-exists-behavior OVERWRITE --s3-location bucket=travel-repo,bundleType=zip,key=travel.zip --region ap-northeast-2
+    # - name: Deploy
+    #   env:
+    #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #   run: |
+    #     aws deploy create-deployment --application-name travel-server-develop --deployment-group-name travel-server-develop-group --file-exists-behavior OVERWRITE --s3-location bucket=travel-repo,bundleType=zip,key=travel.zip --region ap-northeast-2
 
 
       
