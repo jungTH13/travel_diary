@@ -48,7 +48,8 @@ jobs:
 
     # 폴더 압축
     - name: Make zip file
-      run: zip -r ./travelServer.zip ./travelServer/*
+      run: zip -r ./travelServer.zip ./*
+      working-directory: "./travelServer"
       shell: bash
 
     - name: Configure AWS credentials
@@ -60,7 +61,7 @@ jobs:
 
     # S3 로 전송
     - name: Upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./travelServer.zip s3://travel-repo/
+      run: aws s3 cp --region ap-northeast-2 ./travelServer/travelServer.zip s3://travel-repo/
 
      # Deploy
     # - name: Deploy
