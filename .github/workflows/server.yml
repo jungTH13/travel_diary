@@ -36,8 +36,7 @@ jobs:
         
     # Jar 파일 복사
     - name: Jar file Copy
-      run: cp -r ./build/libs/*.jar ./deploy
-      working-directory: "./server/travelDiary/travelDiary"
+      run: cp -r ./server/travelDiary/travelDiary/build/libs/*.jar ./deploy
     
     # appspec.yml 파일 복사
     - name: appspec.yml Copy
