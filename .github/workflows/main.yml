@@ -23,12 +23,12 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         
-#     - name: Grant execute permission for gradlew
-#       run: chmod +x ./server/travelDiary/travelDiary/gradlew
+    - name: Grant execute permission for gradlew
+      run: chmod +x ./server/travelDiary/travelDiary/gradlew
     
-#     - name: Build with Gradle
-#       run: ./gradlew clean build
-#       working-directory: "./server/travelDiary/travelDiary"
+    - name: Build with Gradle
+      run: ./gradlew clean build
+      working-directory: "./server/travelDiary/travelDiary"
       
       # 디렉토리 생성
     - name: Make Directory
@@ -52,13 +52,13 @@ jobs:
     - name: Upload to S3
       run: aws s3 cp --region ap-northeast-2 ./travel.zip s3://travel-repo/
 
-     # Deploy
-    - name: Deploy
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      run: |
-        aws deploy create-deployment --application-name travel-server-develop --deployment-group-name travel-server-develop-group --file-exists-behavior OVERWRITE --s3-location bucket=travel-repo,bundleType=zip,key=travel.zip --region ap-northeast-2
+#      # Deploy
+#     - name: Deploy
+#       env:
+#         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#       run: |
+#         aws deploy create-deployment --application-name travel-server-develop --deployment-group-name travel-server-develop-group --file-exists-behavior OVERWRITE --s3-location bucket=travel-repo,bundleType=zip,key=travel.zip --region ap-northeast-2
 
       
       
