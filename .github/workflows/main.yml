@@ -2,9 +2,9 @@ name: travel develop server CI/CD
 
 on:
   push:
-    branches: [ develop_server_test ]
+    branches: [ server_develop_test ]
   pull_request:
-    branches: [ develop_server_test ]
+    branches: [ server_develop_test ]
 
 env:
   S3_BUCKET_NAME: travel-deploy
