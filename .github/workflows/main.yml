@@ -24,7 +24,7 @@ jobs:
         distribution: 'temurin'
         
     - name: Grant execute permission for gradlew
-      run: chmod +x ./server/travelDiary/travelDiary/gradlew
+      run: chmod +x gradlew
     
     - name: Build with Gradle
-      run: ./server/travelDiary/travelDiary/gradlew clean build
+      run: gradlew clean build
