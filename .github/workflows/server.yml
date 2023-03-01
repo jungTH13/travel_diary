@@ -64,12 +64,12 @@ jobs:
       run: aws s3 cp --region ap-northeast-2 ./travelServer/travelServer.zip s3://travel-repo/
 
      # Deploy
-    # - name: Deploy
-    #   env:
-    #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #   run: |
-    #     aws deploy create-deployment --application-name travel-server-develop --deployment-group-name travel-server-develop-group --file-exists-behavior OVERWRITE --s3-location bucket=travel-repo,bundleType=zip,key=travel.zip --region ap-northeast-2
+    - name: Deploy
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: |
+        aws deploy create-deployment --application-name travel-server-develop --deployment-group-name travel-server-develop-group --file-exists-behavior OVERWRITE --s3-location bucket=travel-repo,bundleType=zip,key=travel.zip --region ap-northeast-2
 
 
       
