@@ -12,6 +12,6 @@ public class UserCotroller {
 
     @GetMapping("/test")
     public  String test(){
-        return "test4";
+        return "test5";
     }
 }
