@@ -3,7 +3,7 @@
 
 // })
 export default {
-  modules: ["@nuxtjs/vuex"],
+  // modules: ["@nuxtjs/vuex"],
   buildModules: ["@nuxtjs/style-resources"],
 
   // Style resources module configuration
