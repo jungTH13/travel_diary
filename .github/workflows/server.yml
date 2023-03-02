@@ -70,8 +70,3 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
         aws deploy create-deployment --application-name travel-server-develop --deployment-group-name server-develop --file-exists-behavior OVERWRITE --s3-location bucket=travel-repo,bundleType=zip,key=travelServer.zip --region ap-northeast-2
-
-
-
-      
-      
