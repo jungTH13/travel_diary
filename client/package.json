@@ -5,7 +5,8 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "prod": "nuxt dev --port 3000"
   },
   "devDependencies": {
     "fibers": "^5.0.3",
