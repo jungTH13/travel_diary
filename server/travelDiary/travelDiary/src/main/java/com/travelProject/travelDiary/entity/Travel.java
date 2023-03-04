@@ -1,6 +1,6 @@
 package com.travelProject.travelDiary.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

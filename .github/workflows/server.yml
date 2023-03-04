@@ -1,0 +1,72 @@
+name: travel develop server CI/CD
+
+on:
+  push:
+    branches: [ server_develop_test,server_develop ]
+  pull_request:
+    branches: [ server_develop_test,server_develop ]
+
+env:
+  S3_BUCKET_NAME: travel-deploy
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        
+    - name: Grant execute permission for gradlew
+      run: chmod +x ./server/travelDiary/travelDiary/gradlew
+    
+    - name: Build with Gradle
+      run: ./gradlew clean build
+      working-directory: "./server/travelDiary/travelDiary"
+      
+    # 디렉토리 생성
+    - name: Make Directory
+      run: mkdir -p travelServer
+        
+    # Jar 파일 복사
+    - name: Jar file Copy
+      run: cp -r ./server/travelDiary/travelDiary/build/libs/*.jar ./travelServer
+    
+    # appspec.yml 파일 복사
+    - name: appspec.yml Copy
+      run: cp ./appspec.yml ./travelServer
+
+    # script files 복사
+    - name: Copy script
+      run: cp ./scripts/*.sh ./travelServer
+
+    # 폴더 압축
+    - name: Make zip file
+      run: zip -r ./travelServer.zip ./*
+      working-directory: "./travelServer"
+      shell: bash
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-northeast-2
+
+    # S3 로 전송
+    - name: Upload to S3
+      run: aws s3 cp --region ap-northeast-2 ./travelServer/travelServer.zip s3://travel-repo/
+
+     # Deploy
+    - name: Deploy
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: |
+        aws deploy create-deployment --application-name travel-server-develop --deployment-group-name server-develop --file-exists-behavior OVERWRITE --s3-location bucket=travel-repo,bundleType=zip,key=travelServer.zip --region ap-northeast-2
