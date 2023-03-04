@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.annotation.CreatedDate;
@@ -36,11 +37,11 @@ public class User {
     private  String publisher;
 
     @Column(nullable = false)
-    @ColumnDefault("true")
-    private boolean status;
+    @ColumnDefault("false")
+    private boolean deleted;
 
     public void patch(User user){
-        this.status = user.status;
+        this.deleted = user.deleted;
     }
 
     @CreatedDate

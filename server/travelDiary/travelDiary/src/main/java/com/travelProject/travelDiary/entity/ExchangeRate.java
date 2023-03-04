@@ -20,7 +20,6 @@ import java.util.Date;
 public class ExchangeRate {
 
     @Id
-
     private Date date;
 
     @Column(nullable = false)
@@ -30,8 +29,8 @@ public class ExchangeRate {
     private Double Rate;
 
     @Column(nullable = false)
-    @ColumnDefault("true")
-    private boolean status;
+    @ColumnDefault("false")
+    private boolean deleted;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)

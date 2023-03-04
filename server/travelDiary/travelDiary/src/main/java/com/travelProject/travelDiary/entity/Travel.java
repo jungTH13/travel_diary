@@ -42,8 +42,8 @@ public class Travel {
     private Date endDate;
 
     @Column(nullable = false)
-    @ColumnDefault("true")
-    private boolean status;
+    @ColumnDefault("false")
+    private boolean deleted;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
