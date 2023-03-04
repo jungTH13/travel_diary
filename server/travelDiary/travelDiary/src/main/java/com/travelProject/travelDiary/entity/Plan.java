@@ -30,7 +30,7 @@ public class Plan {
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name="id")
-    private Long UserId;
+    private String UserId;
 
     @Column(name = "p_type")
     private String type;
