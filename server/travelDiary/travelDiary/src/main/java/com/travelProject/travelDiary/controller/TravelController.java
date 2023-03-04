@@ -33,6 +33,6 @@ public class TravelController {
     @PostMapping("/travel/setTravelInsert")
     public String setTravelInsert(@RequestBody Travel travel) {
         travelService.travelInsert(travel);
-        return "";
+        return "test";
     }
 }
