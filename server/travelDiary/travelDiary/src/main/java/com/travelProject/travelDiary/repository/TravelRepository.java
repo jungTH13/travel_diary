@@ -3,6 +3,7 @@ package com.travelProject.travelDiary.repository;
 import com.travelProject.travelDiary.entity.Travel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -17,9 +18,10 @@ public interface TravelRepository extends JpaRepository<Travel, Long> {
             "\t, t_start_date AS fromDate\n" +
             "\t, t_end_date AS endDate\n" +
             "FROM tbl_travel\n" +
-            "WHERE CAST(t_end_date AS DATE) <= CAST(NOW() AS DATE)",
+            "WHERE CAST(t_end_date AS DATE) <= CAST(NOW() AS DATE)\n" +
+            "\tAND id = :#{#travel.user_id}",
             nativeQuery = true)
-    List<Map<String, Object>> selectPlanTravelList();
+    List<Map<String, Object>> selectPlanTravelList(@Param(value = "travel")Travel travel);
 
     @Query(value = "" +
             "SELECT\n" +
@@ -29,7 +31,8 @@ public interface TravelRepository extends JpaRepository<Travel, Long> {
             "\t, t_start_date AS fromDate\n" +
             "\t, t_end_date AS endDate\n" +
             "FROM tbl_travel\n" +
-            "WHERE CAST(t_end_date AS DATE) > CAST(NOW() AS DATE)",
+            "WHERE CAST(t_end_date AS DATE) > CAST(NOW() AS DATE)\n" +
+            "\tAND id = :#{#travel.user_id}",
             nativeQuery = true)
-    List<Map<String, Object>> selectEndTravelList();
+    List<Map<String, Object>> selectEndTravelList(Travel travel);
 }

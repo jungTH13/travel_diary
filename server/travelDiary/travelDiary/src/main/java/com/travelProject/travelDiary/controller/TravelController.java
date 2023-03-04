@@ -4,10 +4,7 @@ import com.travelProject.travelDiary.entity.Travel;
 import com.travelProject.travelDiary.service.TravelService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,19 +17,26 @@ public class TravelController {
     private TravelService travelService;
 
     @GetMapping("/travel/getTravelList")
-    public Map<String, Object>  selectListCountry(){
+    public Map<String, Object>  getTravelList(@RequestBody Travel travel){
         Map<String, Object> result = new HashMap<>();
-        List<Map<String, Object>> selectPlanTravelList = travelService.selectPlanTravelList();
-        List<Map<String, Object>> selectEndTravelList = travelService.selectEndTravelList();
+        List<Map<String, Object>> selectPlanTravelList = travelService.selectPlanTravelList(travel);
+        List<Map<String, Object>> selectEndTravelList = travelService.selectEndTravelList(travel);
 
         result.put("planTravel", selectPlanTravelList);
         result.put("endTravel", selectEndTravelList);
         return result;
     }
 
-    @PostMapping("/travel/setTravelInsert")
+    @PostMapping("/travel/setTravelSave")
     public String setTravelInsert(@RequestBody Travel travel) {
-        travelService.travelInsert(travel);
-        return "test";
+        travelService.travelSave(travel);
+        return "save test";
     }
+
+    @DeleteMapping("/travel/setTravelDelete")
+    public String setTravelDelete(@RequestBody Travel travel) {
+        travelService.travelDelete(travel);
+        return "delete test";
+    }
+
 }

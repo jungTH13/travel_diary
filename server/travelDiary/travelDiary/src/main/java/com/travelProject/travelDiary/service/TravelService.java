@@ -14,18 +14,29 @@ public class TravelService {
     @Autowired
     private TravelRepository travelRepository;
 
-    public List<Map<String, Object>> selectPlanTravelList() {
-        return travelRepository.selectPlanTravelList();
+    public List<Map<String, Object>> selectPlanTravelList(Travel travel) {
+        return travelRepository.selectPlanTravelList(travel);
     }
 
-    public List<Map<String, Object>> selectEndTravelList() {
-        return travelRepository.selectEndTravelList();
+    public List<Map<String, Object>> selectEndTravelList(Travel travel) {
+        return travelRepository.selectEndTravelList(travel);
     }
 
-    public void travelInsert(Travel travel) {
+    public void travelSave(Travel travel) {
         LocalDateTime time = LocalDateTime.now();
-        travel.setCreatedDate(time);
-        travel.setModifiedDate(time);
+
+        Long id = travel.getId();
+        if(id == null){
+            travel.setCreatedDate(time);
+            travel.setModifiedDate(time);
+        } else {
+            travel.setModifiedDate(time);
+        }
+
         travelRepository.save(travel);
+    }
+
+    public void travelDelete(Travel travel) {
+        travelRepository.delete(travel);
     }
 }
