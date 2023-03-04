@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
 
 
 @Entity
@@ -17,6 +18,7 @@ public class ReTravelAndCountry {
 
     @Id
     @Column(name = "rtc_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(targetEntity = Travel.class, fetch = FetchType.LAZY)
@@ -26,4 +28,8 @@ public class ReTravelAndCountry {
     @ManyToOne(targetEntity = Country.class, fetch = FetchType.LAZY)
     @JoinColumn(name="c_id")
     private Long CountryId;
+
+    @Column(nullable = false)
+    @ColumnDefault("true")
+    private boolean status;
 }
