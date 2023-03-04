@@ -7,8 +7,11 @@ export default {
   buildModules: ["@nuxtjs/style-resources"],
 
   // Style resources module configuration
-  styleResources: {
+  // styleResources: {
+  //   // your SCSS files location
+  //   css: ["~/assets/css/app.scss"],
+  // },
+  css:
     // your SCSS files location
-    scss: ["@/assets/css/main.scss"],
-  },
+    ["~/assets/css/app.scss"],
 };
