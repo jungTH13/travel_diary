@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -39,6 +40,10 @@ public class Travel {
 
     @Column(name = "t_end_date")
     private Date endDate;
+
+    @Column(nullable = false)
+    @ColumnDefault("false")
+    private boolean deleted;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
