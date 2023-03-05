@@ -10,29 +10,31 @@ import java.util.Map;
 
 public interface TravelRepository extends JpaRepository<Travel, Long> {
 
-    @Query(value = "" +
-            "SELECT\n" +
-            "\tt_id AS id\n" +
-            "\t, t_title AS title\n" +
-            "\t, '' AS thumnail\n" +
-            "\t, t_start_date AS fromDate\n" +
-            "\t, t_end_date AS endDate\n" +
-            "FROM tbl_travel\n" +
-            "WHERE CAST(t_end_date AS DATE) <= CAST(NOW() AS DATE)\n" +
-            "\tAND id = :#{#travel.user_id}",
+    @Query(value = ""
+            + "SELECT\n"
+            + "\tt_id AS id\n"
+            + "\t, t_title AS title\n"
+            + "\t, '' AS thumnail\n"
+            + "\t, t_start_date AS fromDate\n"
+            + "\t, t_end_date AS endDate\n"
+            + "FROM tbl_travel\n"
+            + "WHERE CAST(t_end_date AS DATE) <= CAST(NOW() AS DATE)\n"
+            + "\tAND id = :#{#userId}"
+            ,
             nativeQuery = true)
-    List<Map<String, Object>> selectPlanTravelList(@Param(value = "travel")Travel travel);
+    List<Map<String, Object>> selectPlanTravelList(@Param(value = "userId")String userId);
 
-    @Query(value = "" +
-            "SELECT\n" +
-            "\tt_id AS id\n" +
-            "\t, t_title AS title\n" +
-            "\t, '' AS thumnail\n" +
-            "\t, t_start_date AS fromDate\n" +
-            "\t, t_end_date AS endDate\n" +
-            "FROM tbl_travel\n" +
-            "WHERE CAST(t_end_date AS DATE) > CAST(NOW() AS DATE)\n" +
-            "\tAND id = :#{#travel.user_id}",
+    @Query(value = ""
+            + "SELECT\n"
+            + "\tt_id AS id\n"
+            + "\t, t_title AS title\n"
+            + "\t, '' AS thumnail\n"
+            + "\t, t_start_date AS fromDate\n"
+            + "\t, t_end_date AS endDate\n"
+            + "FROM tbl_travel\n"
+            + "WHERE CAST(t_end_date AS DATE) > CAST(NOW() AS DATE)\n"
+            + "\tAND id = :#{#userId}"
+            ,
             nativeQuery = true)
-    List<Map<String, Object>> selectEndTravelList(Travel travel);
+    List<Map<String, Object>> selectEndTravelList(@Param(value = "userId")String userId);
 }
