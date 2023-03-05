@@ -45,6 +45,7 @@ public class TravelController {
 
         return result;
     }
+
     @PutMapping("/travel/travelUpdate")
     public Map<String, Object> setTravelUpdate(@RequestBody Travel travel) {
         Map<String, Object> result = new HashMap<>();
