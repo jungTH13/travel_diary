@@ -4,7 +4,10 @@
 // })
 export default {
   // modules: ["@nuxtjs/vuex"],
-  buildModules: ["@nuxtjs/style-resources"],
+  buildModules: ["@nuxtjs/style-resources", "@nuxtjs/axios"],
+  axios: {
+    baseURL: "http://localhost:3000", // Used as fallback if no runtime config is provided
+  },
 
   // Style resources module configuration
   // styleResources: {
