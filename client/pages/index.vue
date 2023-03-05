@@ -24,13 +24,12 @@ export default {
         return;
       }
 
-      // const data = await axios.get("http://3.36.127.178/common/getListCountry");
+      const countryList = await axios.get(
+        "http://3.36.127.178/common/getListCountry"
+      );
       const data = await axios.post("http://3.36.127.178/user/cookie");
-      // const { data } = await axios.get(
-      //   "https://jsonplaceholder.typicode.com/todos/1"
-      // );
-      // .then((res) => console.log(res))
-      // .catch((e) => console.log("error", e));
+
+      console.log("country", countryList);
       console.log("data", data);
     },
   },
