@@ -15,6 +15,7 @@
     "sass-loader": "^10.4.1"
   },
   "dependencies": {
+    "@nuxtjs/axios": "^5.13.6",
     "vuex": "^4.1.0"
   }
 }
