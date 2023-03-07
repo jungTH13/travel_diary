@@ -1,10 +1,5 @@
 <template>
-  <div>
-    <!-- <NuxtWelcome /> -->
+  <NuxtLayout>
     <NuxtPage />
-  </div>
+  </NuxtLayout>
 </template>
-
-<script>
-import axios from "@nuxtjs/axios";
-</script>
