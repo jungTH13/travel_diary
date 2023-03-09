@@ -17,4 +17,8 @@ public class CommonService {
     public List<Map<String, Object>> selectListCountry() {
         return commonRepository.selectListCountry();
     }
+
+    public List<Map<String, Object>> selectCountry(String code) {
+        return commonRepository.selectCountry(code);
+    }
 }

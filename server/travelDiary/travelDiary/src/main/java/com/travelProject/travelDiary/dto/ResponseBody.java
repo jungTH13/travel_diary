@@ -8,12 +8,12 @@ import java.util.Map;
 @ToString
 @Getter
 public class ResponseBody<T> {
-    private Long code;
+    private int code;
     private String msg;
     private T results;
 
     @Builder
-    public ResponseBody(Long code,String msg, T results){
+    public ResponseBody(int code,String msg, T results){
         this.code = code;
         this.msg = msg;
         this.results = results;
