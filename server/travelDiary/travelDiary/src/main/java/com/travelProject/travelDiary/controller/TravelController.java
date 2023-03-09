@@ -40,7 +40,7 @@ public class TravelController {
     public ResponseBody setTravelInsert(HttpServletRequest request, @RequestBody Travel travel) {
         Map<String,Object> map = (Map<String, Object>) request.getAttribute("user");
         String userId = map.get("id").toString();
-        travel.setUserId(userId);
+        //travel.setUserId(userId);
 
         travelService.travelInsert(travel);
         return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").build();
@@ -50,8 +50,8 @@ public class TravelController {
     public ResponseBody setTravelUpdate(HttpServletRequest request, @RequestBody Travel travel) {
         Map<String,Object> map = (Map<String, Object>) request.getAttribute("user");
         String userId = map.get("id").toString();
+        //travel.setUserId(userId);
 
-        travel.setUserId(userId);
         travelService.travelUpdate(travel);
         return ResponseBody.builder().code(200).msg("수정 성공 했습니다.").build();
     }
@@ -60,8 +60,8 @@ public class TravelController {
     public ResponseBody setTravelDelete(HttpServletRequest request, @RequestBody Travel travel) {
         Map<String,Object> map = (Map<String, Object>) request.getAttribute("user");
         String userId = map.get("id").toString();
+        //travel.setUserId(userId);
 
-        travel.setUserId(userId);
         travelService.travelDelete(travel);
         return ResponseBody.builder().code(200).msg("삭제 성공 했습니다.").build();
     }
