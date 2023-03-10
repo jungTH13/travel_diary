@@ -1,6 +1,8 @@
 package com.travelProject.travelDiary.entity;
 
 import javax.persistence.*;
+
+import com.travelProject.travelDiary.entity.abstractions.DefaultEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +19,7 @@ import java.time.LocalDateTime;
 @ToString
 @Getter
 @Table(name="tbl_plan")
-public class Plan {
+public class Plan extends DefaultEntity<Long> {
 
     @Id
     @Column(name = "p_id")

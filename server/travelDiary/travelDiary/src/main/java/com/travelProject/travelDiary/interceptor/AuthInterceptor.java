@@ -1,5 +1,6 @@
 package com.travelProject.travelDiary.interceptor;
 
+import com.travelProject.travelDiary.entity.User;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,9 @@ public class AuthInterceptor implements HandlerInterceptor {
                 String jwtToken = cookie.getValue();
                 Claims claims = this.getClaims(jwtToken);
 
-                if(claims != null) request.setAttribute("user",claims);
+                User user = User.builder().id(claims.get("id").toString()).build();
+
+                if(claims != null) request.setAttribute("user",user);
             }
 
         }

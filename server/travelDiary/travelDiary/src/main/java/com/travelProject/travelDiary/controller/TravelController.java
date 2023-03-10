@@ -21,11 +21,11 @@ public class TravelController {
 
     @GetMapping("/travel/userTravelList")
     public ResponseBody  getTravelList(HttpServletRequest request){
-        //User user = (User) request.getAttribute("user");
-        //String userId = user.getId();
+        User user = (User) request.getAttribute("user");
+        String userId = user.getId();
 
-        Map<String,Object> map = (Map<String, Object>) request.getAttribute("user");
-        String userId = map.get("id").toString();
+//        Map<String,Object> map = (Map<String, Object>) request.getAttribute("user");
+//        String userId = map.get("id").toString();
 
         Map<String, Object> result = new HashMap<>();
         List<Map<String, Object>> selectPlanTravelList = travelService.selectPlanTravelList(userId);
@@ -40,7 +40,7 @@ public class TravelController {
     public ResponseBody setTravelInsert(HttpServletRequest request, @RequestBody Travel travel) {
         Map<String,Object> map = (Map<String, Object>) request.getAttribute("user");
         String userId = map.get("id").toString();
-        //travel.setUserId(userId);
+        travel.setUserId(userId);
 
         travelService.travelInsert(travel);
         return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").build();

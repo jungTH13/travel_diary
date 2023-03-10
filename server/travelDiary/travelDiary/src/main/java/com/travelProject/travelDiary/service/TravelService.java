@@ -23,6 +23,7 @@ public class TravelService {
         if(userId.equals("") || userId == null) {
             throw new exceptionCode(INVALID_USER_PARAMETER);
         }
+
         List<Map<String, Object>> resutlList = travelRepository.selectPlanTravelList(userId);
         return resutlList;
     }

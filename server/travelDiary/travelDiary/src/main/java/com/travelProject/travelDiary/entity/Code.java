@@ -1,6 +1,8 @@
 package com.travelProject.travelDiary.entity;
 
 import javax.persistence.*;
+
+import com.travelProject.travelDiary.entity.abstractions.DefaultEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 @Getter
-public class Code {
+public class Code extends DefaultEntity<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
