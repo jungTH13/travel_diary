@@ -23,11 +23,10 @@ public class TravelController {
     @GetMapping("/travel/userTravelList")
     public ResponseBody  getTravelList(HttpServletRequest request){
         User user = (User) request.getAttribute("user");
-        String userId = user.getId();
 
         Map<String, Object> result = new HashMap<>();
-        List<Map<String, Object>> selectPlanTravelList = travelService.selectPlanTravelList(userId);
-        List<Map<String, Object>> selectEndTravelList = travelService.selectEndTravelList(userId);
+        List<Map<String, Object>> selectPlanTravelList = travelService.selectPlanTravelList(user.getId());
+        List<Map<String, Object>> selectEndTravelList = travelService.selectEndTravelList(user.getId());
 
         result.put("planTravel", selectPlanTravelList);
         result.put("endTravel", selectEndTravelList);
@@ -37,7 +36,7 @@ public class TravelController {
     @PostMapping("/travel/travelInsert")
     public ResponseBody setTravelInsert(HttpServletRequest request, @RequestBody Travel travel) {
         User user = (User) request.getAttribute("user");
-        //travel.setUserId(user.getId());
+        travel.setUserId(user);
 
         travelService.travelInsert(travel);
         return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").build();
@@ -46,7 +45,7 @@ public class TravelController {
     @PutMapping("/travel/travelUpdate")
     public ResponseBody setTravelUpdate(HttpServletRequest request, @RequestBody Travel travel) {
         User user = (User) request.getAttribute("user");
-        //travel.setUserId(user.getId());
+        travel.setUserId(user);
 
         travelService.travelUpdate(travel);
         return ResponseBody.builder().code(200).msg("수정 성공 했습니다.").build();
@@ -55,7 +54,7 @@ public class TravelController {
     @DeleteMapping("/travel/travelDelete")
     public ResponseBody setTravelDelete(HttpServletRequest request, @RequestBody Travel travel) {
         User user = (User) request.getAttribute("user");
-        //travel.setUserId(user.getId());
+        travel.setUserId(user);
 
         travelService.travelDelete(travel);
         return ResponseBody.builder().code(200).msg("삭제 성공 했습니다.").build();

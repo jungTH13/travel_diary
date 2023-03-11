@@ -11,8 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.travelProject.travelDiary.dto.ErrorCode.INVALID_PARAMETER;
-import static com.travelProject.travelDiary.dto.ErrorCode.INVALID_USER_PARAMETER;
+import static com.travelProject.travelDiary.dto.ErrorCode.*;
 
 @Service
 public class TravelService {
@@ -54,6 +53,11 @@ public class TravelService {
         travel.setModifiedDate(time);
 
         Long id = travel.getId();
+        Travel travel2 = travelRepository.findByIdAndUser(id, travel.getUserId());
+        if(!travel.getUserId().getId().equals(travel2.getUserId().getId())){
+            throw new exceptionCode(DIFFERENT_USER_PARAMETER);
+        }
+
         if(id > 0 || id != null) {
             travelRepository.save(travel);
         } else {
@@ -62,6 +66,12 @@ public class TravelService {
     }
 
     public void travelDelete(Travel travel) {
+        Long id = travel.getId();
+        Travel travel2 = travelRepository.findByIdAndUser(id, travel.getUserId());
+        if(!travel.getUserId().getId().equals(travel2.getUserId().getId())){
+            throw new exceptionCode(DIFFERENT_USER_PARAMETER);
+        }
+
         travelRepository.delete(travel);
     }
 }
