@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,9 +25,6 @@ public class TravelController {
         User user = (User) request.getAttribute("user");
         String userId = user.getId();
 
-//        Map<String,Object> map = (Map<String, Object>) request.getAttribute("user");
-//        String userId = map.get("id").toString();
-
         Map<String, Object> result = new HashMap<>();
         List<Map<String, Object>> selectPlanTravelList = travelService.selectPlanTravelList(userId);
         List<Map<String, Object>> selectEndTravelList = travelService.selectEndTravelList(userId);
@@ -38,9 +36,8 @@ public class TravelController {
 
     @PostMapping("/travel/travelInsert")
     public ResponseBody setTravelInsert(HttpServletRequest request, @RequestBody Travel travel) {
-        Map<String,Object> map = (Map<String, Object>) request.getAttribute("user");
-        String userId = map.get("id").toString();
-        travel.setUserId(userId);
+        User user = (User) request.getAttribute("user");
+        //travel.setUserId(user.getId());
 
         travelService.travelInsert(travel);
         return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").build();
@@ -48,9 +45,8 @@ public class TravelController {
 
     @PutMapping("/travel/travelUpdate")
     public ResponseBody setTravelUpdate(HttpServletRequest request, @RequestBody Travel travel) {
-        Map<String,Object> map = (Map<String, Object>) request.getAttribute("user");
-        String userId = map.get("id").toString();
-        //travel.setUserId(userId);
+        User user = (User) request.getAttribute("user");
+        //travel.setUserId(user.getId());
 
         travelService.travelUpdate(travel);
         return ResponseBody.builder().code(200).msg("수정 성공 했습니다.").build();
@@ -58,9 +54,8 @@ public class TravelController {
 
     @DeleteMapping("/travel/travelDelete")
     public ResponseBody setTravelDelete(HttpServletRequest request, @RequestBody Travel travel) {
-        Map<String,Object> map = (Map<String, Object>) request.getAttribute("user");
-        String userId = map.get("id").toString();
-        //travel.setUserId(userId);
+        User user = (User) request.getAttribute("user");
+        //travel.setUserId(user.getId());
 
         travelService.travelDelete(travel);
         return ResponseBody.builder().code(200).msg("삭제 성공 했습니다.").build();
