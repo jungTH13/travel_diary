@@ -28,11 +28,11 @@ public class Plan extends DefaultEntity<Long> {
 
     @ManyToOne(targetEntity = Travel.class, fetch = FetchType.LAZY)
     @JoinColumn(name="t_id")
-    private Long travelId;
+    private Travel travel;
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name="id")
-    private String UserId;
+    private User user;
 
     @Column(name = "p_type")
     private String type;

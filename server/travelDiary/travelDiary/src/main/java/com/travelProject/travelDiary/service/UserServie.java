@@ -39,6 +39,25 @@ public class UserServie {
         return jwtToken;
     }
 
+    public String getExamUserJWT(){
+        String userId = "063e632c-1666-4d24-ad41-712911a499f6";
+
+        Date now = new Date();
+        String jwtToken = Jwts.builder()
+                .setHeaderParam(Header.TYPE,Header.JWT_TYPE)
+                .setIssuer("travel")
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + Duration.ofHours(24*365).toMillis()))
+                .claim("id",userId)
+                .signWith(SignatureAlgorithm.HS256,"travel_diary")
+                .compact();
+
+        User user = User.builder().id(userId).auth("exam").build();
+        userRepository.save(user);
+
+        return jwtToken;
+    }
+
     public Cookie wrapDataAtCookie(String key,String value){
         Cookie cookie = new Cookie(key,value);
         cookie.setPath("/");

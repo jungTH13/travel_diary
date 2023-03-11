@@ -1,5 +1,6 @@
 package com.travelProject.travelDiary.service.abstractions;
 
+import com.travelProject.travelDiary.entity.User;
 import com.travelProject.travelDiary.entity.abstractions.DefaultEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
