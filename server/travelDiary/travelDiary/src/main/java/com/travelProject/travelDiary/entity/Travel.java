@@ -29,7 +29,7 @@ public class Travel {
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name="id")
-    private User userId;
+    private User user;
 
     @Column(name = "t_title")
     private String title;

@@ -18,6 +18,7 @@ public class PlanService {
     public List<PlanMapping> getUserPlan(String id){
         List<PlanMapping> planList = planRepository.findByUser_Id(id);
 
+
         return planList;
     }
 }

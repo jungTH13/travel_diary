@@ -36,7 +36,7 @@ public class TravelController {
     @PostMapping("/travel/travelInsert")
     public ResponseBody setTravelInsert(HttpServletRequest request, @RequestBody Travel travel) {
         User user = (User) request.getAttribute("user");
-        travel.setUserId(user);
+        travel.setUser(user);
 
         travelService.travelInsert(travel);
         return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").build();
@@ -45,7 +45,7 @@ public class TravelController {
     @PutMapping("/travel/travelUpdate")
     public ResponseBody setTravelUpdate(HttpServletRequest request, @RequestBody Travel travel) {
         User user = (User) request.getAttribute("user");
-        travel.setUserId(user);
+        travel.setUser(user);
 
         travelService.travelUpdate(travel);
         return ResponseBody.builder().code(200).msg("수정 성공 했습니다.").build();
@@ -54,9 +54,9 @@ public class TravelController {
     @DeleteMapping("/travel/travelDelete")
     public ResponseBody setTravelDelete(HttpServletRequest request, @RequestBody Travel travel) {
         User user = (User) request.getAttribute("user");
-        travel.setUserId(user);
+        travel.setUser(user);
 
-        travelService.travelDelete(travel);
+//        travelService.travelDelete(travel);
         return ResponseBody.builder().code(200).msg("삭제 성공 했습니다.").build();
     }
 }

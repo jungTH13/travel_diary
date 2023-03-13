@@ -39,11 +39,11 @@ public interface TravelRepository extends JpaRepository<Travel, Long> {
             nativeQuery = true)
     List<Map<String, Object>> selectEndTravelList(@Param(value = "userId")String userId);
 
-    @Query(value = ""
-            + "SELECT *\n"
-            + "FROM tbl_travel\n"
-            + "WHERE t_id = :#{#id} AND id = :#{#userId}"
-            ,
-            nativeQuery = true)
-    Travel findByIdAndUser(@Param(value = "id")Long id, @Param(value = "userId")User userId);
+//    @Query(value = ""
+//            + "SELECT *\n"
+//            + "FROM tbl_travel\n"
+//            + "WHERE t_id = :#{#id} AND id = :#{#userId}"
+//            ,
+//            nativeQuery = true)
+    Travel findByIdAndUser_Id(Long t_id,String id);
 }

@@ -53,8 +53,8 @@ public class TravelService {
         travel.setModifiedDate(time);
 
         Long id = travel.getId();
-        Travel travel2 = travelRepository.findByIdAndUser(id, travel.getUserId());
-        if(!travel.getUserId().getId().equals(travel2.getUserId().getId())){
+        Travel travel2 = travelRepository.findByIdAndUser_Id(id, travel.getUser().getId());
+        if(!travel.getUser().getId().equals(travel2.getUser().getId())){
             throw new exceptionCode(DIFFERENT_USER_PARAMETER);
         }
 
@@ -65,13 +65,13 @@ public class TravelService {
         }
     }
 
-    public void travelDelete(Travel travel) {
-        Long id = travel.getId();
-        Travel travel2 = travelRepository.findByIdAndUser(id, travel.getUserId());
-        if(!travel.getUserId().getId().equals(travel2.getUserId().getId())){
-            throw new exceptionCode(DIFFERENT_USER_PARAMETER);
-        }
-
-        travelRepository.delete(travel);
-    }
+//    public void travelDelete(Travel travel) {
+//        Long id = travel.getId();
+//        Travel travel2 = travelRepository.findByIdAndUser(id, travel.getUserId());
+//        if(!travel.getUserId().getId().equals(travel2.getUserId().getId())){
+//            throw new exceptionCode(DIFFERENT_USER_PARAMETER);
+//        }
+//
+//        travelRepository.delete(travel);
+//    }
 }
