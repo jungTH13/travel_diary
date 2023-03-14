@@ -16,8 +16,8 @@ public interface TravelRepository extends JpaRepository<Travel, Long> {
             + "\tt_id AS id\n"
             + "\t, t_title AS title\n"
             + "\t, '' AS thumnail\n"
-            + "\t, t_start_date AS fromDate\n"
-            + "\t, t_end_date AS endDate\n"
+            + "\t, CAST(t_start_date AS DATE) AS fromDate\n"
+            + "\t, CAST(t_end_date AS DATE) AS endDate\n"
             + "FROM tbl_travel\n"
             + "WHERE t_start_date >= NOW()\n"
             + "\tAND id = :#{#userId}"
@@ -30,8 +30,8 @@ public interface TravelRepository extends JpaRepository<Travel, Long> {
             + "\tt_id AS id\n"
             + "\t, t_title AS title\n"
             + "\t, '' AS thumnail\n"
-            + "\t, t_start_date AS fromDate\n"
-            + "\t, t_end_date AS endDate\n"
+            + "\t, CAST(t_start_date AS DATE) AS fromDate\n"
+            + "\t, CAST(t_end_date AS DATE) AS endDate\n"
             + "FROM tbl_travel\n"
             + "WHERE t_end_date <= NOW()\n"
             + "\tAND id = :#{#userId}"
@@ -39,11 +39,5 @@ public interface TravelRepository extends JpaRepository<Travel, Long> {
             nativeQuery = true)
     List<Map<String, Object>> selectEndTravelList(@Param(value = "userId")String userId);
 
-//    @Query(value = ""
-//            + "SELECT *\n"
-//            + "FROM tbl_travel\n"
-//            + "WHERE t_id = :#{#id} AND id = :#{#userId}"
-//            ,
-//            nativeQuery = true)
     Travel findByIdAndUser_Id(Long t_id,String id);
 }

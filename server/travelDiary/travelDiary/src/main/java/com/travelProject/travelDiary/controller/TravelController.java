@@ -56,7 +56,7 @@ public class TravelController {
         User user = (User) request.getAttribute("user");
         travel.setUser(user);
 
-//        travelService.travelDelete(travel);
+        travelService.travelDelete(travel);
         return ResponseBody.builder().code(200).msg("삭제 성공 했습니다.").build();
     }
 }
