@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PlanService {
@@ -15,9 +16,8 @@ public class PlanService {
     @Autowired
     private PlanRepository planRepository;
 
-    public List<PlanMapping> getUserPlan(String id){
-        List<PlanMapping> planList = planRepository.findByUser_Id(id);
-
+    public List<Map<String,Object>> getUserPlan(String id){
+        List<Map<String,Object>> planList = planRepository.findByUser_Id(id);
 
         return planList;
     }

@@ -1,5 +1,7 @@
 package com.travelProject.travelDiary.interceptor;
 
+import com.travelProject.travelDiary.config.exceptionCode;
+import com.travelProject.travelDiary.dto.ErrorCode;
 import com.travelProject.travelDiary.entity.User;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
@@ -30,12 +32,9 @@ public class AuthInterceptor implements HandlerInterceptor {
                 Claims claims = this.getClaims(jwtToken);
 
                 User user = User.builder().id(claims.get("id").toString()).build();
-
-                if(claims != null) request.setAttribute("user",user);
+                request.setAttribute("user",user);
             }
-
         }
-
         return true;
     }
 
@@ -48,20 +47,19 @@ public class AuthInterceptor implements HandlerInterceptor {
             // 토큰 유효성 확인
         } catch (SecurityException e) {
             log.info("Invalid JWT signature.");
-//            throw new CustomJwtRuntimeException();
+            throw new exceptionCode(ErrorCode.INVALID_JWT_ERROR);
         } catch (MalformedJwtException e) {
             log.info("Invalid JWT token.");
-//            throw new CustomJwtRuntimeException();
+            throw new exceptionCode(ErrorCode.INVALID_JWT_ERROR);
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT token.");
-//            throw new CustomJwtRuntimeException();
+            throw new exceptionCode(ErrorCode.INVALID_JWT_ERROR);
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT token.");
-//            throw new CustomJwtRuntimeException();
+            throw new exceptionCode(ErrorCode.INVALID_JWT_ERROR);
         } catch (IllegalArgumentException e) {
             log.info("JWT token compact of handler are invalid.");
-//            throw new CustomJwtRuntimeException();
+            throw new exceptionCode(ErrorCode.INVALID_JWT_ERROR);
         }
-        return null;
     }
 }

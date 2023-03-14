@@ -3,6 +3,7 @@ package com.travelProject.travelDiary.controller;
 import com.travelProject.travelDiary.dto.ResponseBody;
 import com.travelProject.travelDiary.entity.Plan;
 import com.travelProject.travelDiary.entity.User;
+import com.travelProject.travelDiary.service.AuthService;
 import com.travelProject.travelDiary.service.PlanService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -20,15 +23,18 @@ public class PlanController {
 
     @Autowired
     private PlanService planService;
+    @Autowired
+    private AuthService authService;
 
     @GetMapping("/userPlanList")
     public ResponseBody getDefaultFormPlanList (HttpServletRequest request){
-        User user = (User) request.getAttribute("user");
+        User user = authService.validateJWTUser(request);
 
+        Map<String,Object> results = new HashMap<>();
         List planList = planService.getUserPlan(user.getId());
 
-        return ResponseBody.builder().code(200).msg("success").results(planList).build();
+        results.put("planList",planList);
+
+        return ResponseBody.builder().code(200).msg("success").results(results).build();
     }
-
-
 }
