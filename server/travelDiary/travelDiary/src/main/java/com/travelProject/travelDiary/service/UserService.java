@@ -6,7 +6,7 @@ import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
@@ -15,12 +15,12 @@ import java.util.Date;
 import java.util.UUID;
 
 @Service
-public class UserServie {
+public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private Environment env;
+    @Value("${spring.secretKey}")
+    private String secretKey;
 
     public String getNewUserJWT(){
         User user = createGuestUser();
@@ -33,7 +33,7 @@ public class UserServie {
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + Duration.ofHours(24*365).toMillis()))
                 .claim("id",user.getId())
-                .signWith(SignatureAlgorithm.HS256,"travel_diary")
+                .signWith(SignatureAlgorithm.HS256,this.secretKey)
                 .compact();
 
         return jwtToken;
@@ -49,7 +49,7 @@ public class UserServie {
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + Duration.ofHours(24*365).toMillis()))
                 .claim("id",userId)
-                .signWith(SignatureAlgorithm.HS256,"travel_diary")
+                .signWith(SignatureAlgorithm.HS256,this.secretKey)
                 .compact();
 
         User user = User.builder().id(userId).auth("exam").build();

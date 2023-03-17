@@ -3,21 +3,16 @@ package com.travelProject.travelDiary.controller;
 
 
 import com.travelProject.travelDiary.dto.ResponseBody;
-import com.travelProject.travelDiary.repository.UserRepository;
-import com.travelProject.travelDiary.service.UserServie;
-import io.jsonwebtoken.Header;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.travelProject.travelDiary.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.Duration;
-import java.util.Date;
 
 
 @Slf4j
@@ -26,17 +21,17 @@ import java.util.Date;
 public class UserCotroller {
 
     @Autowired
-    private UserServie userServie;
+    private UserService userService;
 
-    @Autowired
-    private Environment env;
+    @Value("${spring.cookie.name}")
+    private String cookieName;
 
     @PostMapping("/cookie")
     public ResponseBody getCookie(HttpServletRequest request, HttpServletResponse response){
         if(request.getAttribute("user")!=null) return ResponseBody.builder().code(401).msg("guest-cookie가 이미 존재합니다.").build();
 
-        String jwtToken = userServie.getNewUserJWT();
-        Cookie cookie = userServie.wrapDataAtCookie(env.getProperty("spring.cookie.name"),jwtToken);
+        String jwtToken = userService.getNewUserJWT();
+        Cookie cookie = userService.wrapDataAtCookie(this.cookieName,jwtToken);
 
         if(jwtToken == null || jwtToken.equals("")) return ResponseBody.builder().code(500).msg("guest-cookie발행에 실패했습니다.").build();
 
@@ -47,8 +42,8 @@ public class UserCotroller {
     @GetMapping("/examCookie")
     public ResponseBody getExamCookie(HttpServletRequest request, HttpServletResponse response){
 
-        String jwtToken = userServie.getExamUserJWT();
-        Cookie cookie = userServie.wrapDataAtCookie(env.getProperty("spring.cookie.name"),jwtToken);
+        String jwtToken = userService.getExamUserJWT();
+        Cookie cookie = userService.wrapDataAtCookie(this.cookieName,jwtToken);
 
         if(jwtToken == null || jwtToken.equals("")) return ResponseBody.builder().code(500).msg("guest-cookie발행에 실패했습니다.").build();
 
