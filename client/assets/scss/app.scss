@@ -1,9 +1,11 @@
 @import "fonts";
 @import "common";
 @import "variables";
+@import "styles";
 
 // 페이지별 스타일
 @import "./pages/index.scss";
 
 // 컴포넌트 스타일
 @import "component";
+@import "./pages/plan.scss";
