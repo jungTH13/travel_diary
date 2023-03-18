@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
@@ -56,6 +57,19 @@ public class UserService {
         userRepository.save(user);
 
         return jwtToken;
+    }
+
+    public ResponseCookie wrapDataAtCookieSecure(String key,String value){
+        ResponseCookie cookie = ResponseCookie
+                .from(key,value)
+                .maxAge(60*60*24*365)
+                .httpOnly(true)
+                .path("/")
+                .secure(true)
+                .sameSite("None")
+                .build();
+
+        return cookie;
     }
 
     public Cookie wrapDataAtCookie(String key,String value){
