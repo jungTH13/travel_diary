@@ -10,7 +10,9 @@
       </div>
     </div>
 
-    <div id="edit-item">edit</div>
+    <nuxt-link to="/" id="edit-item">
+      <font-awesome-icon icon="fa-solid fa-pen" id="edit-item-img" />
+    </nuxt-link>
   </div>
 </template>
 
@@ -37,6 +39,18 @@
     #item-title {
       font-weight: bold;
       margin-bottom: 3px;
+    }
+
+    #edit-item {
+      display: block;
+      width: 28px;
+      height: 28px;
+      background: #fff;
+      cursor: pointer;
+      #edit-item-img {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 }

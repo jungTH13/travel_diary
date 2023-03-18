@@ -1,22 +1,16 @@
-// For Nuxt 3
-import { library, config } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { fas } from "@fortawesome/free-solid-svg-icons";
+import { defineNuxtPlugin } from "#app";
 
-// This is important, we are going to let Nuxt worry about the CSS
-config.autoAddCss = false;
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { far } from "@fortawesome/free-regular-svg-icons";
 
 // You can add your icons directly in this plugin. See other examples for how you
 // can add other styles or just individual icons.
-library.add(fas);
+library.add(fab, far, fas);
 
+// Register the component globally
 export default defineNuxtPlugin((nuxtApp) => {
-  nuxtApp.vueApp.component("font-awesome-icon", FontAwesomeIcon, {});
+  nuxtApp.vueApp.component("font-awesome-icon", FontAwesomeIcon);
 });
-
-// Modify the `nuxt.config.ts` file by adding to the `export default defineNuxtConfig()`
-// export default defineNuxtConfig({
-//   css: [
-//     '@fortawesome/fontawesome-svg-core/styles.css'
-//   ]
-// })
