@@ -2,7 +2,9 @@
   <div>
     <div id="login-page">
       <h1 class="text-lg">로그인</h1>
-      <div id="login-button" @click="handleLogin">간편 로그인</div>
+      <div id="login-button" @click="handleLogin">
+        <button>간편 로그인</button>
+      </div>
     </div>
   </div>
 </template>
@@ -19,19 +21,37 @@
   }
   #login-button {
     margin-top: 40px;
-    background-color: beige;
-    cursor: pointer;
+    button {
+      cursor: pointer;
+    }
   }
 }
 </style>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "login",
-  methods: {
-    handleLogin() {
-      console.log("login");
-    },
+  setup() {
+    async function handleLogin() {
+      const data = await axios.post(
+        "https://develop.life-traveldiary.net:8080/user/cookie",
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("login", data);
+    }
+    onBeforeMount(() => {
+      console.log("Before Mount!");
+    });
+    onMounted(async () => {
+      console.log("Mounted!");
+    });
+
+    return { handleLogin };
   },
 };
 </script>

@@ -12,13 +12,12 @@
 }
 
 .plus-button {
-  display: inline-block;
-  text-align: center;
-  line-height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  font-size: $text-lg;
 
   &.orange {
     background-color: $orange;
