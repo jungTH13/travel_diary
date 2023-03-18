@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -25,6 +26,7 @@ public class UserCotroller {
 
     @Value("${spring.cookie.name}")
     private String cookieName;
+    private String sameSite = "None";
 
     @PostMapping("/cookie")
     public ResponseBody getCookie(HttpServletRequest request, HttpServletResponse response){
@@ -32,9 +34,11 @@ public class UserCotroller {
 
         String jwtToken = userService.getNewUserJWT();
         Cookie cookie = userService.wrapDataAtCookie(this.cookieName,jwtToken);
+        ResponseCookie cookieSecure = userService.wrapDataAtCookieSecure(this.cookieName,jwtToken);
 
         if(jwtToken == null || jwtToken.equals("")) return ResponseBody.builder().code(500).msg("guest-cookie발행에 실패했습니다.").build();
 
+        response.addHeader("Set-Cookie",cookieSecure.toString());
         response.addCookie(cookie);
         return ResponseBody.builder().code(200).msg("guest-cookie가 발행되었습니다.").build();
     }
@@ -44,9 +48,11 @@ public class UserCotroller {
 
         String jwtToken = userService.getExamUserJWT();
         Cookie cookie = userService.wrapDataAtCookie(this.cookieName,jwtToken);
+        ResponseCookie cookieSecure = userService.wrapDataAtCookieSecure(this.cookieName,jwtToken);
 
         if(jwtToken == null || jwtToken.equals("")) return ResponseBody.builder().code(500).msg("guest-cookie발행에 실패했습니다.").build();
 
+        response.addHeader("Set-Cookie",cookieSecure.toString());
         response.addCookie(cookie);
         return ResponseBody.builder().code(200).msg("guest-cookie가 발행되었습니다.").build();
     }
