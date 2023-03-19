@@ -1,5 +1,7 @@
 package com.travelProject.travelDiary.service;
 
+import com.travelProject.travelDiary.config.exceptionCode;
+import com.travelProject.travelDiary.dto.ErrorCode;
 import com.travelProject.travelDiary.entity.User;
 import com.travelProject.travelDiary.repository.UserRepository;
 import io.jsonwebtoken.Header;
@@ -15,6 +17,8 @@ import java.time.Duration;
 import java.util.Date;
 import java.util.UUID;
 
+
+
 @Service
 public class UserService {
 
@@ -25,7 +29,8 @@ public class UserService {
 
     public String getNewUserJWT(){
         User user = createGuestUser();
-        if(user == null) return null;
+
+        if(user == null) throw new exceptionCode(ErrorCode.INTERNAL_SERVER_CREATE_ERROR);
 
         Date now = new Date();
         String jwtToken = Jwts.builder()
@@ -95,7 +100,7 @@ public class UserService {
             }
         }
 
-        return null;
+        throw new exceptionCode(ErrorCode.INTERNAL_SERVER_CREATE_ERROR);
     }
 
 }

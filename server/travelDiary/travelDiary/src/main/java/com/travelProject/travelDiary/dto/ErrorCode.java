@@ -32,6 +32,7 @@ public enum ErrorCode {
     ALREADY_SAVED_FESTIVAL(409, "이미 저장한 페스티벌입니다."),
 
     //500 INTERNAL SERVER ERROR
+    INTERNAL_SERVER_CREATE_ERROR(500,"데이터 생성 오류"),
     INTERNAL_SERVER_ERROR(500, "서버 에러입니다. 서버 팀에 연락주세요!");
 
     private final int status;
