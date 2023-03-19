@@ -16,5 +16,5 @@ export default {
   // },
   css:
     // your SCSS files location
-    ["~/assets/css/app.scss"],
+    ["@/assets/scss/app.scss"],
 };
