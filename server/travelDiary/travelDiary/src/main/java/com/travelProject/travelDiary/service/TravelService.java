@@ -9,9 +9,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import static com.travelProject.travelDiary.dto.ErrorCode.*;
+import static com.travelProject.travelDiary.dto.ErrorCode.INVALID_USER_PARAMETER;
+import static com.travelProject.travelDiary.dto.ErrorCode.INVALID_PARAMETER;
+import static com.travelProject.travelDiary.dto.ErrorCode.DIFFERENT_USER_PARAMETER;
 
 @Service
 public class TravelService {
