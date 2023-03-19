@@ -60,7 +60,7 @@ export default {
       travelList.end = data.results.endTravel;
     });
 
-    return { travelList, getData };
+    return { travelList };
   },
 };
 </script>
