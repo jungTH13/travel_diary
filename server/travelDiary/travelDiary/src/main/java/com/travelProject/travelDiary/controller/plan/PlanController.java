@@ -1,4 +1,4 @@
-package com.travelProject.travelDiary.controller;
+package com.travelProject.travelDiary.controller.plan;
 
 import com.travelProject.travelDiary.dto.ResponseBody;
 import com.travelProject.travelDiary.entity.Plan;
