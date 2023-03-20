@@ -21,4 +21,9 @@ public class CommonService {
     public List<Map<String, Object>> selectCountry(String code) {
         return commonRepository.selectCountry(code);
     }
+
+    public List<Map<String, Object>> selectCountryLike(String name) {
+        String name2 = "%" + name + "%";
+        return commonRepository.selectCountryLike(name2);
+    }
 }

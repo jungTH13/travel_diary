@@ -37,4 +37,14 @@ public class CommonController {
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }
 
+    @GetMapping("/common/countryLike")
+    public ResponseBody selectCountryLike(@RequestBody Country country) {
+        Map<String, Object> result = new HashMap<>();
+
+        String name = country.getName();
+        List<Map<String, Object>> selectListCountry = commonService.selectCountryLike(name);
+        result.put("countryList", selectListCountry);
+        return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
+    }
+
 }
