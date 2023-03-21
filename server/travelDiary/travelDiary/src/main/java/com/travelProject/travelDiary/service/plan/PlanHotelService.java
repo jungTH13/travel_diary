@@ -1,6 +1,7 @@
 package com.travelProject.travelDiary.service.plan;
 
 import com.travelProject.travelDiary.config.exceptionCode;
+import com.travelProject.travelDiary.dto.PlanHotelDto;
 import com.travelProject.travelDiary.entity.plan.PlanHotel;
 import com.travelProject.travelDiary.repository.plan.PlanHotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 import static com.travelProject.travelDiary.dto.ErrorCode.INVALID_USER_PARAMETER;
 import static com.travelProject.travelDiary.dto.ErrorCode.INVALID_PARAMETER;
@@ -19,13 +19,14 @@ public class PlanHotelService {
     @Autowired
     private PlanHotelRepository planHotelRepository;
 
-    public List<Map<String, Object>> selectPlanHotelList(String userId) {
+    public List<PlanHotel> selectPlanHotelList(PlanHotelDto PlanHotelDto, String userId) {
         if(userId.equals("") || userId == null) {
             throw new exceptionCode(INVALID_USER_PARAMETER);
         }
 
-        List<Map<String, Object>> resutlList = planHotelRepository.selectPlanHotelList(userId);
-        return resutlList;
+        Long travelId = PlanHotelDto.getTravel().getId();
+        List<PlanHotel> planHotelResult = planHotelRepository.findAllByTravel_IdAndUser_Id(travelId, userId);
+        return planHotelResult;
     }
 
     public void planHotelInsert(PlanHotel planHotel) {

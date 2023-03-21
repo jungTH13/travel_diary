@@ -1,5 +1,6 @@
 package com.travelProject.travelDiary.controller.plan;
 
+import com.travelProject.travelDiary.dto.PlanHotelDto;
 import com.travelProject.travelDiary.dto.ResponseBody;
 import com.travelProject.travelDiary.entity.User;
 import com.travelProject.travelDiary.entity.plan.PlanHotel;
@@ -19,14 +20,14 @@ public class PlanHotelController {
     @Autowired
     private PlanHotelService planHotelService;
 
-    @GetMapping("/plan/hotel/hotelPlanList")
-    public ResponseBody  getPlanHotelList(HttpServletRequest request){
+    @GetMapping("/travel/plan/hotel/hotelList")
+    public ResponseBody  getPlanHotelList(HttpServletRequest request, @RequestBody PlanHotelDto planHotelDto) {
         User user = (User) request.getAttribute("user");
 
         Map<String, Object> result = new HashMap<>();
-        List<Map<String, Object>> selectPlanHotelList = planHotelService.selectPlanHotelList(user.getId());
+        List<PlanHotel> planHotelList = planHotelService.selectPlanHotelList(planHotelDto, user.getId());
 
-        result.put("PlanHotel", selectPlanHotelList);
+        result.put("planHotelList", planHotelList);
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }
 
