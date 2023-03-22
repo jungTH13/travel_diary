@@ -39,8 +39,8 @@ function getRoute() {
   codes.value = JSON.parse(route?.query?.codes);
   countries.value = JSON.parse(route?.query?.countries);
 
-  console.log(codes.value);
-  console.log(countries.value);
+  console.log("code", codes.value);
+  console.log("country", countries.value);
 }
 
 onMounted(() => {
