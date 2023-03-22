@@ -1,5 +1,5 @@
 <template>
   <div id="header">
-    <p>TRAVEL</p>
+    <nuxt-link to="/">TRAVEL</nuxt-link>
   </div>
 </template>

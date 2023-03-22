@@ -32,11 +32,9 @@
             <div id="country-item-wrapper">
               <div id="country-detail">
                 <div id="flag-img">
-                  <img
-                    v-if="country.thumbnail"
-                    :src="country.thumbnail"
-                    alt="국기 이미지"
-                  />
+                  <div v-if="country.thumbnail">
+                    <img :src="country.thumbnail" alt="국기 이미지" />
+                  </div>
                 </div>
                 <span>{{ country.name }}</span>
               </div>
@@ -64,64 +62,95 @@
 
 <style lang="scss" scoped></style>
 
-<script>
+<script setup>
 import axios from "axios";
 import { ref, reactive } from "vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
-export default {
-  name: "search",
-  setup() {
-    const searchInput = ref("");
-    const searchResult = ref([]);
-    const countryList = ref([]);
-    const checkedList = ref([]);
+const searchInput = ref("");
+const searchResult = ref([]);
+const countryList = ref([]);
+const checkedList = ref([]);
 
-    function checkLimit() {
-      if (checkedList.value.length > 3) {
-        // alert("3개까지만 선택 가능");
-        checkedList.value.pop();
-      }
-    }
+function checkLimit() {
+  if (checkedList.value.length > 3) {
+    alert("3개까지만 선택 가능합니다.");
+    checkedList.value.pop();
+  }
+}
 
-    function testCheckList() {
-      const countries = checkedList.value;
-      console.log("check", countries);
-    }
+function testCheckList() {
+  if (checkedList.value.length === 0) {
+    return alert("나라를 선택해주세요");
+  }
+  const countries = checkedList.value;
+  console.log("check", countries);
 
-    async function handleCountrySearch(e) {
-      e.preventDefault();
-      if (searchInput.value) {
-        console.log("test", searchInput.value);
-        searchInput.value = "";
-      }
-    }
+  // const filtered = countries.map((item) => {
+  //   delete item.thumbnail;
+  //   return item;
+  // });
 
-    onBeforeMount(() => {
-      console.log("Before Mount!");
+  const codeArr = checkedList.value.map((item) => item.code);
+  const countryArr = checkedList.value.map((item) => item.name);
+
+  console.log(codeArr, countryArr);
+
+  router.push({
+    path: "/plan",
+    query: {
+      codes: JSON.stringify(codeArr),
+      countries: JSON.stringify(countryArr),
+    },
+  });
+}
+
+async function handleCountrySearch(e) {
+  e.preventDefault();
+  if (searchInput.value) {
+    console.log("test", searchInput.value);
+
+    axios.defaults.withCredentials = true;
+
+    const searchData = JSON.stringify({
+      name: "일",
     });
 
-    onMounted(async () => {
-      await axios.get(
-        "https://develop.life-traveldiary.net:8080/user/examCookie",
-        { withCredentials: true }
-      );
+    const { data } = await axios.post(
+      "https://develop.life-traveldiary.net:8080/common/countryLike",
+      searchData,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-      const { data } = await axios.get(
-        "http://3.36.127.178:80/common/countryList"
-      );
-      countryList.value = data.results.countryList;
-      console.log("country list", data.results.countryList);
-    });
+    console.log("data", data);
+    searchInput.value = "";
+  }
+}
 
-    return {
-      checkLimit,
-      testCheckList,
-      handleCountrySearch,
-      searchInput,
-      searchResult,
-      countryList,
-      checkedList,
-    };
-  },
-};
+onBeforeMount(() => {
+  console.log("Before Mount!");
+});
+
+onMounted(async () => {
+  if (!searchInput.value) {
+    const { data } = await axios.get(
+      "https://develop.life-traveldiary.net:8080/common/countryList",
+      {
+        withCredentials: true,
+      }
+    );
+    if (data.code === 401) {
+      router.push("/login");
+    }
+
+    countryList.value = data.results.countryList;
+    console.log("country list", data.results);
+  }
+});
 </script>

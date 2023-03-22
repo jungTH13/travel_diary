@@ -26,41 +26,38 @@
 
 <style lang="scss" scoped></style>
 
-<script>
+<script setup>
 import axios from "axios";
 import { ref, reactive } from "vue";
+import { useRouter } from "vue-router";
+
 import TravelPlanItem from "../components/TravelPlanItem.vue";
 
-export default {
-  components: {
-    TravelPlanItem,
-  },
-  setup() {
-    const travelList = reactive({
-      plan: [],
-      end: [],
-    });
-    onBeforeMount(() => {
-      console.log("Before Mount!");
-    });
-    onMounted(async () => {
-      await axios.get(
-        "https://develop.life-traveldiary.net:8080/user/examCookie",
-        { withCredentials: true }
-      );
+const router = useRouter();
 
-      const { data } = await axios.get(
-        "https://develop.life-traveldiary.net:8080/travel/userTravelList",
-        { withCredentials: true }
-      );
+const travelList = reactive({
+  plan: [],
+  end: [],
+});
 
-      console.log("Mounted!", data.results);
+onBeforeMount(() => {
+  console.log("Before Mount!");
+});
 
-      travelList.plan = data.results.planTravel;
-      travelList.end = data.results.endTravel;
-    });
+onMounted(async () => {
+  const { data } = await axios.get(
+    "https://develop.life-traveldiary.net:8080/travel/userTravelList",
+    {
+      withCredentials: true,
+    }
+  );
+  if (data.code === 401) {
+    router.push("/login");
+  }
 
-    return { travelList };
-  },
-};
+  console.log("Mounted!", data.results);
+
+  travelList.plan = data.results.planTravel;
+  travelList.end = data.results.endTravel;
+});
 </script>
