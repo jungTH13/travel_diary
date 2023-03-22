@@ -28,30 +28,29 @@
 }
 </style>
 
-<script>
+<script setup>
 import axios from "axios";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
-export default {
-  name: "login",
-  setup() {
-    async function handleLogin() {
-      const data = await axios.post(
-        "https://develop.life-traveldiary.net:8080/user/cookie",
-        {},
-        {
-          withCredentials: true,
-        }
-      );
-      console.log("login", data);
+async function handleLogin() {
+  const exam = await axios.get(
+    "https://develop.life-traveldiary.net:8080/user/examCookie",
+    {
+      withCredentials: true,
     }
-    onBeforeMount(() => {
-      console.log("Before Mount!");
-    });
-    onMounted(async () => {
-      console.log("Mounted!");
-    });
+  );
 
-    return { handleLogin };
-  },
-};
+  router.replace("/");
+
+  console.log("user", exam);
+}
+
+onBeforeMount(() => {
+  console.log("Before Mount!");
+});
+
+onMounted(async () => {
+  console.log("Mounted!");
+});
 </script>
