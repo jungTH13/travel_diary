@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="main-page">
-      <nuxt-link to="/search" id="add-plan-button">
+      <nuxt-link to="/plan/country" id="add-plan-button">
         <span class="plus-button orange"
           ><font-awesome-icon icon="fa-solid fa-plus" id="plus-button-img"
         /></span>
