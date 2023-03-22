@@ -98,7 +98,7 @@ function testCheckList() {
   console.log(codeArr, countryArr);
 
   router.push({
-    path: "/plan",
+    path: "/plan/new",
     query: {
       codes: JSON.stringify(codeArr),
       countries: JSON.stringify(countryArr),

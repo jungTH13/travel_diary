@@ -27,8 +27,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
-const router = useRouter();
+import { useRoute } from "vue-router";
 const route = useRoute();
 
 const codes = ref([]);
@@ -51,22 +50,4 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss" scoped>
-/* .plan-container{
-  margin:60px 90px 0;
-
-  .plan-title{
-    font-size: 20px;
-    line-height: 27px;
-    padding-bottom: 13px;
-    border-bottom: 1px solid #dddddd;
-  }
-
-  .plan-info{
-    font-size:16px;
-    line-height:22px;
-    padding: 10px auto;
-    border-bottom: 1px solid black;
-  }
-} */
-</style>
+<style lang="scss" scoped></style>
