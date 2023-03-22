@@ -43,7 +43,9 @@ public class AuthInterceptor implements HandlerInterceptor {
         if(request.getRequestURI().equals("/user/examCookie") || request.getRequestURI().equals("/user/cookie")){
             return true;
         }
-        throw new exceptionCode(ErrorCode.INVALID_JWT_ERROR);
+        exceptionCode code = new exceptionCode(ErrorCode.INVALID_JWT_ERROR);
+        if(request.getMethod().equals("OPTIONS")) return true;
+        throw code;
     }
 
     private Claims getClaims(String token) throws exceptionCode{
