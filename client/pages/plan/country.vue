@@ -1,15 +1,15 @@
 <template>
   <div>
     <div id="search-page">
-      <div id="search-input-wrapper">
+      <form id="search-input-wrapper" @submit="handleCountrySearch">
         <input class="text-lg" type="text" v-model="searchInput" />
-        <button id="search-button" @click="handleCountrySearch">
+        <button id="search-button">
           <font-awesome-icon
             id="search-button-img"
             icon="fa-solid fa-magnifying-glass"
           />
         </button>
-      </div>
+      </form>
 
       <div id="selected-country-wrapper">
         <div
@@ -53,7 +53,7 @@
         </div>
       </div>
 
-      <div id="select-complete" @click="testCheckList">
+      <div id="select-complete" @click="handleCheckList">
         <div class="submit-button">선택완료</div>
       </div>
     </div>
@@ -69,7 +69,6 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 const searchInput = ref("");
-const searchResult = ref([]);
 const countryList = ref([]);
 const checkedList = ref([]);
 
@@ -80,17 +79,12 @@ function checkLimit() {
   }
 }
 
-function testCheckList() {
+function handleCheckList() {
   if (checkedList.value.length === 0) {
     return alert("나라를 선택해주세요");
   }
   const countries = checkedList.value;
   console.log("check", countries);
-
-  // const filtered = countries.map((item) => {
-  //   delete item.thumbnail;
-  //   return item;
-  // });
 
   const codeArr = checkedList.value.map((item) => item.code);
   const countryArr = checkedList.value.map((item) => item.name);
@@ -108,29 +102,27 @@ function testCheckList() {
 
 async function handleCountrySearch(e) {
   e.preventDefault();
-  if (searchInput.value) {
-    console.log("test", searchInput.value);
 
-    axios.defaults.withCredentials = true;
+  console.log("test", searchInput.value);
 
-    const searchData = JSON.stringify({
-      name: "일",
-    });
+  const searchData = JSON.stringify({
+    name: searchInput.value,
+  });
 
-    const { data } = await axios.post(
-      "https://develop.life-traveldiary.net:8080/common/countryLike",
-      searchData,
-      {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+  const { data } = await axios.post(
+    "https://develop.life-traveldiary.net:8080/common/countryLike",
+    searchData,
+    {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
-    console.log("data", data);
-    searchInput.value = "";
-  }
+  console.log("country list", data.results.countryList);
+  countryList.value = data.results.countryList;
+  searchInput.value = "";
 }
 
 onBeforeMount(() => {
