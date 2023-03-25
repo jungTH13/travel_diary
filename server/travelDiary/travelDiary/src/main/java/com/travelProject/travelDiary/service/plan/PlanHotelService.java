@@ -50,11 +50,13 @@ public class PlanHotelService {
         }
     }
 
-    public void planHotelUpdate(PlanHotel planHotel) {
+    public void planHotelUpdate(PlanHotelDto planHotelDto) {
         LocalDateTime time = LocalDateTime.now();
-        planHotel.setModifiedDate(time);
+        planHotelDto.setModifiedDate(time);
 
+        PlanHotel planHotel = modelMapper.map(planHotelDto, PlanHotel.class);
         Long id = planHotel.getId();
+
         PlanHotel planHotel2 = planHotelRepository.findByIdAndUser_Id(id, planHotel.getUser().getId());
         if(!planHotel.getUser().getId().equals(planHotel2.getUser().getId())){
             throw new exceptionCode(DIFFERENT_USER_PARAMETER);
@@ -67,8 +69,10 @@ public class PlanHotelService {
         }
     }
 
-    public void planHotelDelete(PlanHotel planHotel) {
+    public void planHotelDelete(PlanHotelDto planHotelDto) {
+        PlanHotel planHotel = modelMapper.map(planHotelDto, PlanHotel.class);
         Long id = planHotel.getId();
+
         PlanHotel planHotel2 = planHotelRepository.findByIdAndUser_Id(id, planHotel.getUser().getId());
         if(!planHotel.getUser().getId().equals(planHotel2.getUser().getId())){
             throw new exceptionCode(DIFFERENT_USER_PARAMETER);

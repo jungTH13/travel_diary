@@ -40,21 +40,21 @@ public class PlanHotelController {
         return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").build();
     }
 
-    @PutMapping("/plan/hotel/planHotelUpdate")
-    public ResponseBody setPlanHotelUpdate(HttpServletRequest request, @RequestBody PlanHotel planHotel) {
+    @PutMapping("/travel/plan/hotel/hotelUpdate")
+    public ResponseBody setPlanHotelUpdate(HttpServletRequest request, @RequestBody PlanHotelDto planHotelDto) {
         User user = (User) request.getAttribute("user");
-        planHotel.setUser(user);
+        planHotelDto.setUser(user);
 
-        planHotelService.planHotelUpdate(planHotel);
+        planHotelService.planHotelUpdate(planHotelDto);
         return ResponseBody.builder().code(200).msg("수정 성공 했습니다.").build();
     }
 
-    @DeleteMapping("/plan/hotel/planHotelDelete")
-    public ResponseBody setPlanHotelDelete(HttpServletRequest request, @RequestBody PlanHotel planHotel) {
+    @DeleteMapping("/travel/plan/hotel/hotelDelete")
+    public ResponseBody setPlanHotelDelete(HttpServletRequest request, @RequestBody PlanHotelDto planHotelDto) {
         User user = (User) request.getAttribute("user");
-        planHotel.setUser(user);
+        planHotelDto.setUser(user);
 
-        planHotelService.planHotelDelete(planHotel);
+        planHotelService.planHotelDelete(planHotelDto);
         return ResponseBody.builder().code(200).msg("삭제 성공 했습니다.").build();
     }
 }
