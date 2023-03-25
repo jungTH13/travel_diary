@@ -1,5 +1,6 @@
 package com.travelProject.travelDiary.entity.plan;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.travelProject.travelDiary.entity.Travel;
 import com.travelProject.travelDiary.entity.User;
 import lombok.*;
@@ -26,10 +27,12 @@ public class PlanHotel {
 
     @ManyToOne(targetEntity = Travel.class, fetch = FetchType.LAZY)
     @JoinColumn(name="t_id")
+    @JsonIgnore
     private Travel travel;
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name="id")
+    @JsonIgnore
     private User user;
 
     @Column(name = "ph_title")
