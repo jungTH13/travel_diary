@@ -21,7 +21,7 @@ public class PlanHotelController {
     private PlanHotelService planHotelService;
 
     @GetMapping("/travel/plan/hotel/hotelList")
-    public ResponseBody  getPlanHotelList(HttpServletRequest request, @RequestBody PlanHotelDto planHotelDto) {
+    public ResponseBody  getHotelList(HttpServletRequest request, @RequestBody PlanHotelDto planHotelDto) {
         User user = (User) request.getAttribute("user");
 
         Map<String, Object> result = new HashMap<>();
@@ -31,12 +31,12 @@ public class PlanHotelController {
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }
 
-    @PostMapping("/plan/hotel/planHotelInsert")
-    public ResponseBody setPlanHotelInsert(HttpServletRequest request, @RequestBody PlanHotel planHotel) {
+    @PostMapping("/travel/plan/hotel/hotelInsert")
+    public ResponseBody setHotelInsert(HttpServletRequest request, @RequestBody PlanHotelDto planHotelDto) {
         User user = (User) request.getAttribute("user");
-        planHotel.setUser(user);
+        planHotelDto.setUser(user);
 
-        planHotelService.planHotelInsert(planHotel);
+        planHotelService.planHotelInsert(planHotelDto);
         return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").build();
     }
 

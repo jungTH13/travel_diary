@@ -4,6 +4,7 @@ import com.travelProject.travelDiary.config.exceptionCode;
 import com.travelProject.travelDiary.dto.PlanHotelDto;
 import com.travelProject.travelDiary.entity.plan.PlanHotel;
 import com.travelProject.travelDiary.repository.plan.PlanHotelRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,12 @@ public class PlanHotelService {
     @Autowired
     private PlanHotelRepository planHotelRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public PlanHotelService() {
+    }
+
     public List<PlanHotel> selectPlanHotelList(PlanHotelDto PlanHotelDto, String userId) {
         if(userId.equals("") || userId == null) {
             throw new exceptionCode(INVALID_USER_PARAMETER);
@@ -29,12 +36,13 @@ public class PlanHotelService {
         return planHotelResult;
     }
 
-    public void planHotelInsert(PlanHotel planHotel) {
+    public void planHotelInsert(PlanHotelDto planHotelDto) {
         LocalDateTime time = LocalDateTime.now();
-        planHotel.setCreatedDate(time);
-        planHotel.setModifiedDate(time);
+        planHotelDto.setCreatedDate(time);
+        planHotelDto.setModifiedDate(time);
 
-        Long id = planHotel.getId();
+        Long id = planHotelDto.getId();
+        PlanHotel planHotel = modelMapper.map(planHotelDto, PlanHotel.class);
         if(id == null) {
             planHotelRepository.save(planHotel);
         } else {
