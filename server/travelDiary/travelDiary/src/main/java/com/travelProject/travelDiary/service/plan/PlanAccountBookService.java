@@ -1,6 +1,7 @@
 package com.travelProject.travelDiary.service.plan;
 
 import com.travelProject.travelDiary.config.exceptionCode;
+import com.travelProject.travelDiary.dto.ErrorCode;
 import com.travelProject.travelDiary.dto.PlanAccountBookDto;
 import com.travelProject.travelDiary.entity.plan.PlanAccountBook;
 import com.travelProject.travelDiary.repository.plan.PlanAccountBookRepository;
@@ -10,9 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static com.travelProject.travelDiary.dto.ErrorCode.*;
-
 @Service
 public class PlanAccountBookService {
     @Autowired
@@ -23,7 +21,7 @@ public class PlanAccountBookService {
 
     public PlanAccountBook selectPlanAccountBookOne(PlanAccountBookDto accountBookDto, String userId) {
         if(userId.equals("") || userId == null) {
-            throw new exceptionCode(INVALID_USER_PARAMETER);
+            throw new exceptionCode(ErrorCode.INVALID_USER_PARAMETER);
         }
 
         Long planAccountBookId = accountBookDto.getId();
@@ -33,7 +31,7 @@ public class PlanAccountBookService {
 
     public List<PlanAccountBook> selectPlanAccountBookList(PlanAccountBookDto accountBookDto, String userId) {
         if(userId.equals("") || userId == null) {
-            throw new exceptionCode(INVALID_USER_PARAMETER);
+            throw new exceptionCode(ErrorCode.INVALID_USER_PARAMETER);
         }
 
         Long travelId = accountBookDto.getTravel().getId();
@@ -47,11 +45,17 @@ public class PlanAccountBookService {
         accountBookDto.setModifiedDate(time);
 
         Long id = accountBookDto.getId();
+        Long travelId = accountBookDto.getTravel().getId();
         PlanAccountBook planAccountBook = modelMapper.map(accountBookDto, PlanAccountBook.class);
+
+        if(travelId < 0 || travelId == null) {
+            throw new exceptionCode(ErrorCode.INVALID_TRAVEL_ID_PARAMETER);
+        }
+
         if(id == null) {
             planAccountBookRepository.save(planAccountBook);
         } else {
-            throw new exceptionCode(INVALID_PARAMETER);
+            throw new exceptionCode(ErrorCode.INVALID_PARAMETER);
         }
     }
 
@@ -61,17 +65,22 @@ public class PlanAccountBookService {
 
         PlanAccountBook planAccountBook = modelMapper.map(accountBookDto, PlanAccountBook.class);
         Long id = planAccountBook.getId();
+        Long travelId = accountBookDto.getTravel().getId();
+
+        if(travelId < 0 || travelId == null) {
+            throw new exceptionCode(ErrorCode.INVALID_TRAVEL_ID_PARAMETER);
+        }
+
+        if(id == null) {
+            throw new exceptionCode(ErrorCode.INVALID_ID_PARAMETER);
+        }
 
         PlanAccountBook planAccountBook2 = planAccountBookRepository.findByIdAndUser_Id(id, planAccountBook.getUser().getId());
         if(!planAccountBook.getUser().getId().equals(planAccountBook2.getUser().getId())){
-            throw new exceptionCode(DIFFERENT_USER_PARAMETER);
+            throw new exceptionCode(ErrorCode.DIFFERENT_USER_PARAMETER);
         }
 
-        if(id > 0 || id != null) {
-            planAccountBookRepository.save(planAccountBook);
-        } else {
-            throw new exceptionCode(INVALID_PARAMETER);
-        }
+        planAccountBookRepository.save(planAccountBook);
     }
 
     public void planAccountBookDelete(PlanAccountBookDto accountBookDto) {
@@ -80,7 +89,7 @@ public class PlanAccountBookService {
 
         PlanAccountBook planAccountBook2 = planAccountBookRepository.findByIdAndUser_Id(id, accountBookDto.getUser().getId());
         if(!planAccountBook.getUser().getId().equals(planAccountBook2.getUser().getId())){
-            throw new exceptionCode(DIFFERENT_USER_PARAMETER);
+            throw new exceptionCode(ErrorCode.DIFFERENT_USER_PARAMETER);
         }
 
         planAccountBookRepository.delete(planAccountBook);
