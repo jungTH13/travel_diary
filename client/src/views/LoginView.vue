@@ -30,6 +30,7 @@
 
 <script setup>
 import axios from "axios";
+import { onBeforeMount, onMounted } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 

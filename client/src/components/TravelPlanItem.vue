@@ -10,9 +10,9 @@
       </div>
     </div>
 
-    <nuxt-link to="/" id="edit-item">
+    <router-link to="/" id="edit-item">
       <font-awesome-icon icon="fa-solid fa-pen" id="edit-item-img" />
-    </nuxt-link>
+    </router-link>
   </div>
 </template>
 

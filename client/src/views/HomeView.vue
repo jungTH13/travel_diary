@@ -1,12 +1,12 @@
 <template>
   <div>
     <div id="main-page">
-      <nuxt-link to="/plan/country" id="add-plan-button">
+      <router-link to="/plan/country" id="add-plan-button">
         <span class="plus-button orange"
           ><font-awesome-icon icon="fa-solid fa-plus" id="plus-button-img"
         /></span>
         <span class="text-lg">여행일정 만들기</span>
-      </nuxt-link>
+      </router-link>
 
       <div id="plan-travel">
         <h3>떠날 여행</h3>
@@ -28,7 +28,7 @@
 
 <script setup>
 import axios from "axios";
-import { ref, reactive } from "vue";
+import { ref, reactive, onBeforeMount, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 import TravelPlanItem from "../components/TravelPlanItem.vue";

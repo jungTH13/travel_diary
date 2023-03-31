@@ -64,7 +64,7 @@
 
 <script setup>
 import axios from "axios";
-import { ref, reactive } from "vue";
+import { ref, reactive, onBeforeMount, onMounted } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 
