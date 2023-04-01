@@ -29,22 +29,15 @@
 </style>
 
 <script setup>
-import axios from "axios";
 import { onBeforeMount, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { useUserStore } from "../stores/user";
 const router = useRouter();
+const store = useUserStore();
 
-async function handleLogin() {
-  const exam = await axios.get(
-    "https://develop.life-traveldiary.net:8080/user/examCookie",
-    {
-      withCredentials: true,
-    }
-  );
-
+function handleLogin() {
+  store.login();
   router.replace("/");
-
-  console.log("user", exam);
 }
 
 onBeforeMount(() => {
