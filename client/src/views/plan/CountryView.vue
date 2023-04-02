@@ -11,16 +11,7 @@
         </button>
       </div>
 
-      <div id="selected-country-wrapper">
-        <div
-          v-for="item in checkedList"
-          v-bind:key="item.id"
-          class="selected-country"
-        >
-          <span>{{ item.name }}</span>
-          <font-awesome-icon icon="fa-solid fa-jet-fighter" id="plane-img" />
-        </div>
-      </div>
+      <SelectedCountries :countries="checkedList" />
 
       <div id="country-list-wrapper">
         <div
@@ -66,11 +57,15 @@
 import axios from "axios";
 import { ref, reactive, onBeforeMount, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { storeToRefs } from "pinia";
+import { usePlanStore } from "../../stores/plan";
+import SelectedCountries from "../../components/SelectedCountries.vue";
+
 const router = useRouter();
+const store = usePlanStore();
 
 const searchInput = ref("");
-const searchResult = ref([]);
-const countryList = ref([]);
+const countryList = ref();
 const checkedList = ref([]);
 
 function checkLimit() {
@@ -85,25 +80,9 @@ function testCheckList() {
     return alert("나라를 선택해주세요");
   }
   const countries = checkedList.value;
-  console.log("check", countries);
 
-  // const filtered = countries.map((item) => {
-  //   delete item.thumbnail;
-  //   return item;
-  // });
-
-  const codeArr = checkedList.value.map((item) => item.code);
-  const countryArr = checkedList.value.map((item) => item.name);
-
-  console.log(codeArr, countryArr);
-
-  router.push({
-    path: "/plan/new",
-    query: {
-      codes: JSON.stringify(codeArr),
-      countries: JSON.stringify(countryArr),
-    },
-  });
+  store.setPlanCountries(countries);
+  router.push("/plan/new");
 }
 
 async function handleCountrySearch(e) {
@@ -150,7 +129,7 @@ onMounted(async () => {
     }
 
     countryList.value = data.results.countryList;
-    console.log("country list", data.results);
+    // console.log("country list", data.results);
   }
 });
 </script>

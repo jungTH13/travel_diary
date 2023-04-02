@@ -33,34 +33,6 @@
     }
   }
 
-  #selected-country-wrapper {
-    padding: 20px 40px;
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    background-color: #fff;
-
-    .selected-country {
-      display: flex;
-      align-items: center;
-
-      span {
-        font-size: 1.2rem;
-        font-weight: bold;
-      }
-
-      #plane-img {
-        width: 20px;
-        height: 20px;
-        margin: 0 20px;
-      }
-      &:last-of-type > #plane-img {
-        display: none;
-      }
-    }
-  }
-
   #country-list-wrapper {
     flex-grow: 1;
     padding: 0 40px;
