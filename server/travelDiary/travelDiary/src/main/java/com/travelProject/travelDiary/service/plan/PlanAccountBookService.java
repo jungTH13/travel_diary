@@ -41,12 +41,12 @@ public class PlanAccountBookService {
 
     public void planAccountBookInsert(PlanAccountBookDto accountBookDto) {
         LocalDateTime time = LocalDateTime.now();
-        accountBookDto.setCreatedDate(time);
-        accountBookDto.setModifiedDate(time);
 
         Long id = accountBookDto.getId();
         Long travelId = accountBookDto.getTravel().getId();
         PlanAccountBook planAccountBook = modelMapper.map(accountBookDto, PlanAccountBook.class);
+        planAccountBook.setCreatedDate(time);
+        planAccountBook.setModifiedDate(time);
 
         if(travelId < 0 || travelId == null) {
             throw new exceptionCode(ErrorCode.INVALID_TRAVEL_ID_PARAMETER);
@@ -61,9 +61,9 @@ public class PlanAccountBookService {
 
     public void planAccountBookUpdate(PlanAccountBookDto accountBookDto) {
         LocalDateTime time = LocalDateTime.now();
-        accountBookDto.setModifiedDate(time);
 
         PlanAccountBook planAccountBook = modelMapper.map(accountBookDto, PlanAccountBook.class);
+        planAccountBook.setModifiedDate(time);
         Long id = planAccountBook.getId();
         Long travelId = accountBookDto.getTravel().getId();
 

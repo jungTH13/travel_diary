@@ -1,6 +1,7 @@
 package com.travelProject.travelDiary.service.plan;
 
 import com.travelProject.travelDiary.config.exceptionCode;
+import com.travelProject.travelDiary.dto.ErrorCode;
 import com.travelProject.travelDiary.dto.PlanHotelDto;
 import com.travelProject.travelDiary.entity.plan.PlanHotel;
 import com.travelProject.travelDiary.repository.plan.PlanHotelRepository;
@@ -11,10 +12,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.travelProject.travelDiary.dto.ErrorCode.INVALID_USER_PARAMETER;
-import static com.travelProject.travelDiary.dto.ErrorCode.INVALID_PARAMETER;
-import static com.travelProject.travelDiary.dto.ErrorCode.DIFFERENT_USER_PARAMETER;
-
 @Service
 public class PlanHotelService {
     @Autowired
@@ -23,50 +20,68 @@ public class PlanHotelService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public PlanHotelService() {
-    }
+        public PlanHotel selectPlanHotelOne(PlanHotelDto planHotelDto, String userId) {
+            if(userId.equals("") || userId == null) {
+                throw new exceptionCode(ErrorCode.INVALID_USER_PARAMETER);
+            }
+
+            Long hotelId = planHotelDto.getId();
+            PlanHotel planHotelOne = planHotelRepository.findByIdAndUser_Id(hotelId, userId);
+            return planHotelOne;
+        }
 
     public List<PlanHotel> selectPlanHotelList(PlanHotelDto PlanHotelDto, String userId) {
         if(userId.equals("") || userId == null) {
-            throw new exceptionCode(INVALID_USER_PARAMETER);
+            throw new exceptionCode(ErrorCode.INVALID_USER_PARAMETER);
         }
 
         Long travelId = PlanHotelDto.getTravel().getId();
-        List<PlanHotel> planHotelResult = planHotelRepository.findAllByTravel_IdAndUser_Id(travelId, userId);
-        return planHotelResult;
+        List<PlanHotel> planHotelList = planHotelRepository.findAllByTravel_IdAndUser_Id(travelId, userId);
+        return planHotelList;
     }
 
     public void planHotelInsert(PlanHotelDto planHotelDto) {
         LocalDateTime time = LocalDateTime.now();
-        planHotelDto.setCreatedDate(time);
-        planHotelDto.setModifiedDate(time);
 
         Long id = planHotelDto.getId();
+        Long travelId = planHotelDto.getTravel().getId();
         PlanHotel planHotel = modelMapper.map(planHotelDto, PlanHotel.class);
+        planHotel.setCreatedDate(time);
+        planHotel.setModifiedDate(time);
+
+        if(travelId < 0 || travelId == null) {
+            throw new exceptionCode(ErrorCode.INVALID_TRAVEL_ID_PARAMETER);
+        }
+
         if(id == null) {
             planHotelRepository.save(planHotel);
         } else {
-            throw new exceptionCode(INVALID_PARAMETER);
+            throw new exceptionCode(ErrorCode.INVALID_PARAMETER);
         }
     }
 
     public void planHotelUpdate(PlanHotelDto planHotelDto) {
         LocalDateTime time = LocalDateTime.now();
-        planHotelDto.setModifiedDate(time);
 
         PlanHotel planHotel = modelMapper.map(planHotelDto, PlanHotel.class);
+        planHotel.setModifiedDate(time);
         Long id = planHotel.getId();
+        Long travelId = planHotelDto.getTravel().getId();
+
+        if(travelId < 0 || travelId == null) {
+            throw new exceptionCode(ErrorCode.INVALID_TRAVEL_ID_PARAMETER);
+        }
+
+        if(id == null) {
+            throw new exceptionCode(ErrorCode.INVALID_ID_PARAMETER);
+        }
 
         PlanHotel planHotel2 = planHotelRepository.findByIdAndUser_Id(id, planHotel.getUser().getId());
         if(!planHotel.getUser().getId().equals(planHotel2.getUser().getId())){
-            throw new exceptionCode(DIFFERENT_USER_PARAMETER);
+            throw new exceptionCode(ErrorCode.DIFFERENT_USER_PARAMETER);
         }
 
-        if(id > 0 || id != null) {
-            planHotelRepository.save(planHotel);
-        } else {
-            throw new exceptionCode(INVALID_PARAMETER);
-        }
+        planHotelRepository.save(planHotel);
     }
 
     public void planHotelDelete(PlanHotelDto planHotelDto) {
@@ -75,7 +90,7 @@ public class PlanHotelService {
 
         PlanHotel planHotel2 = planHotelRepository.findByIdAndUser_Id(id, planHotel.getUser().getId());
         if(!planHotel.getUser().getId().equals(planHotel2.getUser().getId())){
-            throw new exceptionCode(DIFFERENT_USER_PARAMETER);
+            throw new exceptionCode(ErrorCode.DIFFERENT_USER_PARAMETER);
         }
 
         planHotelRepository.delete(planHotel);

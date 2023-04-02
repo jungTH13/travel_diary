@@ -36,10 +36,4 @@ public class PlanAccountBookDto {
     private String planType;
 
     private Long planTypeId;
-
-    private boolean deleted;
-
-    private LocalDateTime createdDate;
-
-    private LocalDateTime modifiedDate;
 }

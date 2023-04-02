@@ -41,10 +41,4 @@ public class PlanHotelDto {
     private Double x;
 
     private Double y;
-
-    protected boolean deleted;
-
-    protected LocalDateTime createdDate;
-
-    protected LocalDateTime modifiedDate;
 }

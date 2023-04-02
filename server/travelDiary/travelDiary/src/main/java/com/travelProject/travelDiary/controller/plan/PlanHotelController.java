@@ -20,6 +20,17 @@ public class PlanHotelController {
     @Autowired
     private PlanHotelService planHotelService;
 
+    @GetMapping("/travel/plan/hotel/hotelOne")
+    public ResponseBody  getHotelOne(HttpServletRequest request, @RequestBody PlanHotelDto planHotelDto) {
+        User user = (User) request.getAttribute("user");
+
+        Map<String, Object> result = new HashMap<>();
+        PlanHotel planHotelOne= planHotelService.selectPlanHotelOne(planHotelDto, user.getId());
+
+        result.put("planHotelOne", planHotelOne);
+        return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
+    }
+
     @GetMapping("/travel/plan/hotel/hotelList")
     public ResponseBody  getHotelList(HttpServletRequest request, @RequestBody PlanHotelDto planHotelDto) {
         User user = (User) request.getAttribute("user");
