@@ -1,9 +1,13 @@
 package com.travelProject.travelDiary.entity.plan;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.travelProject.travelDiary.entity.Travel;
 import com.travelProject.travelDiary.entity.User;
-import com.travelProject.travelDiary.entity.abstractions.CreateEntity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -19,7 +23,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Table(name="tbl_plan_airplane")
-public class PlanAirplane {
+public class PlanAirPlane {
     @Id
     @Column(name = "pa_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,10 +31,12 @@ public class PlanAirplane {
 
     @ManyToOne(targetEntity = Travel.class, fetch = FetchType.LAZY)
     @JoinColumn(name="t_id")
+    @JsonIgnore
     private Travel travel;
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name="id")
+    @JsonIgnore
     private User user;
 
     @Column(name = "pa_title")
@@ -65,6 +71,12 @@ public class PlanAirplane {
 
     @Column(name="pa_reservation_number")
     private String reservationNumber;
+
+    @Column(name="pa_x")
+    private Double x;
+
+    @Column(name="pa_y")
+    private Double y;
 
     @Column(nullable = false)
     @ColumnDefault("false")
