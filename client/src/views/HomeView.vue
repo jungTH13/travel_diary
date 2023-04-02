@@ -1,37 +1,57 @@
 <template>
   <div>
-    <div id="main-page">
-      <router-link to="/plan/country" id="add-plan-button">
-        <span class="plus-button orange"
-          ><font-awesome-icon icon="fa-solid fa-plus" id="plus-button-img"
-        /></span>
-        <span class="text-lg">여행일정 만들기</span>
-      </router-link>
+    <TheHeader />
 
-      <div id="plan-travel">
-        <h3>떠날 여행</h3>
-        <div v-for="item in travelList.plan" v-bind:key="item.id">
-          <TravelPlanItem :planItem="item" />
+    <div id="main-page">
+
+      <TheCreateTravel />
+
+      <div id="travel-plan">
+        <div id="plan-travel">
+          <h3>떠날 여행</h3>
+          <div v-for="item in travelList.plan" v-bind:key="item.id">
+            <TravelPlanItem :planItem="item" />
+          </div>
+        </div>
+
+        <div id="end-travel">
+          <h3>떠난 여행</h3>
+          <div v-for="item in travelList.end" v-bind:key="item.id">
+            <TravelPlanItem :planItem="item" />
+          </div>
         </div>
       </div>
-      <div id="end-travel">
-        <h3>떠난 여행</h3>
-        <div v-for="item in travelList.end" v-bind:key="item.id">
-          <TravelPlanItem :planItem="item" />
-        </div>
-      </div>
+
     </div>
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+#main-page {
+  width: 100%;
+  padding: 40px 40px;
+
+  #travel-plan {
+    padding-top:40px;
+  }
+
+  h3 {
+    font-weight: bold;
+  }
+
+  #plan-travel {
+    margin-bottom: 80px;
+  }
+}
+</style>
 
 <script setup>
 import { ref, reactive, onBeforeMount, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { storeToRefs } from "pinia";
 import TravelPlanItem from "../components/TravelPlanItem.vue";
 import { useTravelStore } from "../stores/travel";
+import TheHeader from "../components/TheHeader.vue";
+import TheCreateTravel from "../components/TheCreateTravel.vue";
 
 const router = useRouter();
 const store = useTravelStore();
@@ -44,4 +64,5 @@ onBeforeMount(() => {
 onMounted(() => {
   store.getTravelList();
 });
+
 </script>

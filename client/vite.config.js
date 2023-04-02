@@ -10,5 +10,14 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+
+  //scss 전역 사용
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: '@import "./src/assets/scss/_variables.scss";' 
+      }
+    }
   }
 })

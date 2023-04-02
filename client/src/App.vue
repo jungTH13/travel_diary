@@ -1,12 +1,13 @@
 <template>
-  <TheHeader />
-  <RouterView />
+  <div style="width:50%; min-width:800px; transform: translate(50%, 0%);">
+    <RouterView />
+  </div>
 </template>
 
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
-import TheHeader from "../src/components/TheHeader.vue";
-import HomeView from "./views/HomeView.vue";
+import { RouterView } from "vue-router";
 </script>
 
-<style scoped></style>
+<style lang="scss">
+@import "./assets/scss/app.scss";
+</style>

@@ -8,6 +8,12 @@ export const useTravelStore = defineStore("travel", () => {
     end: [],
   });
 
+  const newTravel = ref({
+    countryList: [], // country[]
+    startDate: "", // YYYY-MM-DD
+    endDate:"" // YYYY-MM-DD
+  })
+
   async function getTravelList() {
     const { data } = await axios.get(
       "https://develop.life-traveldiary.net:8080/travel/userTravelList",
@@ -24,5 +30,24 @@ export const useTravelStore = defineStore("travel", () => {
     travelList.end = data.results.endTravel;
   }
 
-  return { travelList, getTravelList };
+  const post = async()=>{
+    const { data } = await axios.post(
+      "https://develop.life-traveldiary.net:8080/travel/travelInsert",
+      newTravel.value,
+      {
+        withCredentials: true,
+      }
+    );
+ 
+    if(data.code === 200){
+      return data
+    }
+  }
+
+  return { 
+    travelList,
+    newTravel, 
+    getTravelList, 
+    post 
+  };
 });

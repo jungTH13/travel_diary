@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div style="overflow-y: auto;">
     <div id="search-page">
+      
       <div id="search-input-wrapper">
         <input class="text-lg" type="text" v-model="searchInput" />
         <button id="search-button" @click="handleCountrySearch">
@@ -11,67 +12,81 @@
         </button>
       </div>
 
-      <div id="selected-country-wrapper">
-        <div
-          v-for="item in checkedList"
-          v-bind:key="item.id"
-          class="selected-country"
-        >
-          <span>{{ item.name }}</span>
-          <font-awesome-icon icon="fa-solid fa-jet-fighter" id="plane-img" />
-        </div>
-      </div>
+      <CountrySelected v-model="checkedList" />
 
-      <div id="country-list-wrapper">
-        <div
-          v-for="country in countryList"
-          id="country-info"
-          v-bind:key="country.id"
-        >
-          <label>
-            <div id="country-item-wrapper">
-              <div id="country-detail">
-                <div id="flag-img">
-                  <div v-if="country.thumbnail">
-                    <img :src="country.thumbnail" alt="국기 이미지" />
-                  </div>
-                </div>
-                <span>{{ country.name }}</span>
-              </div>
-              <div id="country-checkbox">
-                <input
-                  @change="checkLimit"
-                  type="checkbox"
-                  name="check"
-                  :value="country"
-                  v-model="checkedList"
-                />
-                <span id="check-box-custom"> </span>
-              </div>
-            </div>
-          </label>
-        </div>
-      </div>
+      <CountryList v-model="checkedList" :visual-searched="isSearch" />
 
       <div id="select-complete" @click="testCheckList">
         <div class="submit-button">선택완료</div>
       </div>
     </div>
+    
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+#search-page {
+  width: 100%;
+  height: calc(100vh - 70px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  #search-input-wrapper {
+    width: 100%;
+    margin-top: 20px;
+    padding: 0 40px;
+    display: flex;
+    justify-content: center;
+    input {
+      border: none;
+      border-bottom: 1px solid;
+      flex-grow: 1;
+    }
+    input:focus {
+      outline: none;
+    }
+    #search-button {
+      width: 34px;
+      height: 34px;
+      margin-left: 10px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      #search-button-img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
+#select-complete {
+    position:fixed;
+    bottom:10px;
+    width: 100%;
+    padding: 0 20px;
+  }
+
+</style>
 
 <script setup>
 import axios from "axios";
-import { ref, reactive, onBeforeMount, onMounted } from "vue";
+import { ref, reactive, onBeforeMount, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
-const router = useRouter();
+import CountryList from "../../components/CountryList.vue";
+import CountrySelected from "../../components/CountrySelected.vue";
+import { useCountryStore } from "../../stores/country";
+import { useTravelStore } from "../../stores/travel";
 
+//stores
+const countryStore = useCountryStore()
+const router = useRouter();
+const travelStore = useTravelStore()
+
+//contents
 const searchInput = ref("");
-const searchResult = ref([]);
-const countryList = ref([]);
 const checkedList = ref([]);
+const isSearch = ref(false);
 
 function checkLimit() {
   if (checkedList.value.length > 3) {
@@ -87,22 +102,16 @@ function testCheckList() {
   const countries = checkedList.value;
   console.log("check", countries);
 
-  // const filtered = countries.map((item) => {
-  //   delete item.thumbnail;
-  //   return item;
-  // });
-
   const codeArr = checkedList.value.map((item) => item.code);
   const countryArr = checkedList.value.map((item) => item.name);
 
   console.log(codeArr, countryArr);
 
+  travelStore.newTravel.countryList = checkedList.value
+  travelStore.newTravel.title = countryArr.join('-')
+  
   router.push({
-    path: "/plan/new",
-    query: {
-      codes: JSON.stringify(codeArr),
-      countries: JSON.stringify(countryArr),
-    },
+    name: "newCountry",
   });
 }
 
@@ -111,46 +120,18 @@ async function handleCountrySearch(e) {
   if (searchInput.value) {
     console.log("test", searchInput.value);
 
-    axios.defaults.withCredentials = true;
-
-    const searchData = JSON.stringify({
-      name: "일",
-    });
-
-    const { data } = await axios.post(
-      "https://develop.life-traveldiary.net:8080/common/countryLike",
-      searchData,
-      {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    console.log("data", data);
-    searchInput.value = "";
+    countryStore.getCountryListLike(searchInput.value)
+    return isSearch.value = true
   }
+  return isSearch.value =false
 }
+
 
 onBeforeMount(() => {
   console.log("Before Mount!");
 });
 
 onMounted(async () => {
-  if (!searchInput.value) {
-    const { data } = await axios.get(
-      "https://develop.life-traveldiary.net:8080/common/countryList",
-      {
-        withCredentials: true,
-      }
-    );
-    if (data.code === 401) {
-      router.push("/login");
-    }
-
-    countryList.value = data.results.countryList;
-    console.log("country list", data.results);
-  }
+  if(travelStore.newTravel.countryList.length) checkedList.value = travelStore.newTravel.countryList
 });
 </script>

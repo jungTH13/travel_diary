@@ -22,12 +22,12 @@ const router = createRouter({
       name: "plan",
       children: [
         {
-          path: "country",
-          name: "country",
+          path: "create1",
+          name: "create1",
           component: CountryView,
         },
         {
-          path: "new",
+          path: "create2",
           name: "newCountry",
           component: NewCountryView,
         },
