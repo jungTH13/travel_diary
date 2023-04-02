@@ -34,20 +34,24 @@ public class TravelController {
 
     @PostMapping("/travel/travelInsert")
     public ResponseBody setTravelInsert(HttpServletRequest request, @RequestBody Travel travel) {
+        Map<String, Object> result = new HashMap<>();
         User user = (User) request.getAttribute("user");
         travel.setUser(user);
 
-        travelService.travelInsert(travel);
-        return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").build();
+        Long travelId = travelService.travelInsert(travel);
+        result.put("travelId", travelId);
+        return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").results(result).build();
     }
 
     @PutMapping("/travel/travelUpdate")
     public ResponseBody setTravelUpdate(HttpServletRequest request, @RequestBody Travel travel) {
+        Map<String, Object> result = new HashMap<>();
         User user = (User) request.getAttribute("user");
         travel.setUser(user);
 
-        travelService.travelUpdate(travel);
-        return ResponseBody.builder().code(200).msg("수정 성공 했습니다.").build();
+        Long travelId = travelService.travelUpdate(travel);
+        result.put("travelId", travelId);
+        return ResponseBody.builder().code(200).msg("수정 성공 했습니다.").results(result).build();
     }
 
     @DeleteMapping("/travel/travelDelete")

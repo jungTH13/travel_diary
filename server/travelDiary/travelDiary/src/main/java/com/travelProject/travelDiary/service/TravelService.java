@@ -36,20 +36,21 @@ public class TravelService {
         return resutlList;
     }
 
-    public void travelInsert(Travel travel) {
+    public Long travelInsert(Travel travel) {
         LocalDateTime time = LocalDateTime.now();
         travel.setCreatedDate(time);
         travel.setModifiedDate(time);
 
         Long id = travel.getId();
         if(id == null) {
-            travelRepository.save(travel);
+            Long travelId = travelRepository.save(travel).getId();
+            return travelId;
         } else {
             throw new exceptionCode(INVALID_PARAMETER);
         }
     }
 
-    public void travelUpdate(Travel travel) {
+    public Long travelUpdate(Travel travel) {
         LocalDateTime time = LocalDateTime.now();
         travel.setModifiedDate(time);
 
@@ -60,7 +61,8 @@ public class TravelService {
         }
 
         if(id > 0 || id != null) {
-            travelRepository.save(travel);
+            Long travelId = travelRepository.save(travel).getId();
+            return travelId;
         } else {
             throw new exceptionCode(INVALID_PARAMETER);
         }
