@@ -51,7 +51,7 @@ public class PlanHotel {
     private String name;
 
     @Column(name="ph_address")
-    private Date address;
+    private String address;
 
     @Column(name = "ph_reservation_number")
     private String reservationNumber;

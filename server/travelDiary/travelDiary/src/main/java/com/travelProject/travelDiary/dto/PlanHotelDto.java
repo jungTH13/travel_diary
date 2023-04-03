@@ -32,7 +32,7 @@ public class PlanHotelDto {
 
     private String name;
 
-    private Date address;
+    private String address;
 
     private String reservationNumber;
 
