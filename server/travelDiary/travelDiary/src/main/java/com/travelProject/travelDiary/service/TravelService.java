@@ -37,7 +37,7 @@ public class TravelService {
         return resutlList;
     }
 
-    public Long travelInsert(Travel travel) {
+    public Long travelInsert(Travel travel, String[] countryArr) {
         LocalDateTime time = LocalDateTime.now();
         travel.setCreatedDate(time);
         travel.setModifiedDate(time);
@@ -45,6 +45,10 @@ public class TravelService {
         Long id = travel.getId();
         if(id == null) {
             Long travelId = travelRepository.save(travel).getId();
+            travelCountryService.travelCountryDelete(travelId);
+            for (String country: countryArr) {
+                travelCountryService.travelCountryInsert(travelId, country);
+            }
             return travelId;
         } else {
             throw new exceptionCode(ErrorCode.INVALID_PARAMETER);

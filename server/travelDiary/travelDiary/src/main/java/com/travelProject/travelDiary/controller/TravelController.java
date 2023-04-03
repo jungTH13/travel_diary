@@ -43,9 +43,10 @@ public class TravelController {
         User user = (User) request.getAttribute("user");
 
         Travel travel = modelMapper.map(travelDto, Travel.class);
+        String[] countryArr = travelDto.getCountry();
         travel.setUser(user);
 
-        Long travelId = travelService.travelInsert(travel);
+        Long travelId = travelService.travelInsert(travel, countryArr);
         result.put("travelId", travelId);
         return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").results(result).build();
     }
