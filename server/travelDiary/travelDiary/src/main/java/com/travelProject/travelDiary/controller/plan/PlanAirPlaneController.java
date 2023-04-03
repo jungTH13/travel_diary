@@ -48,8 +48,10 @@ public class PlanAirPlaneController {
         User user = (User) request.getAttribute("user");
         planAirPlaneDto.setUser(user);
 
-        planAirPlaneService.planAirPlaneInsert(planAirPlaneDto);
-        return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").build();
+        Map<String, Object> result = new HashMap<>();
+        Long planAirPlaneId = planAirPlaneService.planAirPlaneInsert(planAirPlaneDto);
+        result.put("planAirPlaneId", planAirPlaneId);
+        return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").results(result).build();
     }
 
     @PutMapping("/travel/plan/airPlane/airPlaneUpdate")
@@ -57,8 +59,10 @@ public class PlanAirPlaneController {
         User user = (User) request.getAttribute("user");
         planAirPlaneDto.setUser(user);
 
-        planAirPlaneService.planAirPlaneUpdate(planAirPlaneDto);
-        return ResponseBody.builder().code(200).msg("수정 성공 했습니다.").build();
+        Map<String, Object> result = new HashMap<>();
+        Long planAirPlaneId = planAirPlaneService.planAirPlaneUpdate(planAirPlaneDto);
+        result.put("planAirPlaneId", planAirPlaneId);
+        return ResponseBody.builder().code(200).msg("수정 성공 했습니다.").results(result).build();
     }
 
     @DeleteMapping("/travel/plan/airPlane/airPlaneDelete")

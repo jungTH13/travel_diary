@@ -47,8 +47,10 @@ public class PlanHotelController {
         User user = (User) request.getAttribute("user");
         planHotelDto.setUser(user);
 
-        planHotelService.planHotelInsert(planHotelDto);
-        return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").build();
+        Map<String, Object> result = new HashMap<>();
+        Long planHotelId = planHotelService.planHotelInsert(planHotelDto);
+        result.put("planHotelId", planHotelId);
+        return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").results(result).build();
     }
 
     @PutMapping("/travel/plan/hotel/hotelUpdate")
@@ -56,8 +58,10 @@ public class PlanHotelController {
         User user = (User) request.getAttribute("user");
         planHotelDto.setUser(user);
 
-        planHotelService.planHotelUpdate(planHotelDto);
-        return ResponseBody.builder().code(200).msg("수정 성공 했습니다.").build();
+        Map<String, Object> result = new HashMap<>();
+        Long planHotelId = planHotelService.planHotelUpdate(planHotelDto);
+        result.put("planHotelId", planHotelId);
+        return ResponseBody.builder().code(200).msg("수정 성공 했습니다.").results(result).build();
     }
 
     @DeleteMapping("/travel/plan/hotel/hotelDelete")

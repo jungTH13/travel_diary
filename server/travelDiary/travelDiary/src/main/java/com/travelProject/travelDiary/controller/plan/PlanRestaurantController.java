@@ -47,8 +47,10 @@ public class PlanRestaurantController {
         User user = (User) request.getAttribute("user");
         planRestaurantDto.setUser(user);
 
-        planRestaurantService.planRestaurantInsert(planRestaurantDto);
-        return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").build();
+        Map<String, Object> result = new HashMap<>();
+        Long planRestaurantId = planRestaurantService.planRestaurantInsert(planRestaurantDto);
+        result.put("planRestaurantId", planRestaurantId);
+        return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").results(result).build();
     }
 
     @PutMapping("/travel/plan/restaurant/restaurantUpdate")
@@ -56,8 +58,10 @@ public class PlanRestaurantController {
         User user = (User) request.getAttribute("user");
         planRestaurantDto.setUser(user);
 
-        planRestaurantService.planRestaurantUpdate(planRestaurantDto);
-        return ResponseBody.builder().code(200).msg("수정 성공 했습니다.").build();
+        Map<String, Object> result = new HashMap<>();
+        Long planRestaurantId = planRestaurantService.planRestaurantUpdate(planRestaurantDto);
+        result.put("planRestaurantId", planRestaurantId);
+        return ResponseBody.builder().code(200).msg("수정 성공 했습니다.").results(result).build();
     }
 
     @DeleteMapping("/travel/plan/restaurant/restaurantDelete")

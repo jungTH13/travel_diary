@@ -39,7 +39,7 @@ public class PlanAccountBookService {
         return planAccountBookList;
     }
 
-    public void planAccountBookInsert(PlanAccountBookDto accountBookDto) {
+    public Long planAccountBookInsert(PlanAccountBookDto accountBookDto) {
         LocalDateTime time = LocalDateTime.now();
 
         Long id = accountBookDto.getId();
@@ -53,13 +53,14 @@ public class PlanAccountBookService {
         }
 
         if(id == null) {
-            planAccountBookRepository.save(planAccountBook);
+            Long planAccountBookId = planAccountBookRepository.save(planAccountBook).getId();
+            return planAccountBookId;
         } else {
             throw new exceptionCode(ErrorCode.INVALID_PARAMETER);
         }
     }
 
-    public void planAccountBookUpdate(PlanAccountBookDto accountBookDto) {
+    public Long planAccountBookUpdate(PlanAccountBookDto accountBookDto) {
         LocalDateTime time = LocalDateTime.now();
 
         PlanAccountBook planAccountBook = modelMapper.map(accountBookDto, PlanAccountBook.class);
@@ -80,7 +81,8 @@ public class PlanAccountBookService {
             throw new exceptionCode(ErrorCode.DIFFERENT_USER_PARAMETER);
         }
 
-        planAccountBookRepository.save(planAccountBook);
+        Long planAccountBookId = planAccountBookRepository.save(planAccountBook).getId();
+        return planAccountBookId;
     }
 
     public void planAccountBookDelete(PlanAccountBookDto accountBookDto) {

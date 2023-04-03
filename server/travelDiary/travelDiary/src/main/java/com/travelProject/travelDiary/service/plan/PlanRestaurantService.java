@@ -40,7 +40,7 @@ public class PlanRestaurantService {
         return planRestaurantList;
     }
 
-    public void planRestaurantInsert(PlanRestaurantDto planRestaurantDto) {
+    public Long planRestaurantInsert(PlanRestaurantDto planRestaurantDto) {
         LocalDateTime time = LocalDateTime.now();
 
         Long id = planRestaurantDto.getId();
@@ -54,13 +54,14 @@ public class PlanRestaurantService {
         }
 
         if(id == null) {
-            planRestaurantRepository.save(planRestaurant);
+            Long planRestaurantId = planRestaurantRepository.save(planRestaurant).getId();
+            return planRestaurantId;
         } else {
             throw new exceptionCode(ErrorCode.INVALID_PARAMETER);
         }
     }
 
-    public void planRestaurantUpdate(PlanRestaurantDto planRestaurantDto) {
+    public Long planRestaurantUpdate(PlanRestaurantDto planRestaurantDto) {
         LocalDateTime time = LocalDateTime.now();
 
         PlanRestaurant planRestaurant = modelMapper.map(planRestaurantDto, PlanRestaurant.class);
@@ -81,7 +82,8 @@ public class PlanRestaurantService {
             throw new exceptionCode(ErrorCode.DIFFERENT_USER_PARAMETER);
         }
 
-        planRestaurantRepository.save(planRestaurant);
+        Long planRestaurantId = planRestaurantRepository.save(planRestaurant).getId();
+        return planRestaurantId;
     }
 
     public void planRestaurantDelete(PlanRestaurantDto planRestaurantDto) {

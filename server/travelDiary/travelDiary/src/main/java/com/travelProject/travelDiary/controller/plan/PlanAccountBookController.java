@@ -47,8 +47,10 @@ public class PlanAccountBookController {
         User user = (User) request.getAttribute("user");
         accountBookDto.setUser(user);
 
-        planAccountBookService.planAccountBookInsert(accountBookDto);
-        return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").build();
+        Map<String, Object> result = new HashMap<>();
+        Long planAccountBookId = planAccountBookService.planAccountBookInsert(accountBookDto);
+        result.put("planAccountBookId", planAccountBookId);
+        return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").results(result).build();
     }
 
     @PutMapping("/travel/plan/accountBook/accountBookUpdate")

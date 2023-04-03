@@ -42,7 +42,7 @@ public class PlanAirPlaneService {
         return PlanAirPlaneList;
     }
 
-    public void planAirPlaneInsert(PlanAirPlaneDto planAirPlaneDto) {
+    public Long planAirPlaneInsert(PlanAirPlaneDto planAirPlaneDto) {
         LocalDateTime time = LocalDateTime.now();
 
         Long id = planAirPlaneDto.getId();
@@ -56,13 +56,14 @@ public class PlanAirPlaneService {
         }
 
         if(id == null) {
-            planAirPlaneRepository.save(planAirPlane);
+            Long planAirPlaneId = planAirPlaneRepository.save(planAirPlane).getId();
+            return planAirPlaneId;
         } else {
             throw new exceptionCode(ErrorCode.INVALID_PARAMETER);
         }
     }
 
-    public void planAirPlaneUpdate(PlanAirPlaneDto planAirPlaneDto) {
+    public Long planAirPlaneUpdate(PlanAirPlaneDto planAirPlaneDto) {
         LocalDateTime time = LocalDateTime.now();
 
         PlanAirPlane planAirPlane = modelMapper.map(planAirPlaneDto, PlanAirPlane.class);
@@ -83,7 +84,8 @@ public class PlanAirPlaneService {
             throw new exceptionCode(ErrorCode.DIFFERENT_USER_PARAMETER);
         }
 
-        planAirPlaneRepository.save(planAirPlane);
+        Long planAirPlaneId = planAirPlaneRepository.save(planAirPlane).getId();
+        return planAirPlaneId;
     }
 
     public void planAirPlaneDelete(PlanAirPlaneDto planAirPlaneDto) {

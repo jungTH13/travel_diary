@@ -40,7 +40,7 @@ public class PlanHotelService {
         return planHotelList;
     }
 
-    public void planHotelInsert(PlanHotelDto planHotelDto) {
+    public Long planHotelInsert(PlanHotelDto planHotelDto) {
         LocalDateTime time = LocalDateTime.now();
 
         Long id = planHotelDto.getId();
@@ -54,13 +54,14 @@ public class PlanHotelService {
         }
 
         if(id == null) {
-            planHotelRepository.save(planHotel);
+            Long planHotelId = planHotelRepository.save(planHotel).getId();
+            return planHotelId;
         } else {
             throw new exceptionCode(ErrorCode.INVALID_PARAMETER);
         }
     }
 
-    public void planHotelUpdate(PlanHotelDto planHotelDto) {
+    public Long planHotelUpdate(PlanHotelDto planHotelDto) {
         LocalDateTime time = LocalDateTime.now();
 
         PlanHotel planHotel = modelMapper.map(planHotelDto, PlanHotel.class);
@@ -81,7 +82,8 @@ public class PlanHotelService {
             throw new exceptionCode(ErrorCode.DIFFERENT_USER_PARAMETER);
         }
 
-        planHotelRepository.save(planHotel);
+        Long planHotelId = planHotelRepository.save(planHotel).getId();
+        return planHotelId;
     }
 
     public void planHotelDelete(PlanHotelDto planHotelDto) {
