@@ -3,6 +3,7 @@ package com.travelProject.travelDiary.entity;
 import com.travelProject.travelDiary.entity.abstractions.DefaultEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 @Getter
+@Setter
 @Table(name="tbl_country")
 public class Country extends DefaultEntity<Long> {
 

@@ -3,7 +3,6 @@ package com.travelProject.travelDiary.controller.plan;
 import com.travelProject.travelDiary.dto.PlanRestaurantDto;
 import com.travelProject.travelDiary.dto.ResponseBody;
 import com.travelProject.travelDiary.entity.User;
-import com.travelProject.travelDiary.entity.plan.PlanHotel;
 import com.travelProject.travelDiary.entity.plan.PlanRestaurant;
 import com.travelProject.travelDiary.service.plan.PlanRestaurantService;
 import lombok.extern.slf4j.Slf4j;
