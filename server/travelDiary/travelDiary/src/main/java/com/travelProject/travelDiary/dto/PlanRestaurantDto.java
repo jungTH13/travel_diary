@@ -24,7 +24,7 @@ public class PlanRestaurantDto {
 
     private String memo;
 
-    private Date name;
+    private String name;
 
     private Date date;
 

@@ -42,7 +42,7 @@ public class PlanRestaurant {
     private String memo;
 
     @Column(name = "pr_name")
-    private Date name;
+    private String name;
 
     @Column(name = "pr_date")
     private Date date;
