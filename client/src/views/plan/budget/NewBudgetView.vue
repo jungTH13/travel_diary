@@ -4,7 +4,11 @@
       <div>
         <font-awesome-icon icon="fa-solid fa-tag" />
       </div>
-      <input type="text" placeholder="내용을 입력하세요" />
+      <input
+        type="text"
+        placeholder="내용을 입력하세요"
+        v-model="budget.memo"
+      />
     </div>
 
     <div id="plan-dates">
@@ -21,7 +25,7 @@
             id="pre"
             name="dates"
             value="여행 준비"
-            v-model="dateValue"
+            v-model="budget.paymentDate"
           />
           <label for="pre">여행 준비</label>
         </div>
@@ -31,7 +35,7 @@
             :id="date"
             name="dates"
             :value="date"
-            v-model="dateValue"
+            v-model="budget.paymentDate"
           />
           <label :for="date">{{ date }}</label>
         </div>
@@ -52,7 +56,7 @@
             id="card"
             name="payment"
             value="card"
-            v-model="paymentValue"
+            v-model="budget.paymentType"
           />
           <label for="card">카드</label>
         </div>
@@ -62,7 +66,7 @@
             id="cash"
             name="payment"
             value="cash"
-            v-model="paymentValue"
+            v-model="budget.paymentType"
           />
           <label for="cash">현금</label>
         </div>
@@ -74,7 +78,11 @@
         <font-awesome-icon icon="fa-solid fa-won-sign" />
         <h3>결제 금액</h3>
       </div>
-      <input type="text" placeholder="금액 입력" />
+      <input
+        type="text"
+        placeholder="금액 입력"
+        v-model="budget.amountOfPayment"
+      />
     </div>
 
     <div id="category">
@@ -84,7 +92,7 @@
           :id="cate"
           name="category"
           :value="cate"
-          v-model="catValue"
+          v-model="budget.planType"
         />
         <label :for="cate">{{ cate }}</label>
       </div>
@@ -195,7 +203,21 @@
 </style>
 
 <script setup>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
+import { useBudgetStore } from "../../../stores/budget";
+
+const store = useBudgetStore();
+
+const budget = reactive({
+  travel: { id: 5 },
+  memo: "",
+  title: "",
+  amountOfPayment: 0,
+  paymentDate: "2023-10-02",
+  paymentType: "card",
+  planType: "",
+  planTypeId: 0,
+});
 
 const categories = ref([
   "Food Expense",
@@ -206,17 +228,10 @@ const categories = ref([
   "Room Charge",
   "etc",
 ]);
-const planDate = ref(["15", "16", "17"]);
-
-const catValue = ref("Food Expense");
-const dateValue = ref("여행 준비");
-const paymentValue = ref("card");
+const planDate = ref(["2023-10-02", "16", "17"]);
 
 function handleBudget(e) {
   e.preventDefault();
-
-  console.log("날짜 선택 : ", dateValue.value);
-  console.log("결제 수단 : ", paymentValue.value);
-  console.log("카테고리 : ", catValue.value);
+  store.saveBudget(budget);
 }
 </script>
