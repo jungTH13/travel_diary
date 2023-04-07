@@ -56,11 +56,10 @@
 }
 </style>
 
-<script>
-export default {
-  name: "travel-plan-item",
-  props: {
-    planItem: Object,
-  },
-};
+<script setup>
+import { defineProps } from "vue";
+
+const props = defineProps({
+  planItem: Object,
+});
 </script>
