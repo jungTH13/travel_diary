@@ -20,7 +20,7 @@ public class PlanAccountBookController {
     @Autowired
     private PlanAccountBookService planAccountBookService;
 
-    @GetMapping("/travel/plan/accountBook/accountBookOne")
+    @PostMapping("/travel/plan/accountBook/accountBookOne")
     public ResponseBody  getAccountBookOne(HttpServletRequest request, @RequestBody PlanAccountBookDto accountBookDto) {
         User user = (User) request.getAttribute("user");
 
@@ -31,7 +31,7 @@ public class PlanAccountBookController {
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }
 
-    @GetMapping("/travel/plan/accountBook/accountBookList")
+    @PostMapping("/travel/plan/accountBook/accountBookList")
     public ResponseBody  getAccountBookList(HttpServletRequest request, @RequestBody PlanAccountBookDto accountBookDto) {
         User user = (User) request.getAttribute("user");
 

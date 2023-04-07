@@ -21,7 +21,7 @@ public class PlanAirPlaneController {
     @Autowired
     private PlanAirPlaneService planAirPlaneService;
 
-    @GetMapping("/travel/plan/airPlane/airPlaneOne")
+    @PostMapping("/travel/plan/airPlane/airPlaneOne")
     public ResponseBody  getHotelOne(HttpServletRequest request, @RequestBody PlanAirPlaneDto planAirPlaneDto) {
         User user = (User) request.getAttribute("user");
 
@@ -32,7 +32,7 @@ public class PlanAirPlaneController {
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }
 
-    @GetMapping("/travel/plan/airPlane/airPlaneList")
+    @PostMapping("/travel/plan/airPlane/airPlaneList")
     public ResponseBody  getHotelList(HttpServletRequest request, @RequestBody PlanAirPlaneDto planAirPlaneDto) {
         User user = (User) request.getAttribute("user");
 

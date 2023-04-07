@@ -20,7 +20,7 @@ public class PlanTransPortController {
     @Autowired
     private PlanTransPortService planTransPortService;
 
-    @GetMapping("/travel/plan/transPort/transPortOne")
+    @PostMapping("/travel/plan/transPort/transPortOne")
     public ResponseBody  getHotelOne(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto) {
         User user = (User) request.getAttribute("user");
 
@@ -31,7 +31,7 @@ public class PlanTransPortController {
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }
 
-    @GetMapping("/travel/plan/transPort/transPortList")
+    @PostMapping("/travel/plan/transPort/transPortList")
     public ResponseBody  getHotelList(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto) {
         User user = (User) request.getAttribute("user");
 

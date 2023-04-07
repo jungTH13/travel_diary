@@ -20,7 +20,7 @@ public class PlanRestaurantController {
     @Autowired
     private PlanRestaurantService planRestaurantService;
 
-    @GetMapping("/travel/plan/restaurant/restaurantOne")
+    @PostMapping("/travel/plan/restaurant/restaurantOne")
     public ResponseBody  getHotelOne(HttpServletRequest request, @RequestBody PlanRestaurantDto planRestaurantDto) {
         User user = (User) request.getAttribute("user");
 
@@ -31,7 +31,7 @@ public class PlanRestaurantController {
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }
 
-    @GetMapping("/travel/plan/restaurant/restaurantList")
+    @PostMapping("/travel/plan/restaurant/restaurantList")
     public ResponseBody  getHotelList(HttpServletRequest request, @RequestBody PlanRestaurantDto planRestaurantDto) {
         User user = (User) request.getAttribute("user");
 

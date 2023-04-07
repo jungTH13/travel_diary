@@ -20,7 +20,7 @@ public class PlanEtcController {
     @Autowired
     private PlanEtcService planEtcService;
 
-    @GetMapping("/travel/plan/etc/etcOne")
+    @PostMapping("/travel/plan/etc/etcOne")
     public ResponseBody  getHotelOne(HttpServletRequest request, @RequestBody PlanEtcDto planEtcDto) {
         User user = (User) request.getAttribute("user");
 
@@ -31,7 +31,7 @@ public class PlanEtcController {
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }
 
-    @GetMapping("/travel/plan/etc/etcList")
+    @PostMapping("/travel/plan/etc/etcList")
     public ResponseBody  getHotelList(HttpServletRequest request, @RequestBody PlanEtcDto planEtcDto) {
         User user = (User) request.getAttribute("user");
 
