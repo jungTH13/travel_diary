@@ -82,7 +82,7 @@ function testCheckList() {
   const countries = checkedList.value;
 
   store.setPlanCountries(countries);
-  router.push("/plan/new");
+  router.push("/travel/new");
 }
 
 async function handleCountrySearch(e) {

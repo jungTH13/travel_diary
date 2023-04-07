@@ -29,6 +29,8 @@
   </div>
 </template>
 
+<style lang="scss" scoped></style>
+
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
@@ -47,6 +49,7 @@ const store = usePlanStore();
 async function postPlan() {
   const startDate = planDate.value[0].$d;
   const endDate = planDate.value[1].$d;
+  countries.value = countries?.value?.map((country) => country.code);
 
   console.log(countries?.value);
   console.log(planDate.value);
@@ -58,13 +61,14 @@ async function postPlan() {
       title: planTitle.value,
       startDate,
       endDate,
+      country: countries.value,
     },
     {
       withCredentials: true,
     }
   );
 
-  console.log("post res", response);
+  const { travelId } = response?.data?.results;
 
   router.push("/");
 }
@@ -79,5 +83,3 @@ onMounted(() => {
   planTitle.value = titleArr.join(", ");
 });
 </script>
-
-<style lang="scss" scoped></style>
