@@ -81,7 +81,8 @@
       <input
         type="text"
         placeholder="금액 입력"
-        v-model="budget.amountOfPayment"
+        :value="formattedValue"
+        @input="onInput"
       />
     </div>
 
@@ -203,7 +204,7 @@
 </style>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, computed, watch } from "vue";
 import { useBudgetStore } from "../../../stores/budget";
 
 const store = useBudgetStore();
@@ -212,10 +213,10 @@ const budget = reactive({
   travel: { id: 5 },
   memo: "",
   title: "",
-  amountOfPayment: 0,
+  amountOfPayment: "",
   paymentDate: "2023-10-02",
   paymentType: "card",
-  planType: "",
+  planType: "Food Expense",
   planTypeId: 0,
 });
 
@@ -230,8 +231,28 @@ const categories = ref([
 ]);
 const planDate = ref(["2023-10-02", "16", "17"]);
 
+const inputValue = ref("");
+
+function onInput(event) {
+  const regex = /[^0-9]/g;
+  const replacedValue = event.target.value.replace(regex, "");
+  event.target.value = replacedValue;
+  inputValue.value = event.target.value;
+  budget.amountOfPayment = event.target.value;
+}
+
+const formattedValue = computed(() => {
+  const value = parseFloat(inputValue.value.replace(/,/g, ""));
+  if (isNaN(value)) {
+    return "";
+  } else {
+    return value.toLocaleString();
+  }
+});
+
 function handleBudget(e) {
   e.preventDefault();
+  console.log(budget);
   store.saveBudget(budget);
 }
 </script>

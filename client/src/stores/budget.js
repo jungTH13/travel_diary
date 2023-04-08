@@ -11,7 +11,6 @@ export const useBudgetStore = defineStore("budget", () => {
         withCredentials: true,
       }
     );
-    console.log(data);
   }
 
   return { saveBudget };
