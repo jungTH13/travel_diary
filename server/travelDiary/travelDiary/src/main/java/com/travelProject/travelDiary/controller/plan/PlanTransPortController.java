@@ -2,6 +2,7 @@ package com.travelProject.travelDiary.controller.plan;
 
 import com.travelProject.travelDiary.dto.PlanTransPortDto;
 import com.travelProject.travelDiary.dto.ResponseBody;
+import com.travelProject.travelDiary.entity.Travel;
 import com.travelProject.travelDiary.entity.User;
 import com.travelProject.travelDiary.entity.plan.PlanTransPort;
 import com.travelProject.travelDiary.service.plan.PlanTransPortService;
@@ -21,10 +22,11 @@ public class PlanTransPortController {
     private PlanTransPortService planTransPortService;
 
     @PostMapping("/travel/plan/transPort/transPortOne")
-    public ResponseBody  getHotelOne(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto) {
+    public ResponseBody  getHotelOne(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
         Map<String, Object> result = new HashMap<>();
+        setTravelId(travelId, user, planTransPortDto);
         PlanTransPort planTransPortOne= planTransPortService.selectPlanTransPortOne(planTransPortDto, user.getId());
 
         result.put("planTransPortOne", planTransPortOne);
@@ -32,44 +34,54 @@ public class PlanTransPortController {
     }
 
     @PostMapping("/travel/plan/transPort/transPortList")
-    public ResponseBody  getHotelList(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto) {
+    public ResponseBody  getHotelList(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
         Map<String, Object> result = new HashMap<>();
-        List<PlanTransPort> planTransPortlList = planTransPortService.selectPlanTransPortList(planTransPortDto, user.getId());
+        setTravelId(travelId, user, planTransPortDto);
+        List<PlanTransPort> planTransPortList = planTransPortService.selectPlanTransPortList(planTransPortDto, user.getId());
 
-        result.put("planTransPortlList", planTransPortlList);
+        result.put("planTransPortList", planTransPortList);
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }
 
     @PostMapping("/travel/plan/transPort/transPortInsert")
-    public ResponseBody setHotelInsert(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto) {
+    public ResponseBody setHotelInsert(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
-        planTransPortDto.setUser(user);
 
         Map<String, Object> result = new HashMap<>();
+        setTravelId(travelId, user, planTransPortDto);
         Long planTransPortId = planTransPortService.planTransPortInsert(planTransPortDto);
         result.put("planTransPortId", planTransPortId);
         return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").results(result).build();
     }
 
     @PutMapping("/travel/plan/transPort/transPortUpdate")
-    public ResponseBody setPlanHotelUpdate(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto) {
+    public ResponseBody setPlanHotelUpdate(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
-        planTransPortDto.setUser(user);
 
         Map<String, Object> result = new HashMap<>();
+        setTravelId(travelId, user, planTransPortDto);
         Long planTransPortId = planTransPortService.planTransPortUpdate(planTransPortDto);
         result.put("planTransPortId", planTransPortId);
         return ResponseBody.builder().code(200).msg("수정 성공 했습니다.").results(result).build();
     }
 
     @DeleteMapping("/travel/plan/transPort/transPortDelete")
-    public ResponseBody setPlanHotelDelete(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto) {
+    public ResponseBody setPlanHotelDelete(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
-        planTransPortDto.setUser(user);
 
+        setTravelId(travelId, user, planTransPortDto);
         planTransPortService.planTransPortDelete(planTransPortDto);
         return ResponseBody.builder().code(200).msg("삭제 성공 했습니다.").build();
+    }
+
+    public PlanTransPortDto setTravelId(Long travelId, User user, PlanTransPortDto planTransPortDto) {
+        Travel travel = new Travel();
+        travel.setId(travelId);
+
+        planTransPortDto.setTravel(travel);
+        planTransPortDto.setUser(user);
+        return planTransPortDto;
     }
 }

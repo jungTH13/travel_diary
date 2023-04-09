@@ -2,6 +2,7 @@ package com.travelProject.travelDiary.controller.plan;
 
 import com.travelProject.travelDiary.dto.PlanRestaurantDto;
 import com.travelProject.travelDiary.dto.ResponseBody;
+import com.travelProject.travelDiary.entity.Travel;
 import com.travelProject.travelDiary.entity.User;
 import com.travelProject.travelDiary.entity.plan.PlanRestaurant;
 import com.travelProject.travelDiary.service.plan.PlanRestaurantService;
@@ -20,56 +21,67 @@ public class PlanRestaurantController {
     @Autowired
     private PlanRestaurantService planRestaurantService;
 
-    @PostMapping("/travel/plan/restaurant/restaurantOne")
-    public ResponseBody  getHotelOne(HttpServletRequest request, @RequestBody PlanRestaurantDto planRestaurantDto) {
+    @PostMapping("/travel/{travelId}/plan/restaurant/restaurantOne")
+    public ResponseBody  getHotelOne(HttpServletRequest request, @RequestBody PlanRestaurantDto planRestaurantDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
         Map<String, Object> result = new HashMap<>();
+        setTravelId(travelId, user, planRestaurantDto);
         PlanRestaurant planRestaurantOne= planRestaurantService.selectPlanRestaurantOne(planRestaurantDto, user.getId());
 
         result.put("planRestaurantOne", planRestaurantOne);
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }
 
-    @PostMapping("/travel/plan/restaurant/restaurantList")
-    public ResponseBody  getHotelList(HttpServletRequest request, @RequestBody PlanRestaurantDto planRestaurantDto) {
+    @PostMapping("/travel/{travelId}/plan/restaurant/restaurantList")
+    public ResponseBody  getHotelList(HttpServletRequest request, @RequestBody PlanRestaurantDto planRestaurantDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
         Map<String, Object> result = new HashMap<>();
-        List<PlanRestaurant> planRestaurantlList = planRestaurantService.selectPlanRestaurantList(planRestaurantDto, user.getId());
+        setTravelId(travelId, user, planRestaurantDto);
+        List<PlanRestaurant> planRestaurantList = planRestaurantService.selectPlanRestaurantList(planRestaurantDto, user.getId());
 
-        result.put("planRestaurantlList", planRestaurantlList);
+        result.put("planRestaurantList", planRestaurantList);
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }
 
-    @PostMapping("/travel/plan/restaurant/restaurantInsert")
-    public ResponseBody setHotelInsert(HttpServletRequest request, @RequestBody PlanRestaurantDto planRestaurantDto) {
+    @PostMapping("/travel/{travelId}/plan/restaurant/restaurantInsert")
+    public ResponseBody setHotelInsert(HttpServletRequest request, @RequestBody PlanRestaurantDto planRestaurantDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
-        planRestaurantDto.setUser(user);
 
         Map<String, Object> result = new HashMap<>();
+        setTravelId(travelId, user, planRestaurantDto);
         Long planRestaurantId = planRestaurantService.planRestaurantInsert(planRestaurantDto);
         result.put("planRestaurantId", planRestaurantId);
         return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").results(result).build();
     }
 
-    @PutMapping("/travel/plan/restaurant/restaurantUpdate")
-    public ResponseBody setPlanHotelUpdate(HttpServletRequest request, @RequestBody PlanRestaurantDto planRestaurantDto) {
+    @PutMapping("/travel/{travelId}/plan/restaurant/restaurantUpdate")
+    public ResponseBody setPlanHotelUpdate(HttpServletRequest request, @RequestBody PlanRestaurantDto planRestaurantDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
-        planRestaurantDto.setUser(user);
 
         Map<String, Object> result = new HashMap<>();
+        setTravelId(travelId, user, planRestaurantDto);
         Long planRestaurantId = planRestaurantService.planRestaurantUpdate(planRestaurantDto);
         result.put("planRestaurantId", planRestaurantId);
         return ResponseBody.builder().code(200).msg("수정 성공 했습니다.").results(result).build();
     }
 
-    @DeleteMapping("/travel/plan/restaurant/restaurantDelete")
-    public ResponseBody setPlanHotelDelete(HttpServletRequest request, @RequestBody PlanRestaurantDto planRestaurantDto) {
+    @DeleteMapping("/travel/{travelId}/plan/restaurant/restaurantDelete")
+    public ResponseBody setPlanHotelDelete(HttpServletRequest request, @RequestBody PlanRestaurantDto planRestaurantDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
-        planRestaurantDto.setUser(user);
 
+        setTravelId(travelId, user, planRestaurantDto);
         planRestaurantService.planRestaurantDelete(planRestaurantDto);
         return ResponseBody.builder().code(200).msg("삭제 성공 했습니다.").build();
+    }
+
+    public PlanRestaurantDto setTravelId(Long travelId, User user, PlanRestaurantDto planRestaurantDto) {
+        Travel travel = new Travel();
+        travel.setId(travelId);
+
+        planRestaurantDto.setTravel(travel);
+        planRestaurantDto.setUser(user);
+        return planRestaurantDto;
     }
 }
