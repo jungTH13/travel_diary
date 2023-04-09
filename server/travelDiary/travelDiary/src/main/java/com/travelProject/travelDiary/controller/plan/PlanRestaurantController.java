@@ -34,7 +34,7 @@ public class PlanRestaurantController {
     }
 
     @PostMapping("/travel/{travelId}/plan/restaurant/restaurantList")
-    public ResponseBody  getHotelList(HttpServletRequest request, @RequestBody PlanRestaurantDto planRestaurantDto, @PathVariable Long travelId) {
+    public ResponseBody  getHotelList(HttpServletRequest request, @RequestBody(required = false) PlanRestaurantDto planRestaurantDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
         Map<String, Object> result = new HashMap<>();
