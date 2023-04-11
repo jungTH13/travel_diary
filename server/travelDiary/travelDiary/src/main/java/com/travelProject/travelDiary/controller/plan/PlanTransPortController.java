@@ -27,7 +27,7 @@ public class PlanTransPortController {
     @Autowired
     private TravelService travelService;
 
-    @PostMapping("/travel/plan/transPort/transPortOne")
+    @PostMapping("/travel/{travelId}/plan/transPort/transPortOne")
     public ResponseBody  getHotelOne(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
@@ -39,7 +39,7 @@ public class PlanTransPortController {
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }
 
-    @PostMapping("/travel/plan/transPort/transPortList")
+    @PostMapping("/travel/{travelId}/plan/transPort/transPortList")
     public ResponseBody  getHotelList(HttpServletRequest request, @RequestBody(required = false) PlanTransPortDto planTransPortDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
@@ -51,7 +51,7 @@ public class PlanTransPortController {
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }
 
-    @PostMapping("/travel/plan/transPort/transPortInsert")
+    @PostMapping("/travel/{travelId}/plan/transPort/transPortInsert")
     public ResponseBody setHotelInsert(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
@@ -62,7 +62,7 @@ public class PlanTransPortController {
         return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").results(result).build();
     }
 
-    @PutMapping("/travel/plan/transPort/transPortUpdate")
+    @PutMapping("/travel/{travelId}/plan/transPort/transPortUpdate")
     public ResponseBody setPlanHotelUpdate(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
@@ -73,7 +73,7 @@ public class PlanTransPortController {
         return ResponseBody.builder().code(200).msg("수정 성공 했습니다.").results(result).build();
     }
 
-    @DeleteMapping("/travel/plan/transPort/transPortDelete")
+    @DeleteMapping("/travel/{travelId}/plan/transPort/transPortDelete")
     public ResponseBody setPlanHotelDelete(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 

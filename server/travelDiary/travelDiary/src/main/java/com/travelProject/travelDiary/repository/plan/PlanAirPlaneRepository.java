@@ -10,4 +10,6 @@ public interface PlanAirPlaneRepository extends JpaRepository<PlanAirPlane, Long
     PlanAirPlane findByIdAndUser_Id(Long t_id, String id);
 
     List<PlanAirPlane> findAllByTravel_IdAndUser_Id(Long travelId, String userId);
+
+    List<PlanAirPlane> findAllByTravel_IdAndUser_IdOrderByDepartDateAsc(Long travelId, String userId);
 }

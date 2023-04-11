@@ -36,7 +36,7 @@ public class PlanHotelService {
         }
 
         Long travelId = PlanHotelDto.getTravel().getId();
-        List<PlanHotel> planHotelList = planHotelRepository.findAllByTravel_IdAndUser_Id(travelId, userId);
+        List<PlanHotel> planHotelList = planHotelRepository.findAllByTravel_IdAndUser_IdOrderByCheckinDateAsc(travelId, userId);
         return planHotelList;
     }
 

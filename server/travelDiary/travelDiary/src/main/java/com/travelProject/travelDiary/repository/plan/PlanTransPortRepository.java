@@ -10,4 +10,6 @@ public interface PlanTransPortRepository extends JpaRepository<PlanTransPort, Lo
     PlanTransPort findByIdAndUser_Id(Long t_id,String id);
 
     List<PlanTransPort> findAllByTravel_IdAndUser_Id(Long travelId, String userId);
+
+    List<PlanTransPort> findAllByTravel_IdAndUser_IdOrderByDepartDateAsc(Long travelId, String userId);
 }

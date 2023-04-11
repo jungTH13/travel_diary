@@ -38,7 +38,7 @@ public class PlanAirPlaneService {
         }
 
         Long travelId = planAirPlaneDto.getTravel().getId();
-        List<PlanAirPlane> PlanAirPlaneList = planAirPlaneRepository.findAllByTravel_IdAndUser_Id(travelId, userId);
+        List<PlanAirPlane> PlanAirPlaneList = planAirPlaneRepository.findAllByTravel_IdAndUser_IdOrderByDepartDateAsc(travelId, userId);
         return PlanAirPlaneList;
     }
 

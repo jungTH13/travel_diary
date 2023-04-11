@@ -36,7 +36,7 @@ public class PlanTransPortService {
         }
 
         Long travelId = planTransPortDto.getTravel().getId();
-        List<PlanTransPort> planTransPortList = planTransPortRepository.findAllByTravel_IdAndUser_Id(travelId, userId);
+        List<PlanTransPort> planTransPortList = planTransPortRepository.findAllByTravel_IdAndUser_IdOrderByDepartDateAsc(travelId, userId);
         return planTransPortList;
     }
 

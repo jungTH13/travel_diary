@@ -47,7 +47,7 @@ public class PlanEtcController {
         setTravelId(travelId, user, planEtcDto);
         List<PlanEtc> planEtclList = planEtcService.selectPlanEtcList(planEtcDto, user.getId());
 
-        result.put("planEtclList", planEtclList);
+        result.put("planEtcList", planEtclList);
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }
 

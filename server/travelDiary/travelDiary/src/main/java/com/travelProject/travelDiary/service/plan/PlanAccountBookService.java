@@ -35,7 +35,7 @@ public class PlanAccountBookService {
         }
 
         Long travelId = accountBookDto.getTravel().getId();
-        List<PlanAccountBook> planAccountBookList = planAccountBookRepository.findAllByTravel_IdAndUser_Id(travelId, userId);
+        List<PlanAccountBook> planAccountBookList = planAccountBookRepository.findAllByTravel_IdAndUser_IdOrderByPaymentDateAsc(travelId, userId);
         return planAccountBookList;
     }
 

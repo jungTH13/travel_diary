@@ -36,7 +36,7 @@ public class PlanRestaurantService {
         }
 
         Long travelId = planRestaurantDto.getTravel().getId();
-        List<PlanRestaurant> planRestaurantList = planRestaurantRepository.findAllByTravel_IdAndUser_Id(travelId, userId);
+        List<PlanRestaurant> planRestaurantList = planRestaurantRepository.findAllByTravel_IdAndUser_IdOrderByDateAsc(travelId, userId);
         return planRestaurantList;
     }
 

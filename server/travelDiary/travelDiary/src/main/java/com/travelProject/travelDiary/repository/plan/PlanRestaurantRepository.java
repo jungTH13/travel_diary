@@ -10,4 +10,6 @@ public interface PlanRestaurantRepository extends JpaRepository<PlanRestaurant, 
     PlanRestaurant findByIdAndUser_Id(Long t_id,String id);
 
     List<PlanRestaurant> findAllByTravel_IdAndUser_Id(Long travelId, String userId);
+
+    List<PlanRestaurant> findAllByTravel_IdAndUser_IdOrderByDateAsc(Long travelId, String userId);
 }

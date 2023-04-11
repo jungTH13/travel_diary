@@ -36,7 +36,8 @@ public class PlanEtcService {
         }
 
         Long travelId = planEtcDto.getTravel().getId();
-        List<PlanEtc> planEtcList = planEtcRepository.findAllByTravel_IdAndUser_Id(travelId, userId);
+        List<PlanEtc> planEtcList = planEtcRepository.findAllByTravel_IdAndUser_IdOrderByReservationDateAsc(travelId, userId);
+
         return planEtcList;
     }
 
