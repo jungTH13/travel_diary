@@ -1,10 +1,13 @@
 package com.travelProject.travelDiary.controller.plan;
 
+import com.travelProject.travelDiary.config.exceptionCode;
+import com.travelProject.travelDiary.dto.ErrorCode;
 import com.travelProject.travelDiary.dto.PlanAirPlaneDto;
 import com.travelProject.travelDiary.dto.ResponseBody;
 import com.travelProject.travelDiary.entity.Travel;
 import com.travelProject.travelDiary.entity.User;
 import com.travelProject.travelDiary.entity.plan.PlanAirPlane;
+import com.travelProject.travelDiary.service.TravelService;
 import com.travelProject.travelDiary.service.plan.PlanAirPlaneService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,9 @@ import java.util.Map;
 public class PlanAirPlaneController {
     @Autowired
     private PlanAirPlaneService planAirPlaneService;
+
+    @Autowired
+    private TravelService travelService;
 
     @PostMapping("/travel/{travelId}/plan/airPlane/airPlaneOne")
     public ResponseBody  getHotelOne(HttpServletRequest request, @RequestBody PlanAirPlaneDto planAirPlaneDto, @PathVariable Long travelId) {
@@ -77,6 +83,11 @@ public class PlanAirPlaneController {
     }
 
     public PlanAirPlaneDto setTravelId(Long travelId, User user, PlanAirPlaneDto planAirPlaneDto) {
+        Travel resultTravel = travelService.selectPlanTravelOne(user.getId(), travelId);
+        if(resultTravel == null){
+            throw new exceptionCode(ErrorCode.INVALID_TRAVEL_ID_PARAMETER);
+        }
+
         Travel travel = new Travel();
         travel.setId(travelId);
 

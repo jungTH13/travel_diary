@@ -24,6 +24,17 @@ public class TravelController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @PostMapping ("/travel/userTravelOne")
+    public ResponseBody  getTravelOne(HttpServletRequest request, @RequestBody TravelDto travelDto){
+        User user = (User) request.getAttribute("user");
+
+        Map<String, Object> result = new HashMap<>();
+        Travel travelOne = travelService.selectPlanTravelOne(user.getId(), travelDto.getId());
+
+        result.put("travelOne", travelOne);
+        return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
+    }
+
     @GetMapping("/travel/userTravelList")
     public ResponseBody  getTravelList(HttpServletRequest request){
         User user = (User) request.getAttribute("user");

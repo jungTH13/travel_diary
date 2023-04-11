@@ -20,6 +20,19 @@ public class TravelService {
     @Autowired
     private TravelCountryService travelCountryService;
 
+    public Travel selectPlanTravelOne(String userId, Long travelId) {
+        if(userId.equals("") || userId == null) {
+            throw new exceptionCode(ErrorCode.INVALID_USER_PARAMETER);
+        }
+
+        if(travelId < 0 || travelId == null) {
+            throw new exceptionCode(ErrorCode.INVALID_TRAVEL_ID_PARAMETER);
+        }
+
+        Travel travel = travelRepository.findByIdAndUser_Id(travelId, userId);
+        return travel;
+    }
+
     public List<Map<String, Object>> selectPlanTravelList(String userId) {
         if(userId.equals("") || userId == null) {
             throw new exceptionCode(ErrorCode.INVALID_USER_PARAMETER);

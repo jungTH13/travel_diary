@@ -1,6 +1,8 @@
 package com.travelProject.travelDiary.entity;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +31,7 @@ public class Travel {
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name="id")
+    @JsonIgnore
     private User user;
 
     @Column(name = "t_title")
