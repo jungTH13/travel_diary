@@ -1,15 +1,11 @@
 import { ref, computed, reactive } from "vue";
 import { defineStore } from "pinia";
-import axios from "axios";
+import * as API from "../utils/api";
 
 export const useUserStore = defineStore("user", () => {
   async function login() {
-    const exam = await axios.get(
-      "https://develop.life-traveldiary.net:8080/user/examCookie",
-      {
-        withCredentials: true,
-      }
-    );
+    const exam = await API.get("/user/examCookie");
+
     console.log("user", exam);
   }
 

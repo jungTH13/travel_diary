@@ -1,15 +1,15 @@
 <template>
   <div>
     <div id="search-page">
-      <div id="search-input-wrapper">
+      <form id="search-input-wrapper" @submit="handleCountrySearch">
         <input class="text-lg" type="text" v-model="searchInput" />
-        <button id="search-button" @click="handleCountrySearch">
+        <button id="search-button">
           <font-awesome-icon
             id="search-button-img"
             icon="fa-solid fa-magnifying-glass"
           />
         </button>
-      </div>
+      </form>
 
       <SelectedCountries :countries="checkedList" />
 
@@ -44,7 +44,7 @@
         </div>
       </div>
 
-      <div id="select-complete" @click="testCheckList">
+      <div id="select-complete" @click="handleCheckList">
         <div class="submit-button">선택완료</div>
       </div>
     </div>
@@ -58,11 +58,11 @@ import axios from "axios";
 import { ref, reactive, onBeforeMount, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
-import { usePlanStore } from "../../stores/plan";
+import { useTravelStore } from "../../stores/travel";
 import SelectedCountries from "../../components/SelectedCountries.vue";
 
 const router = useRouter();
-const store = usePlanStore();
+const store = useTravelStore();
 
 const searchInput = ref("");
 const countryList = ref();
@@ -75,41 +75,31 @@ function checkLimit() {
   }
 }
 
-function testCheckList() {
+function handleCheckList() {
   if (checkedList.value.length === 0) {
     return alert("나라를 선택해주세요");
   }
   const countries = checkedList.value;
 
-  store.setPlanCountries(countries);
+  store.setTravelCountries(countries);
   router.push("/travel/new");
 }
 
 async function handleCountrySearch(e) {
   e.preventDefault();
-  if (searchInput.value) {
-    console.log("test", searchInput.value);
 
-    axios.defaults.withCredentials = true;
+  const searchData = JSON.stringify({
+    name: searchInput.value,
+  });
 
-    const searchData = JSON.stringify({
-      name: "일",
-    });
+  const data = await store.getCountrySearchResult(searchData);
 
-    const { data } = await axios.post(
-      "https://develop.life-traveldiary.net:8080/common/countryLike",
-      searchData,
-      {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    console.log("data", data);
-    searchInput.value = "";
+  if (data.code === 401) {
+    router.push("/login");
   }
+
+  countryList.value = data.results.countryList;
+  searchInput.value = "";
 }
 
 onBeforeMount(() => {
@@ -118,18 +108,13 @@ onBeforeMount(() => {
 
 onMounted(async () => {
   if (!searchInput.value) {
-    const { data } = await axios.get(
-      "https://develop.life-traveldiary.net:8080/common/countryList",
-      {
-        withCredentials: true,
-      }
-    );
+    const data = await store.getAllCountries();
+
     if (data.code === 401) {
       router.push("/login");
     }
 
     countryList.value = data.results.countryList;
-    // console.log("country list", data.results);
   }
 });
 </script>

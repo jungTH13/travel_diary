@@ -2,12 +2,6 @@
   <div class="plan-container">
     <section>
       <SelectedCountries :countries="countries" />
-
-      <!-- <p class="plan-info">2025년 3월 10일 ~ 2025년 4월 2일</p>
-      <div class="plan-date">
-        <img src="@/assets/icons/cal.png" alt="calender" />
-        <input type="date" />
-      </div> -->
       <div class="plan-title">
         <input
           type="text"
@@ -34,7 +28,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { usePlanStore } from "../../stores/plan";
+import { useTravelStore } from "../../stores/travel";
 import SelectedCountries from "../../components/SelectedCountries.vue";
 import axios from "axios";
 
@@ -44,37 +38,40 @@ const countries = ref([]);
 const planDate = ref([]);
 const planTitle = ref("");
 
-const store = usePlanStore();
+const store = useTravelStore();
 
 async function postPlan() {
+  if (planDate.value.length <= 0) {
+    return alert("날짜를 선택해주세요");
+  }
+
   const startDate = planDate.value[0].$d;
   const endDate = planDate.value[1].$d;
   countries.value = countries?.value?.map((country) => country.code);
 
-  console.log(countries?.value);
-  console.log(planDate.value);
-  console.log(startDate, endDate);
+  // console.log(countries?.value);
+  // console.log(planDate.value);
+  // console.log(startDate, endDate);
 
-  const response = await axios.post(
-    "https://develop.life-traveldiary.net:8080/travel/travelInsert",
-    {
-      title: planTitle.value,
-      startDate,
-      endDate,
-      country: countries.value,
-    },
-    {
-      withCredentials: true,
-    }
-  );
+  const travelData = {
+    title: planTitle.value,
+    startDate,
+    endDate,
+    country: countries.value,
+  };
 
-  const { travelId } = response?.data?.results;
-
-  router.push("/");
+  const data = await store.postTravel(travelData);
+  console.log(data.results.travelId);
+  router.push(`/plan/${data.results.travelId}`);
 }
 
 onMounted(() => {
-  countries.value = store.planCountries;
+  countries.value = store.travelCountries;
+
+  if (countries.value.length <= 0) {
+    alert("나라를 선택해주세요");
+    return router.push("/travel/country");
+  }
 
   const titleArr = countries.value.map((item) => {
     return item.name;
