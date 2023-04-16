@@ -68,7 +68,7 @@ public class PlanService {
             planList.add(insertMap);
         }
 
-        planList.sort(Comparator.comparing((Map<String, Object> map) -> (Date) map.get("orderDate")).reversed());
+        planList.sort(Comparator.comparing((Map<String, Object> map) -> (Date) map.get("orderDate")));
         return planList;
     }
 }
