@@ -11,6 +11,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @AllArgsConstructor
@@ -76,4 +78,20 @@ public class PlanHotel {
     @LastModifiedDate
     @Column(name = "modified_at", nullable = false)
     protected LocalDateTime modifiedDate;
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderDate", this.checkinDate);
+        map.put("title", this.title);
+        map.put("memo", this.memo);
+        map.put("checkinDate", this.checkinDate);
+        map.put("checkoutDate", this.checkoutDate);
+        map.put("name", this.name);
+        map.put("address", this.address);
+        map.put("reservationNumber", this.reservationNumber);
+        map.put("phone", this.phone);
+        map.put("x", this.x);
+        map.put("y", this.y);
+        return map;
+    }
 }
