@@ -2,27 +2,23 @@ import { ref, computed, reactive } from "vue";
 import { defineStore } from "pinia";
 import * as API from "../utils/api";
 
+const defaultTravel = ()=> ({
+  title:"",
+  countryList: [],
+  startDate:'',
+  endDate:'',
+});
+
 export const useTravelStore = defineStore("travel", () => {
   const travelList = reactive({
     plan: [],
     end: [],
   });
 
-  const travelCountries = ref([]);
-  const getTravelCountries = computed(() => travelCountries.value);
+  const travel = ref(defaultTravel()); 
 
-  function setTravelCountries(countries) {
-    travelCountries.value = countries;
-  }
-
-  async function getCountrySearchResult(searchData) {
-    const { data } = await API.post("/common/countryLike", searchData);
-    return data;
-  }
-
-  async function getAllCountries() {
-    const { data } = await API.get("/common/countryList");
-    return data;
+  function resetTravel(){
+    travel.value = defaultTravel()
   }
 
   async function getTravelList() {
@@ -34,20 +30,24 @@ export const useTravelStore = defineStore("travel", () => {
     return data;
   }
 
-  async function postTravel(travelData) {
-    const { data } = await API.post("/travel/travelInsert", travelData);
+  async function postTravel() {
+
+    const form = {};
+
+    Object.keys(travel.value).forEach((key)=>form[key] = travel.value[key]);
+
+    form.countryList = form.countryList.map(country=>country.code);
+
+    const { data } = await API.post("/travel/travelInsert", form);
 
     return data;
   }
 
   return {
     travelList,
-    travelCountries,
-    getTravelCountries,
-    setTravelCountries,
-    getAllCountries,
-    getCountrySearchResult,
+    travel,
     getTravelList,
     postTravel,
+    resetTravel,
   };
 });

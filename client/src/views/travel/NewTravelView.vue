@@ -1,12 +1,11 @@
 <template>
   <div class="plan-container">
     <section>
-      <SelectedCountries :countries="countries" />
+      <SelectedCountries :countries="travel.countryList" />
       <div class="plan-title">
         <input
           type="text"
-          :value="planTitle"
-          @input="(e) => (planTitle = e.target.value)"
+          v-model="travel.title"
         />
       </div>
       <div class="plan-date">
@@ -26,57 +25,47 @@
 <style lang="scss" scoped></style>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useTravelStore } from "../../stores/travel";
 import SelectedCountries from "../../components/SelectedCountries.vue";
-import axios from "axios";
+import {toKoreaTimeString} from "../../utils/util"
 
 const router = useRouter();
+const travelStore = useTravelStore();
 
-const countries = ref([]);
+//콘텐츠
+const travel = computed(()=>travelStore.travel)
 const planDate = ref([]);
-const planTitle = ref("");
 
-const store = useTravelStore();
+
+watch(()=>planDate.value,()=>{
+  travel.value.startDate = toKoreaTimeString(planDate.value[0].$d).split('T')[0];
+  travel.value.endDate = toKoreaTimeString(planDate.value[1].$d).split('T')[0];
+})
+
 
 async function postPlan() {
   if (planDate.value.length <= 0) {
     return alert("날짜를 선택해주세요");
   }
 
-  const startDate = planDate.value[0].$d;
-  const endDate = planDate.value[1].$d;
-  countries.value = countries?.value?.map((country) => country.code);
-
-  // console.log(countries?.value);
-  // console.log(planDate.value);
-  // console.log(startDate, endDate);
-
-  const travelData = {
-    title: planTitle.value,
-    startDate,
-    endDate,
-    country: countries.value,
-  };
-
-  const data = await store.postTravel(travelData);
+  const data = await travelStore.postTravel();
   console.log(data.results.travelId);
-  router.push(`/plan/${data.results.travelId}`);
+  router.push({
+    name: "plan",
+    params:{id:data.results.travelId}
+  });
 }
 
 onMounted(() => {
-  countries.value = store.travelCountries;
 
-  if (countries.value.length <= 0) {
+  if (travel.value.countryList.length <= 0) {
     alert("나라를 선택해주세요");
-    return router.push("/travel/country");
+    return router.push({name:"new-country"});
   }
 
-  const titleArr = countries.value.map((item) => {
-    return item.name;
-  });
+  travel.value.title = travel.value.countryList.map(country=>country.name).join(',');
 
-  planTitle.value = titleArr.join(", ");
 });
 </script>

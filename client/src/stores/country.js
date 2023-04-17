@@ -2,31 +2,27 @@ import { ref, computed, reactive } from "vue";
 import { defineStore } from "pinia";
 import * as API from "../utils/api";
 
-export const useCountryStore = defineStore("travel", () => {
+export const useCountryStore = defineStore("country", () => {
   const countryList = ref([]);
   const searchCountryList = ref([]);
 
-  const travelCountries = ref([]);
-  const getTravelCountries = computed(() => travelCountries.value);
+  async function getCountryList(searchData) {
+    if(countryList.value?.length === 0) {
+      const {data} = await API.get("/common/countryList");
+      countryList.value = data.results.countryList;
+    }
 
-  function setTravelCountries(countries) {
-    travelCountries.value = countries;
-  }
-
-  async function getCountrySearchResult(searchData) {
-    const { data } = await API.post("/common/countryLike", searchData);
-    return data;
-  }
-
-  async function getAllCountries() {
-    const { data } = await API.get("/common/countryList");
-    return data;
+    if(searchData){
+      searchCountryList.value = countryList.value.filter((country)=>country.name.includes(searchData));
+    }
+    else{
+      searchCountryList.value = countryList.value;
+    }
   }
 
   return {
     countryList,
     searchCountryList,
-    getAllCountries,
-    getCountryListLike,
+    getCountryList,
   };
 });

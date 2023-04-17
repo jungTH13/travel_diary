@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
+import TravelView from "../views/travel/TravelView.vue";
 import NewTravelView from "../views/travel/NewTravelView.vue";
 import NewCountryView from "../views/travel/NewCountryView.vue";
 import NewBudgetView from "../views/plan/budget/NewBudgetView.vue";
@@ -32,6 +33,7 @@ const router = createRouter({
     {
       path: "/travel",
       name: "travel",
+      component: TravelView,
       children: [
         {
           path: "country",

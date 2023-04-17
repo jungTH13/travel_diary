@@ -35,8 +35,8 @@ import { useUserStore } from "../stores/user";
 const router = useRouter();
 const store = useUserStore();
 
-function handleLogin() {
-  store.login();
+async function handleLogin() {
+  await store.login();
   router.replace("/");
 }
 

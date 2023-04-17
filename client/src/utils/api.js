@@ -16,7 +16,8 @@ async function get(endpoint) {
 
 async function post(endpoint, bodyData) {
   console.log(`%cPOST 요청 : ${endpoint}`, "color: red");
-  console.log(`%cPOST 요청 데이터 : ${bodyData}`, "color: blue");
+  console.log(`%cPOST 요청 데이터 :`,bodyData, "color: blue");
+  console.log(bodyData);
 
   return api.post(endpoint, bodyData, {
     withCredentials: true,
@@ -49,4 +50,4 @@ async function del(endpoint) {
 // 아래처럼 export 한 후,
 // import * as API 방식으로 가져오면
 // API.get, API.delete 이런 식으로 쓸 수 있음
-export { get, post, put, del as delete };
+export { get, post, put, del as delete, api };

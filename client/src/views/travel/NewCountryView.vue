@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="search-page">
-      <form id="search-input-wrapper" @submit="handleCountrySearch">
+      <form id="search-input-wrapper" @submit.prevent="handleCountrySearch">
         <input class="text-lg" type="text" v-model="searchInput" />
         <button id="search-button">
           <font-awesome-icon
@@ -11,13 +11,13 @@
         </button>
       </form>
 
-      <SelectedCountries :countries="checkedList" />
+      <SelectedCountries :countries="travel.countryList" />
 
       <div id="country-list-wrapper">
         <div
           v-for="country in countryList"
           id="country-info"
-          v-bind:key="country.id"
+          :key="country.code"
         >
           <label>
             <div id="country-item-wrapper">
@@ -31,11 +31,10 @@
               </div>
               <div id="country-checkbox">
                 <input
-                  @change="checkLimit"
                   type="checkbox"
                   name="check"
                   :value="country"
-                  v-model="checkedList"
+                  v-model="travel.countryList"
                 />
                 <span id="check-box-custom"> </span>
               </div>
@@ -54,67 +53,46 @@
 <style lang="scss" scoped></style>
 
 <script setup>
-import axios from "axios";
-import { ref, reactive, onBeforeMount, onMounted } from "vue";
+import { ref, reactive, onBeforeMount, onMounted, computed, watch } from "vue";
 import { useRouter } from "vue-router";
-import { storeToRefs } from "pinia";
 import { useTravelStore } from "../../stores/travel";
 import SelectedCountries from "../../components/SelectedCountries.vue";
+import { useCountryStore } from "../../stores/country";
+import ChecklistView from "../plan/checklist/ChecklistView.vue";
 
 const router = useRouter();
-const store = useTravelStore();
+const travelStore = useTravelStore();
+const countryStore = useCountryStore();
 
 const searchInput = ref("");
-const countryList = ref();
-const checkedList = ref([]);
-
-function checkLimit() {
-  if (checkedList.value.length > 3) {
-    alert("3개까지만 선택 가능합니다.");
-    checkedList.value.pop();
-  }
-}
+const countryList = computed(()=>countryStore.searchCountryList);
+const travel = computed(()=>travelStore.travel);
 
 function handleCheckList() {
-  if (checkedList.value.length === 0) {
+  if (travel.value.countryList.length === 0) {
     return alert("나라를 선택해주세요");
   }
-  const countries = checkedList.value;
 
-  store.setTravelCountries(countries);
-  router.push("/travel/new");
+  router.push({name:"new-travel"});
 }
 
-async function handleCountrySearch(e) {
-  e.preventDefault();
+async function handleCountrySearch() {
+  countryStore.getCountryList(searchInput.value);
+}
 
-  const searchData = JSON.stringify({
-    name: searchInput.value,
-  });
-
-  const data = await store.getCountrySearchResult(searchData);
-
-  if (data.code === 401) {
-    router.push("/login");
+watch(()=>searchInput.value,()=>handleCountrySearch());
+watch(()=>travel.value.countryList?.length,()=>{
+  if(travel.value.countryList.length>3){
+    travel.value.countryList.pop();
+    alert("3개까지만 선택 가능합니다.");
   }
-
-  countryList.value = data.results.countryList;
-  searchInput.value = "";
-}
+});
 
 onBeforeMount(() => {
   console.log("Before Mount!");
 });
 
 onMounted(async () => {
-  if (!searchInput.value) {
-    const data = await store.getAllCountries();
-
-    if (data.code === 401) {
-      router.push("/login");
-    }
-
-    countryList.value = data.results.countryList;
-  }
+  await countryStore.getCountryList();
 });
 </script>
