@@ -94,6 +94,8 @@ public class PlanAirPlane {
 
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
+        map.put("type", "pa");
+        map.put("id", this.id);
         map.put("orderDate", this.departDate);
         map.put("title", this.title);
         map.put("memo", this.memo);

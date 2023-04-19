@@ -84,6 +84,8 @@ public class PlanTransPort {
 
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
+        map.put("type", "pt");
+        map.put("id", this.id);
         map.put("orderDate", this.departDate);
         map.put("title", this.title);
         map.put("memo", this.memo);

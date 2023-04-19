@@ -81,6 +81,8 @@ public class PlanHotel {
 
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
+        map.put("type", "ph");
+        map.put("id", this.id);
         map.put("orderDate", this.checkinDate);
         map.put("title", this.title);
         map.put("memo", this.memo);
