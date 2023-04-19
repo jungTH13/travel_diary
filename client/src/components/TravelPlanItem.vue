@@ -16,45 +16,7 @@
   </div>
 </template>
 
-<style lang="scss">
-#travel-plan-item {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 20px 0;
-
-  #item-info {
-    display: flex;
-    align-items: center;
-
-    #flag-img {
-      width: 58px;
-      height: 58px;
-      background-color: #ddd;
-      border-radius: 50%;
-      margin-right: 20px;
-    }
-
-    #item-title {
-      font-weight: bold;
-      margin-bottom: 3px;
-    }
-
-    #edit-item {
-      display: block;
-      width: 28px;
-      height: 28px;
-      background: #fff;
-      cursor: pointer;
-      #edit-item-img {
-        width: 100%;
-        height: 100%;
-      }
-    }
-  }
-}
-</style>
+<style lang="scss"></style>
 
 <script setup>
 import { defineProps } from "vue";

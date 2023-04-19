@@ -11,9 +11,7 @@
   </div>
 </template>
 
-<style lang="scss">
-@import "../assets/scss/components/selectedCountries.scss";
-</style>
+<style lang="scss"></style>
 
 <script setup>
 import { defineProps } from "vue";

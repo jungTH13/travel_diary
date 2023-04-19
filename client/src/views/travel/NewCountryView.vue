@@ -11,13 +11,13 @@
         </button>
       </form>
 
-      <SelectedCountries :countries="checkedList" />
+      <SelectedCountries :countries="travel.countryList" />
 
       <div id="country-list-wrapper">
         <div
           v-for="country in countryList"
           id="country-info"
-          v-bind:key="country.id"
+          :key="country.code"
         >
           <label>
             <div id="country-item-wrapper">
@@ -31,11 +31,11 @@
               </div>
               <div id="country-checkbox">
                 <input
-                  @change="checkLimit"
+                  @change="() => checkTest(country)"
                   type="checkbox"
                   name="check"
-                  :value="country"
-                  v-model="checkedList"
+                  :value="country.name"
+                  v-model="travel.countryList"
                 />
                 <span id="check-box-custom"> </span>
               </div>
@@ -55,66 +55,60 @@
 
 <script setup>
 import axios from "axios";
-import { ref, reactive, onBeforeMount, onMounted } from "vue";
+import { ref, reactive, onBeforeMount, onMounted, computed, watch } from "vue";
 import { useRouter } from "vue-router";
-import { storeToRefs } from "pinia";
 import { useTravelStore } from "../../stores/travel";
+import { useCountryStore } from "../../stores/country";
 import SelectedCountries from "../../components/SelectedCountries.vue";
 
 const router = useRouter();
-const store = useTravelStore();
+const travelStore = useTravelStore();
+const countryStore = useCountryStore();
 
 const searchInput = ref("");
-const countryList = ref();
-const checkedList = ref([]);
+const countryList = computed(() => countryStore.searchCountryList);
+const travel = computed(() => travelStore.travel);
 
-function checkLimit() {
-  if (checkedList.value.length > 3) {
-    alert("3개까지만 선택 가능합니다.");
-    checkedList.value.pop();
-  }
+function checkTest(cntry) {
+  // travel.countryList.push(cntry);
+  console.log("c", cntry);
+  console.log("country", countryStore.searchCountryList);
+  console.log("tavel", travelStore.travel);
+  console.log("t", travel.countryList);
 }
 
 function handleCheckList() {
-  if (checkedList.value.length === 0) {
+  if (travel.value.countryList.length === 0) {
     return alert("나라를 선택해주세요");
   }
-  const countries = checkedList.value;
 
-  store.setTravelCountries(countries);
-  router.push("/travel/new");
+  router.push({ name: "new-travel" });
 }
 
 async function handleCountrySearch(e) {
   e.preventDefault();
-
-  const searchData = JSON.stringify({
-    name: searchInput.value,
-  });
-
-  const data = await store.getCountrySearchResult(searchData);
-
-  if (data.code === 401) {
-    router.push("/login");
-  }
-
-  countryList.value = data.results.countryList;
-  searchInput.value = "";
+  countryStore.getCountryList(searchInput.value);
 }
+
+watch(
+  () => searchInput.value,
+  () => handleCountrySearch()
+);
+watch(
+  () => travel.value.countryList?.length,
+  () => {
+    if (travel.value.countryList.length > 3) {
+      travel.value.countryList.pop();
+      alert("3개까지만 선택 가능합니다.");
+    }
+  }
+);
 
 onBeforeMount(() => {
   console.log("Before Mount!");
 });
 
 onMounted(async () => {
-  if (!searchInput.value) {
-    const data = await store.getAllCountries();
-
-    if (data.code === 401) {
-      router.push("/login");
-    }
-
-    countryList.value = data.results.countryList;
-  }
+  await countryStore.getCountryList();
 });
 </script>

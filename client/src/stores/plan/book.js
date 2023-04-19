@@ -1,8 +1,10 @@
 import { ref, computed, reactive } from "vue";
 import { defineStore } from "pinia";
-import * as API from "../../utils/api";
+import { useApi } from "../../composable/useApi";
 
 export const useBookStore = defineStore("plan", () => {
+  const API = useApi();
+
   const bookFlightList = ref([]);
 
   const getBookFlight = async (planId) => {

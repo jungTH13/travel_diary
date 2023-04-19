@@ -17,11 +17,10 @@
           </div>
           <div id="country-checkbox">
             <input
-              @change="checkLimit"
               type="checkbox"
               name="check"
               :value="country"
-              v-model="checkedList"
+              v-model="travel.countryList"
             />
             <span id="check-box-custom"> </span>
           </div>

@@ -42,10 +42,6 @@ onBeforeMount(() => {
 });
 
 onMounted(() => {
-  const data = store.getTravelList();
-
-  if (data.code === 401) {
-    router.push("/login");
-  }
+  store.getTravelList();
 });
 </script>
