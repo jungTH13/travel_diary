@@ -3,7 +3,9 @@ package com.travelProject.travelDiary.controller;
 import com.travelProject.travelDiary.dto.ResponseBody;
 import com.travelProject.travelDiary.dto.TravelDto;
 import com.travelProject.travelDiary.entity.Travel;
+import com.travelProject.travelDiary.entity.TravelCountry;
 import com.travelProject.travelDiary.entity.User;
+import com.travelProject.travelDiary.service.TravelCountryService;
 import com.travelProject.travelDiary.service.TravelService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -22,6 +24,9 @@ public class TravelController {
     private TravelService travelService;
 
     @Autowired
+    private TravelCountryService travelCountryService;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     @PostMapping ("/travel/userTravelOne")
@@ -30,8 +35,11 @@ public class TravelController {
 
         Map<String, Object> result = new HashMap<>();
         Travel travelOne = travelService.selectPlanTravelOne(user.getId(), travelDto.getId());
+        String[] travelCountryList = travelCountryService.travelCountrySelect(travelDto.getId());
 
         result.put("travelOne", travelOne);
+        result.put("travelCountryList", travelCountryList);
+
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }
 

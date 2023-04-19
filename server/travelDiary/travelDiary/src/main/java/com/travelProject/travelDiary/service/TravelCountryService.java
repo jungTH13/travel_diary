@@ -15,6 +15,18 @@ public class TravelCountryService {
     @Autowired
     private TravelCountryRepository travelCountryRepository;
 
+    public String[] travelCountrySelect(Long travelId) {
+        List<TravelCountry> travelCountryList = travelCountryRepository.findAllByTravel_Id(travelId);
+
+        int index = 0;
+        String[] countryArr = new String[travelCountryList.size()];
+        for (TravelCountry travelCountry: travelCountryList) {
+            countryArr[index] = travelCountry.getCountry().getCode();
+            index = index + 1;
+        }
+        return countryArr;
+    }
+
     public void travelCountryInsert(Long travelId, String countryStr) {
         Long countryId = Long.valueOf(countryStr.substring(0, countryStr.indexOf("_")));
         TravelCountry travelCountry = new TravelCountry();
