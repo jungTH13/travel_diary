@@ -1,12 +1,14 @@
 <template>
-  <TheHeader />
-  <RouterView />
+  <div style="height: 100%; width: 100%;">
+    <TheHeader />
+    <RouterView />
+  </div>
 </template>
 
 <script setup>
 import { RouterLink, RouterView, useRouter } from "vue-router";
 import TheHeader from "../src/components/TheHeader.vue";
-import * as API from "./utils/api";
+import * as API from "./composable/api";
 
 
 const router = useRouter();
@@ -39,6 +41,7 @@ API.api.interceptors.response.use(
 
       router.push({name:'login'})
     }
+    if(response.data.code !== 200) console.log(response)
 
     return response;
   },

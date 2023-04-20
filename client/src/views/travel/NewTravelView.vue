@@ -1,7 +1,7 @@
 <template>
   <div class="plan-container">
     <section>
-      <SelectedCountries :countries="travel.countryList" />
+      <SelectedCountries v-model="travel.countryList" />
       <div class="plan-title">
         <input
           type="text"
@@ -15,9 +15,9 @@
       </div>
     </section>
     <div class="plan-footer">
-      <!-- <button class="font-weight-600">수정</button>
-      <button class="font-weight-600">삭제</button> -->
-      <button class="font-weight-600" @click="postPlan">등록</button>
+      <button v-if="travel.id" class="font-weight-600">수정</button>
+      <button v-if="travel.id" class="font-weight-600">삭제</button>
+      <button v-else class="font-weight-600" @click="postPlan">등록</button>
     </div>
   </div>
 </template>
@@ -29,7 +29,7 @@ import { ref, onMounted, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useTravelStore } from "../../stores/travel";
 import SelectedCountries from "../../components/SelectedCountries.vue";
-import {toKoreaTimeString} from "../../utils/util"
+import {toKoreaTimeString} from "../../composable/util"
 
 const router = useRouter();
 const travelStore = useTravelStore();

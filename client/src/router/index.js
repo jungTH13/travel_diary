@@ -16,10 +16,16 @@ import BookHotelView from "../views/plan/book/BookHotelView.vue";
 import BookFoodView from "../views/plan/book/BookFoodView.vue";
 import BookOtherView from "../views/plan/book/BookOtherView.vue";
 import BookTransportView from "../views/plan/book/BookTransportView.vue";
+import MapGoogle from "../components/MapGoogle.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path:"/map",
+      name:"map",
+      component: MapGoogle
+    },
     {
       path: "/",
       name: "home",
@@ -45,78 +51,79 @@ const router = createRouter({
           name: "new-travel",
           component: NewTravelView,
         },
-      ],
-    },
-    {
-      path: "/plan/:id",
-      name: "plan",
-      component: PlanHomeView,
-      children: [
         {
-          path: "",
-          name: "schedule",
-          component: ScheduleListView,
-        },
-        {
-          path: "book",
-          name: "book",
-          component: BookHomeView,
+          path: ":id/plan",
+          name: "plan",
+          component: PlanHomeView,
           children: [
             {
               path: "",
-              name: "book-all",
-              component: BookListView,
+              name: "schedule",
+              component: ScheduleListView,
             },
             {
-              path: "flight",
-              name: "book-flight",
-              component: BookFlightView,
+              path: "book",
+              name: "book",
+              component: BookHomeView,
+              children: [
+                {
+                  path: "",
+                  name: "book-all",
+                  component: BookListView,
+                },
+                {
+                  path: "flight",
+                  name: "book-flight",
+                  component: BookFlightView,
+                },
+                {
+                  path: "hotel",
+                  name: "book-hotel",
+                  component: BookHotelView,
+                },
+                {
+                  path: "food",
+                  name: "book-food",
+                  component: BookFoodView,
+                },
+                {
+                  path: "transport",
+                  name: "book-transport",
+                  component: BookTransportView,
+                },
+                {
+                  path: "other",
+                  name: "book-other",
+                  component: BookOtherView,
+                },
+              ],
             },
             {
-              path: "hotel",
-              name: "book-hotel",
-              component: BookHotelView,
+              path: "budget",
+              name: "budget",
+              children: [
+                {
+                  path: "",
+                  name: "plan-budget",
+                  component: BudgetHomeView,
+                },
+                {
+                  path: "new",
+                  name: "new-plan-budget",
+                  component: NewBudgetView,
+                },
+              ],
             },
             {
-              path: "food",
-              name: "book-food",
-              component: BookFoodView,
-            },
-            {
-              path: "transport",
-              name: "book-transport",
-              component: BookTransportView,
-            },
-            {
-              path: "other",
-              name: "book-other",
-              component: BookOtherView,
+              path: "checklist",
+              name: "checklist",
+              component: ChecklistView,
             },
           ],
-        },
-        {
-          path: "budget",
-          name: "budget",
-          children: [
-            {
-              path: "",
-              name: "plan-budget",
-              component: BudgetHomeView,
-            },
-            {
-              path: "new",
-              name: "new-plan-budget",
-              component: NewBudgetView,
-            },
-          ],
-        },
-        {
-          path: "checklist",
-          name: "checklist",
-          component: ChecklistView,
         },
       ],
     },
+    
   ],
 });
 

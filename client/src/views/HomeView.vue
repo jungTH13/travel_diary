@@ -10,13 +10,13 @@
 
       <div id="plan-travel">
         <h3>떠날 여행</h3>
-        <div v-for="item in travelList.plan" v-bind:key="item.id">
+        <div v-for="item in travelList.plan" v-bind:key="item.id" @click="editTravel(item.id)">
           <TravelPlanItem :planItem="item" />
         </div>
       </div>
       <div id="end-travel">
         <h3>떠난 여행</h3>
-        <div v-for="item in travelList.end" v-bind:key="item.id">
+        <div v-for="item in travelList.end" v-bind:key="item.id" @click="editTravel(item.id)">
           <TravelPlanItem :planItem="item" />
         </div>
       </div>
@@ -36,6 +36,15 @@ import { useTravelStore } from "../stores/travel";
 const router = useRouter();
 const store = useTravelStore();
 const travelList = store.travelList;
+
+const editTravel = (travelId)=>{
+  router.push({
+    name:"schedule",
+    params:{
+      id:travelId
+    }
+  })
+}
 
 onBeforeMount(() => {
   console.log("Before Mount!");

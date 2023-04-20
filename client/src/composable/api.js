@@ -6,17 +6,18 @@ const api = axios.create({
   baseURL: BASE_URL,
 });
 
-async function get(endpoint) {
+async function get(endpoint,body=null) {
   console.log(`%cGET 요청 ${BASE_URL + endpoint}`, "color: red");
 
-  return api.get(endpoint, {
-    withCredentials: true,
-  });
+  const config = {withCredentials: true}
+  if(body) config.params = body;
+
+  return api.get(endpoint, config);
 }
 
 async function post(endpoint, bodyData) {
   console.log(`%cPOST 요청 : ${endpoint}`, "color: red");
-  console.log(`%cPOST 요청 데이터 :`,bodyData, "color: blue");
+  console.log(`%cPOST 요청 데이터 :`, "color: blue");
   console.log(bodyData);
 
   return api.post(endpoint, bodyData, {

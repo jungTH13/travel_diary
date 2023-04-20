@@ -11,7 +11,7 @@
         </button>
       </form>
 
-      <SelectedCountries :countries="travel.countryList" />
+      <SelectedCountries v-model="travel.countryList" />
 
       <div id="country-list-wrapper">
         <div
@@ -58,7 +58,6 @@ import { useRouter } from "vue-router";
 import { useTravelStore } from "../../stores/travel";
 import SelectedCountries from "../../components/SelectedCountries.vue";
 import { useCountryStore } from "../../stores/country";
-import ChecklistView from "../plan/checklist/ChecklistView.vue";
 
 const router = useRouter();
 const travelStore = useTravelStore();

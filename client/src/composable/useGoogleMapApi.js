@@ -1,3 +1,5 @@
+import axios from "axios"
+
 let mapObj = null
 
 export const useGoogleMapApi = ()=>{
@@ -25,10 +27,22 @@ export const useGoogleMapApi = ()=>{
      * 
      * @retruns  좌표정보를 반환
      */
-    const searchPlace = (searchText)=>{
+    const searchPlace = async (searchText)=>{
+        const url = `https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_MAP_KEY}&q=${searchText}`
 
+        const response = await axios.get(url)
 
+        let target = response.data.split("initEmbed(")[1]
+        target = `{ "target": ${target.split(");")[0]} }`
+        target = JSON.parse(target)
 
+        const address = target["target"][21][3][2]
+        const geometry = target["target"][21][3][0][2] // [lat,lng]
+        const place_id = target["target"][21][3][27]
+        const name = target["target"][21][3][1]
+        const cid = target["target"][21][3][0][3]
+
+        return {address,geometry,place_id,name,cid}
     }
 
     const searchAddr = ()=>{
@@ -61,13 +75,16 @@ export const useGoogleMapApi = ()=>{
      *  
      * @returns 
      */
-    const getMap = ()=>{
-        if(mapObj !== null) return mapObj
+    const getMap = ()=>new Promise((resolve,reject)=>{
+        if(mapObj !== null) return Promise.all(mapObj)
 
-        mapObj = createMap()
+        mapObj = createMap().then(map=>{
+            mapObj = map
+            resolve(map)
+        })
 
         return mapObj
-    }
+    })
 
     /**
      * 
@@ -84,11 +101,27 @@ export const useGoogleMapApi = ()=>{
             position: {lat:x,lng:y},
             map: mapObj,
         })
-
-        if(isTrace === true) mapObj.setCenter({lat:x,lng:y})
+        if(isTrace === true) {
+            mapObj.setCenter({lat:x,lng:y})
+            mapObj.setZoom(16)
+        }
 
         return marker
     }
+
+    const removeListeners = (marker,eventName)=>{
+        window.google.maps.event.clearListeners(marker,eventName)
+    }
+
+    const createInfoWindow = (label,content)=>{
+        
+        return new window.google.maps.InfoWindow({
+            content: content,
+            ariaLabel: label,
+        })
+    }
+
+
 
     /**
      * 
@@ -102,9 +135,12 @@ export const useGoogleMapApi = ()=>{
     const moveMarker = (marker,x,y,isTrace)=>{
         if(!marker) return alert("마커가 존재하지 않습니다!")
         
-        marker.value.setPosition({lat:x,lng:y})
+        marker.setPosition({lat:x,lng:y})
 
-        if(isTrace === true) mapObj.setCenter({lat:x,lng:y})
+        if(isTrace === true) {
+            mapObj.setCenter({lat:x,lng:y})
+            mapObj.setZoom(20)
+        }
     }
 
     return{
@@ -112,6 +148,9 @@ export const useGoogleMapApi = ()=>{
         createMap,
         getMap,
         setMarker,
-        moveMarker
+        moveMarker,
+        searchPlace,
+        createInfoWindow,
+        removeListeners
     }
 }
