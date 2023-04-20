@@ -10,7 +10,7 @@ import { useApi } from "./composable/useApi";
 
 const router = useRouter();
 const API = useApi();
-/*
+
 // # 인터셉터 설정 # //
 let reqeustNumber = 0;
 API.api.interceptors.request.use(
@@ -47,7 +47,6 @@ API.api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-*/
 </script>
 
 <style scoped></style>

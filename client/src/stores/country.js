@@ -8,9 +8,6 @@ export const useCountryStore = defineStore("country", () => {
   const countryList = ref([]);
   const searchCountryList = ref([]);
 
-  // const travelCountries = ref([]);
-  // const getTravelCountries = computed(() => travelCountries.value);
-
   async function getCountryList(searchData) {
     if (countryList.value?.length === 0) {
       const { data } = await API.get("/common/countryList");
@@ -18,10 +15,12 @@ export const useCountryStore = defineStore("country", () => {
     }
 
     if (searchData) {
-      const { data } = await API.post("/common/countryLike", searchData);
-      searchCountryList.value = data.results.countryList;
+      searchCountryList.value = countryList.value.filter((country) =>
+        country.name.includes(searchData)
+      );
+      // const { data } = await API.post("/common/countryLike", searchData);
+      // searchCountryList.value = data.results.countryList;
     } else {
-      console.log("countryList", countryList.value);
       searchCountryList.value = countryList.value;
     }
   }

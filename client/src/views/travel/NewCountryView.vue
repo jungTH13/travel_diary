@@ -11,7 +11,7 @@
         </button>
       </form>
 
-      <SelectedCountries :countries="travel.countryList" />
+      <SelectedCountries :countries="travel.country" />
 
       <div id="country-list-wrapper">
         <div
@@ -31,11 +31,10 @@
               </div>
               <div id="country-checkbox">
                 <input
-                  @change="() => checkTest(country)"
                   type="checkbox"
                   name="check"
-                  :value="country.name"
-                  v-model="travel.countryList"
+                  :value="country"
+                  v-model="travel.country"
                 />
                 <span id="check-box-custom"> </span>
               </div>
@@ -69,16 +68,8 @@ const searchInput = ref("");
 const countryList = computed(() => countryStore.searchCountryList);
 const travel = computed(() => travelStore.travel);
 
-function checkTest(cntry) {
-  // travel.countryList.push(cntry);
-  console.log("c", cntry);
-  console.log("country", countryStore.searchCountryList);
-  console.log("tavel", travelStore.travel);
-  console.log("t", travel.countryList);
-}
-
 function handleCheckList() {
-  if (travel.value.countryList.length === 0) {
+  if (travel.value.country.length === 0) {
     return alert("나라를 선택해주세요");
   }
 
@@ -90,15 +81,15 @@ async function handleCountrySearch(e) {
   countryStore.getCountryList(searchInput.value);
 }
 
+// watch(
+//   () => searchInput.value,
+//   () => handleCountrySearch()
+// );
 watch(
-  () => searchInput.value,
-  () => handleCountrySearch()
-);
-watch(
-  () => travel.value.countryList?.length,
+  () => travel.value.country?.length,
   () => {
-    if (travel.value.countryList.length > 3) {
-      travel.value.countryList.pop();
+    if (travel.value.country.length > 3) {
+      travel.value.country.pop();
       alert("3개까지만 선택 가능합니다.");
     }
   }

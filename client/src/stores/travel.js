@@ -4,7 +4,7 @@ import { useApi } from "../composable/useApi";
 
 const defaultTravel = () => ({
   title: "",
-  countryList: [],
+  country: [],
   startDate: "",
   endDate: "",
 });
@@ -17,7 +17,7 @@ export const useTravelStore = defineStore("travel", () => {
     end: [],
   });
 
-  const travel = ref([]);
+  const travel = ref(defaultTravel());
 
   function resetTravel() {
     travel.value = defaultTravel();
@@ -37,7 +37,7 @@ export const useTravelStore = defineStore("travel", () => {
 
     Object.keys(travel.value).forEach((key) => (form[key] = travel.value[key]));
 
-    form.countryList = form.countryList.map((country) => country.code);
+    form.country = form.country.map((country) => country.code);
 
     const { data } = await API.post("/travel/travelInsert", form);
 
