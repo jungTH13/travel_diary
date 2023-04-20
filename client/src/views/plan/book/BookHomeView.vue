@@ -23,16 +23,16 @@
     max-width:100px;
     width:15%;
     height: 100%;
-    margin:5px;
+    margin:0.5vh;
     
     .schedule-type{
       cursor: pointer;
-      padding-top: 3px;
+      padding-top: 1vh;
       margin: auto;
-      margin-bottom: 25px;
+      margin-bottom: 1vh;
       width: 50px;
-      height: 50px;
-      font-size:x-large;
+      height: 5vh;
+      font-size:2.5vh;
     }
 
     div.active{
@@ -45,23 +45,24 @@
     margin:5px;
 
     .contents{
-      padding:30px;
+      padding:2vh;
       padding-right:0px;
       padding-top:0px;
 
       .date{
-        margin-left:20px;
+        margin-left:1.5vh;
         margin-right:5px;
       }
       .plan{
-        margin-bottom: 30px;
+        margin-bottom: 2vh;
       }
 
       h1{
-        font-size:x-large;
+        font-size:3vh;
         display: inline;
       }
       p{
+        font-size: 1.5vh;
         display: inline;
       }
     }
