@@ -1,16 +1,35 @@
 <template>
-  <div>항공권 예약</div>
+  <div>
+    <div>항공권 예약</div>
+    <div v-for="item in flightList" :key="item.id">
+      <span>
+        {{ item.title }}
+      </span>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref, reactive, onBeforeMount, onMounted } from "vue";
+import { ref, reactive, onBeforeMount, onMounted, computed, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
-import { useBookStore } from "../../../stores/plan/book";
+import { useFlightStore } from "../../../stores/plan/book/flight";
 
 const router = useRouter();
 const route = useRoute();
-const bookStore = useBookStore();
+
+const bookStore = useFlightStore();
+
+const flightList = computed(() => bookStore.bookFlightList);
+
+watch(
+  () => flightList.value,
+  () => {
+    flightList.value.forEach((item) => {
+      console.log("list", item);
+    });
+  }
+);
 
 onMounted(() => {
   console.log(route.params.id);

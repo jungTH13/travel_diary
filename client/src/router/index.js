@@ -63,7 +63,7 @@ const router = createRouter({
           component: BookHomeView,
           children: [
             {
-              path: "",
+              path: "all",
               name: "book-all",
               component: BookListView,
             },

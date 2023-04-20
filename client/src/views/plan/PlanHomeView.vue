@@ -36,7 +36,7 @@ const routePath = route.path;
 const paramsId = route.params.id;
 const nav = [
   { path: `/plan/${paramsId}`, name: "일정" },
-  { path: `/plan/${paramsId}/book`, name: "예약" },
+  { path: `/plan/${paramsId}/book/all`, name: "예약" },
   { path: `/plan/${paramsId}/budget`, name: "가계부" },
   { path: `/plan/${paramsId}/checklist`, name: "체크리스트" },
 ];

@@ -11,6 +11,6 @@ const router = useRouter();
 const route = useRoute();
 
 onMounted(() => {
-  console.log(route.path);
+  // console.log(route.path);
 });
 </script>
