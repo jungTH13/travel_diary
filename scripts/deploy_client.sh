@@ -30,7 +30,7 @@ cd $REPOSITORY
 
 sudo npm install
 
-sudo nohup npx nuxt dev >> $REPOSITORY/nohup.out 2>&1 &
+sudo nohup npm run dev >> $REPOSITORY/nohup.out 2>&1 &
 
 # echo "> JAR NAME: $JAR_NAME"
 

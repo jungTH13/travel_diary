@@ -1,12 +1,54 @@
 <template>
-  <TheHeader />
-  <RouterView />
+  <div style="height: 100%; width: 100%;">
+    <TheHeader />
+    <RouterView />
+  </div>
 </template>
 
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
+import { RouterLink, RouterView, useRouter } from "vue-router";
 import TheHeader from "../src/components/TheHeader.vue";
-import HomeView from "./views/HomeView.vue";
+import * as API from "./composable/api";
+
+
+const router = useRouter();
+
+// # 인터셉터 설정 # //
+let reqeustNumber = 0;
+API.api.interceptors.request.use(
+  function (config) {
+    // 요청을 보내기 전에 수행할 일
+    reqeustNumber++;
+
+    config.headers['Request-Number'] = `${reqeustNumber}`;
+    return config;
+  },
+  function (error) {
+    // 오류 요청을 보내기전 수행할 일
+    return Promise.reject(error);
+  });
+
+let loginIgnore = 0;
+API.api.interceptors.response.use(
+  function (response) {
+    // 응답 데이터를 가공
+    const requestNumber = parseInt(response.config.headers['Request-Number']);
+    if(response.data.code === 401 && loginIgnore < requestNumber){
+      
+      loginIgnore = reqeustNumber;
+      
+      alert('로그인 페이지로 이동합니다.')
+
+      router.push({name:'login'})
+    }
+    if(response.data.code !== 200) console.log(response)
+
+    return response;
+  },
+  function (error) {
+    // 오류 응답을 처리
+    return Promise.reject(error);
+});
 </script>
 
 <style scoped></style>

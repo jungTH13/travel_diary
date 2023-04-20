@@ -1,0 +1,77 @@
+.plan{
+    width:100%;
+    background-color: $gray;
+    border-radius: 10px;
+    min-height:80px;
+    padding:30px;
+
+    .plan-head{
+
+        border-bottom: 2px solid gray;
+        padding-bottom: 10px;
+        display: flex;
+        flex-direction: row;
+        min-height:80px;
+        font-size:x-large;
+
+        #name{
+            width: 100%;
+            text-align: left;
+            margin:auto;
+            font-weight:900;
+            p{
+                margin-left: 10px;
+                font-size:small;
+                display: inline;
+            }
+        }
+
+        #checkinDate,#departLocation{
+            width:40%;
+            text-align: left;
+            margin:auto;
+            font-weight:900;
+            p{
+                font-size:small;
+                
+            }
+        }
+        #progress-ico{
+            width:20%;
+            text-align: center;
+            margin:auto;
+            font-weight:900;
+        }
+        #checkoutDate,#arriveLocation{
+            width:40%;
+            text-align: right;
+            margin:auto;
+            font-weight:900;
+            p{
+                font-size:small;
+            }
+        }
+        
+    }
+
+    .plan-contents{
+        padding-top:15px;
+
+        table{
+            width:100%;
+            margin-bottom: 30px;
+
+            th{
+                width:33%;
+                font-size: medium;
+                text-align: left;
+                font-weight: 600;
+                padding-bottom: 2px;
+            }
+        }
+    }
+}
+
+.etc{
+    background-color: rgb(253, 224, 204);
+}

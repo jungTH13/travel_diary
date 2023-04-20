@@ -18,11 +18,19 @@
 
 <style lang="scss">
 #travel-plan-item {
+  cursor: pointer;
+  box-shadow: 0px 0px 5px #444;
+  border-radius: 8px;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 20px 0;
+  padding: 10px 15px 10px 10px;
+  margin: 10px 0;
+
+  &:hover{
+    border: 1px solid $green;
+  }
 
   #item-info {
     display: flex;
