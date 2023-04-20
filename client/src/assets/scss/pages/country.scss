@@ -8,11 +8,12 @@
   #search-input-wrapper {
     width: 100%;
     margin-top: 20px;
-    padding: 0 40px;
+    padding: 0 20px;
     display: flex;
     justify-content: center;
     input {
       border: none;
+      width: 100%;
       border-bottom: 1px solid;
       flex-grow: 1;
     }
@@ -22,7 +23,7 @@
     #search-button {
       width: 34px;
       height: 34px;
-      margin-left: 10px;
+      margin-left: 2px;
       background: none;
       border: none;
       cursor: pointer;
@@ -35,7 +36,7 @@
 
   #country-list-wrapper {
     flex-grow: 1;
-    padding: 0 40px;
+    padding: 0 10px;
 
     overflow-y: auto;
     -ms-overflow-style: none;

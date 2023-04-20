@@ -50,13 +50,14 @@
                 width:100%;
 
                 .time{
-                    font-size:medium;
+                    font-size:1.5vh;
                     font-weight: 600;
                     display: inline;
-                    margin-right:5px;
+                    margin-right:1vh;
                 }
                 .description{
                     display: inline;
+                    font-size: 1.5vh;
                     font-weight: 600;
                     color:gray
                 }
@@ -68,9 +69,13 @@
                     padding:8px;
 
                     .title{
-                        font-size:medium;
+                        font-size:1.8vh;
                         font-weight: 600;
-                        margin-bottom: 5px;
+                        margin-bottom: 0.5vh;
+                    }
+                    .memo{
+                        font-size:1.5vh;
+                        font-weight: 300;
                     }
                 }
             }
@@ -82,16 +87,16 @@
     position: relative;
     height: 100%;
     left:50%;
-    border-left: 3px solid $gray;
+    border-left: 0.3vh solid $gray;
 }
 
 .spot{
     position: relative;
     z-index: 100;
-    height:15px;
-    width:15px;
+    height:1.5vh;
+    width:1.5vh;
     margin: auto;
-    margin-top:4px;
+    margin-top:0.9vh;
     background-color: $green;
     border-radius: 50%;
 }

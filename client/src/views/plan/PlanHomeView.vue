@@ -17,14 +17,14 @@
 #plan-page {
 
   .nav{
-    margin-top:30px;
-    margin-bottom: 30px;
+    margin-top:2vh;
+    margin-bottom: 1vh;
   }
 
   ul {
     display: flex;
     justify-content: space-between;
-    height: 60px;
+    height: 5vh;
     
     li {
       width: 100%;
@@ -33,17 +33,17 @@
       border-bottom: 2px solid rgba(128, 128, 128, 0.486);
       .item-box{
         text-align: center;
-        margin-top:15px;
-        margin-bottom: 15px;
+        padding-top:5%;
+
         p{
-          font-size: x-large;
+          font-size: 2vh;
           font-weight: 600;
         }
       }
     }
     .active{
       box-shadow: 1px -2px 2px #444;
-      border-radius: 20px 20px 0px 0px;
+      border-radius: 10px 10px 0px 0px;
       border: 2px solid rgba(128, 128, 128, 0.486);
       border-bottom: 0px solid rgba(128, 128, 128, 0.486);
       // background-color: rgba(0, 128, 0, 0.623);
