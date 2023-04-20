@@ -1,6 +1,7 @@
 package com.travelProject.travelDiary.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.travelProject.travelDiary.entity.Travel;
 import com.travelProject.travelDiary.entity.User;
 import lombok.AllArgsConstructor;
@@ -26,8 +27,11 @@ public class PlanAirPlaneDto {
     private String arriveLocation;
     private Date arriveDate;
     private String flightNumber;
+    private String seatNumber;
     private String airline;
     private String boardingGate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date boardingTime;
     private String terminal;
     private String reservationNumber;
     private Double x;

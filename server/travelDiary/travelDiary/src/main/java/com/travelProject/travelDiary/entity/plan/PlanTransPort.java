@@ -55,6 +55,9 @@ public class PlanTransPort {
     @Column(name = "pt_depart_date")
     private Date departDate;
 
+    @Column(name="pt_boarding_gate")
+    private String boardingGate;
+
     @Column(name = "pt_reservation_number")
     private String reservationNumber;
 
@@ -93,6 +96,7 @@ public class PlanTransPort {
         map.put("arriveDate", this.arriveDate);
         map.put("departLocation", this.departLocation);
         map.put("departDate", this.departDate);
+        map.put("boardingGate", this.boardingGate);
         map.put("reservationNumber", this.reservationNumber);
         map.put("line", this.line);
         map.put("seatNumber", this.seatNumber);

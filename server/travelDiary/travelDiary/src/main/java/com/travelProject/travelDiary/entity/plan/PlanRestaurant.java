@@ -52,6 +52,9 @@ public class PlanRestaurant {
     @Column(name = "pr_address")
     private String address;
 
+    @Column(name = "pr_reservation_number")
+    private String reservationNumber;
+
     @Column(name = "pr_phone")
     private String phone;
 
@@ -83,6 +86,7 @@ public class PlanRestaurant {
         map.put("name", this.name);
         map.put("date", this.date);
         map.put("address", this.address);
+        map.put("reservationNumber", this.reservationNumber);
         map.put("phone", this.phone);
         map.put("x", this.x);
         map.put("y", this.y);

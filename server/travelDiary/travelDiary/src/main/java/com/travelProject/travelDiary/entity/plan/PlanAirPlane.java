@@ -62,12 +62,17 @@ public class PlanAirPlane {
     @Column(name="pa_flight_number")
     private String flightNumber;
 
+    @Column(name="pa_seat_number")
+    private String seatNumber;
+
     @Column(name="pa_airline")
     private String airline;
 
     @Column(name="pa_boarding_gate")
     private String boardingGate;
 
+    @Column(name="pa_boarding_time")
+    private Date boardingTime;
     @Column(name="pa_terminal")
     private String terminal;
 
@@ -104,8 +109,10 @@ public class PlanAirPlane {
         map.put("arriveLocation", this.arriveLocation);
         map.put("arriveDate", this.arriveDate);
         map.put("flightNumber", this.flightNumber);
+        map.put("seatNumber", this.seatNumber);
         map.put("airline", this.airline);
         map.put("boardingGate", this.boardingGate);
+        map.put("boardingTime", this.boardingTime);
         map.put("terminal", this.terminal);
         map.put("reservationNumber", this.reservationNumber);
         map.put("x", this.x);

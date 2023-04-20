@@ -36,4 +36,6 @@ public class PlanAccountBookDto {
     private String planType;
 
     private Long planTypeId;
+
+    private String categoryType;
 }

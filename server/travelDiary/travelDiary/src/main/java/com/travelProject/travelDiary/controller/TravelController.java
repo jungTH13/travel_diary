@@ -3,7 +3,6 @@ package com.travelProject.travelDiary.controller;
 import com.travelProject.travelDiary.dto.ResponseBody;
 import com.travelProject.travelDiary.dto.TravelDto;
 import com.travelProject.travelDiary.entity.Travel;
-import com.travelProject.travelDiary.entity.TravelCountry;
 import com.travelProject.travelDiary.entity.User;
 import com.travelProject.travelDiary.service.TravelCountryService;
 import com.travelProject.travelDiary.service.TravelService;

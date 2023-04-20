@@ -61,6 +61,9 @@ public class PlanAccountBook {
     @Column(name="pat_plan_type_id")
     private Long planTypeId;
 
+    @Column(name = "pat_category_type")
+    private String categoryType;
+
     @Column(nullable = false)
     @ColumnDefault("false")
     protected boolean deleted;
