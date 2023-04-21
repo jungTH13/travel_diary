@@ -30,7 +30,8 @@ async function post(endpoint, bodyData) {
 
 async function put(endpoint, bodyData) {
   console.log(`%cPUT 요청 : ${endpoint}`, "color: red");
-  console.log(`%cPUT 요청 데이터 : ${bodyData}`, "color: blue");
+  console.log(`%cPUT 요청 데이터 :`, "color: blue");
+  console.log(bodyData);
 
   return api.put(endpoint, bodyData, {
     withCredentials: true,
@@ -40,11 +41,14 @@ async function put(endpoint, bodyData) {
   });
 }
 
-async function del(endpoint) {
+async function del(endpoint,bodyData) {
   console.log(`%DELETE 요청 ${BASE_URL + endpoint}`, "color: red");
+  console.log(`%cDELTE 요청 데이터 :`, "color: red");
+  console.log(bodyData);
 
-  return api.get(endpoint, {
+  return api.delete(endpoint, {
     withCredentials: true,
+    data:bodyData
   });
 }
 

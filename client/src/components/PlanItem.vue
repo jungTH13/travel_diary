@@ -15,14 +15,6 @@
 
 }
 
-.spot{
-    height:15px;
-    width:15px;
-    margin: auto;
-    margin-top:4px;
-    background-color: $green;
-    border-radius: 50%;
-}
 </style>
 
 <script setup>

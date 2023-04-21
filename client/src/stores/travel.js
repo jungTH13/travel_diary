@@ -1,6 +1,7 @@
 import { ref, computed, reactive } from "vue";
 import { defineStore } from "pinia";
 import * as API from "../composable/api";
+import { useCountryStore } from "./country";
 
 const defaultTravel = ()=> ({
   title:"",
@@ -34,6 +35,11 @@ export const useTravelStore = defineStore("travel", () => {
   async function getTravel(travelId){
 
     const {data} = await API.post("/travel/userTravelOne",{id:travelId})
+    
+    const countryStore = useCountryStore()
+    await countryStore.getCountryList()
+    // countryList의 code 정보를 country 정보로 변경
+    data.results.travelOne.countryList = data.results.travelCountryList.map((code)=>countryStore.countryList.filter((country)=>code===country.code.split('_')[1])[0])
 
     travel.value = data.results.travelOne
 
@@ -72,12 +78,35 @@ export const useTravelStore = defineStore("travel", () => {
     return data;
   }
 
+  async function putTravel(){
+    const form = {};
+
+    Object.keys(travel.value).forEach((key)=>form[key] = travel.value[key]);
+
+    form.country = form.countryList.map(country=>country.code);
+    delete form.countryList
+
+    const { data } = await API.put("/travel/travelUpdate", form);
+
+    return data;
+  }
+
+  async function delTravel(){
+    const form = {id: travel.value.id};
+
+    const { data } = await API.delete("/travel/travelDelete", form);
+
+    return data;
+  }
+
   return {
     travelList,
     travel,
     dayList,
     getTravelList,
     postTravel,
+    putTravel,
+    delTravel,
     resetTravel,
     getTravel,
   };

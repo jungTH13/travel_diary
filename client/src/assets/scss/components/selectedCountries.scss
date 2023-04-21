@@ -1,5 +1,5 @@
 #selected-country-wrapper {
-  padding: 20px 0px;
+  padding: 2vh 0px;
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -12,14 +12,14 @@
 
     span {
       cursor: pointer;
-      font-size:larger;
+      font-size:2vh;
       font-weight: bold;
     }
 
     #plane-img {
-      width: 20px;
-      height: 20px;
-      margin: 0 20px;
+      width: 2vh;
+      height: 2vh;
+      margin: 0 1.5vh;
     }
     &:last-of-type > #plane-img {
       display: none;

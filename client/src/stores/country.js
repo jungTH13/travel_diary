@@ -9,6 +9,9 @@ export const useCountryStore = defineStore("country", () => {
   async function getCountryList(searchData) {
     if(countryList.value?.length === 0) {
       const {data} = await API.get("/common/countryList");
+      // 코드에 붙은 1_ 정보 제거
+      // data.results.countryList.forEach((country)=>country.code = country.code.split('_')[1])
+
       countryList.value = data.results.countryList;
     }
 

@@ -1,7 +1,15 @@
 <template>
-  <div style="height: 100%; width: 100%;">
-    <TheHeader />
-    <RouterView />
+  <div class="main">
+    <div class="head">
+      <TheHeader />
+    </div>
+    <div class="body">
+      <RouterView />
+    </div>
+  </div>
+
+  <div class="main-sub">
+    <MapGoogle />
   </div>
 </template>
 
@@ -9,6 +17,7 @@
 import { RouterLink, RouterView, useRouter } from "vue-router";
 import TheHeader from "../src/components/TheHeader.vue";
 import * as API from "./composable/api";
+import MapGoogle from "./components/MapGoogle.vue";
 
 
 const router = useRouter();
@@ -51,4 +60,43 @@ API.api.interceptors.response.use(
 });
 </script>
 
-<style scoped></style>
+<style lang="scss">
+#app{
+  height:100%;
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.main{
+  height: 100%; 
+  width: 100%; 
+  margin:auto;
+  min-width: 300px;
+  max-width: 720px;
+  display: flex; 
+  flex-direction: column;
+  padding: 0 0 1.2rem 0;
+
+  .head{
+    height: 3rem;
+    width: 100%;
+    padding: 0 1.2rem 0 1.2rem;
+  }
+
+  .body{
+    flex: 1;
+    width: 100%;
+    padding: 0 1.2rem 0 1.2rem;
+    display:flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+}
+.main-sub{
+  display: none;
+}
+
+
+
+</style>

@@ -12,27 +12,33 @@
       </div>
     </div>
   </div>
+  <div class="create-container">
+    <div class="create-botton">
+      <span class="plus-button green">
+        <font-awesome-icon icon="fa-solid fa-plus" id="plus-button-img" />
+      </span>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 .schedule-container{
-  padding: 10px 10px 10px 10px;
   display: flex;
   flex-direction: row;
+  height: 100%;
+  overflow: hidden;
   .schedule-type-container{
     max-width:100px;
-    width:15%;
     height: 100%;
-    margin:0.5vh;
+    margin:0.3rem;
     
     .schedule-type{
       cursor: pointer;
-      padding-top: 1vh;
+      padding-top: 1rem;
       margin: auto;
-      margin-bottom: 1vh;
-      width: 50px;
-      height: 5vh;
-      font-size:2.5vh;
+      margin-bottom: 1rem;
+      height: 3.8rem;
+      font-size:2rem;
     }
 
     div.active{
@@ -42,31 +48,52 @@
 
   .schdule-contents-container{
     width:100%;
-    margin:5px;
+    height: 100%;
+    overflow-y: auto;
+    margin:1rem;
+    flex: 1;
 
     .contents{
-      padding:2vh;
+      // padding:2vh;
       padding-right:0px;
       padding-top:0px;
 
       .date{
-        margin-left:1.5vh;
-        margin-right:5px;
+        margin-left:1rem;
+        margin-right:0.8rem;
       }
       .plan{
-        margin-bottom: 2vh;
+        margin-bottom: 2rem;
       }
 
       h1{
-        font-size:3vh;
+        font-size:2.5rem;
         display: inline;
       }
       p{
-        font-size: 1.5vh;
+        font-size: 1.4rem;
         display: inline;
       }
     }
 
+  }
+}
+
+.create-container{
+  position:relative;
+  width: 100%;
+  bottom:0rem;
+  left: 0px;
+  margin: auto;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+
+  .create-botton{
+    position:absolute;
+    bottom:-0.5rem;
+    cursor: pointer;
+    margin:auto;
   }
 }
 

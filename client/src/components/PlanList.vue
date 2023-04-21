@@ -34,30 +34,30 @@
 <style lang="scss" scoped>
 .plan-contents-wrapper{
     .plan-wrapper{
-        margin-bottom: 15px;
+        margin-bottom: 1rem;
         
         .plan{
             display: flex;
             flex-direction: row;
 
             .progress-line{
-                max-width:50px;
+                max-width:3rem;
                 width:10%;
-                margin-right:10px;
+                margin-right:1rem;
             }
 
             .plan-contents{
                 width:100%;
 
                 .time{
-                    font-size:1.5vh;
+                    font-size:1.5rem;
                     font-weight: 600;
                     display: inline;
-                    margin-right:1vh;
+                    margin-right:1rem;
                 }
                 .description{
                     display: inline;
-                    font-size: 1.5vh;
+                    font-size: 1.2rem;
                     font-weight: 600;
                     color:gray
                 }
@@ -65,16 +65,16 @@
                 .plan-memo{
                     background-color: $gray;
                     border-radius: 10px;
-                    min-height:80px;
+                    min-height:8rem;
                     padding:8px;
 
                     .title{
-                        font-size:1.8vh;
+                        font-size:1.4rem;
                         font-weight: 600;
                         margin-bottom: 0.5vh;
                     }
                     .memo{
-                        font-size:1.5vh;
+                        font-size:1.2rem;
                         font-weight: 300;
                     }
                 }
@@ -87,16 +87,16 @@
     position: relative;
     height: 100%;
     left:50%;
-    border-left: 0.3vh solid $gray;
+    border-left: 0.3rem solid $gray;
 }
 
 .spot{
     position: relative;
     z-index: 100;
-    height:1.5vh;
-    width:1.5vh;
+    height:1.3rem;
+    width:1.3rem;
     margin: auto;
-    margin-top:0.9vh;
+    margin-top:1rem;
     background-color: $green;
     border-radius: 50%;
 }

@@ -3,24 +3,36 @@ import axios from "axios"
 let mapObj = null
 
 export const useGoogleMapApi = ()=>{
-    const init = ()=>new Promise((resolve,reject)=>{
-        if(!window.google){
-			const script = document.createElement("script")
-			/* global google */
-            script.async = true
-			script.src =`https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAP_KEY}`
-			document.head.appendChild(script);
+    const init = async()=>{
+        
+        const result = new Promise((resolve,reject)=>{
+            if(window.google === undefined){
+                window.google = false
+                window.initMap = function(){
+                    console.log("googleMap installed")
+                }
+                
+                const script = document.createElement("script")
+                /* global google */
+                script.async = true
+                script.src =`https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAP_KEY}&callback=initMap`
+                document.head.appendChild(script);
+            }
 
             const installWait = ()=>{
                 if(!window.google)setTimeout(()=>{
+                    console.log('wait')
                     installWait()
                 },100)
                 else resolve()
             }
 
             installWait()
-		}
-    })
+            
+        })
+        
+        await result
+    }
     /**
      * 
      * @param {String} searchText 검색할 문자을 입력
@@ -56,10 +68,10 @@ export const useGoogleMapApi = ()=>{
 			zoom: 16, //zoom size를 지정.
 			maxZoom: 20,
 			minZoom: 3,
-			streetViewControl: true,
-			mapTypeControl: true,
-			fullscreenControl: true,
-			zoomControl: true,
+			streetViewControl: false,
+			mapTypeControl: false,
+			fullscreenControl: false,
+			zoomControl: false,
 		}
 
         if(config) mapConfig = config
@@ -75,16 +87,19 @@ export const useGoogleMapApi = ()=>{
      *  
      * @returns 
      */
-    const getMap = ()=>new Promise((resolve,reject)=>{
-        if(mapObj !== null) return Promise.all(mapObj)
+    const getMap = async ()=>{
+        if(mapObj !== null) {
+            const result = await Promise.all([mapObj])
+            return result[0]
+        }
 
         mapObj = createMap().then(map=>{
             mapObj = map
-            resolve(map)
+            return map
         })
 
         return mapObj
-    })
+    }
 
     /**
      * 

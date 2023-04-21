@@ -1,10 +1,10 @@
 <template>
-<div>
+<div class="full-hidden">
     <RouterView />
 </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss"></style>
 
 <script setup>
 import { RouterView } from 'vue-router';

@@ -15,8 +15,8 @@
       </div>
     </section>
     <div class="plan-footer">
-      <button v-if="travel.id" class="font-weight-600">수정</button>
-      <button v-if="travel.id" class="font-weight-600">삭제</button>
+      <button v-if="travel.id" class="font-weight-600" @click="putPlan">수정</button>
+      <button v-if="travel.id" class="font-weight-600" @click="delPlan">삭제</button>
       <button v-else class="font-weight-600" @click="postPlan">등록</button>
     </div>
   </div>
@@ -55,6 +55,24 @@ async function postPlan() {
   router.push({
     name: "plan",
     params:{id:data.results.travelId}
+  });
+}
+
+async function putPlan(){
+  const response = await travelStore.putTravel()
+  if(response.code !== 200 ) alert("여행 수정에 실패했습니다.") 
+  
+  router.push({
+    name: "home",
+  });
+}
+
+async function delPlan(){
+  const response = await travelStore.delTravel()
+  if(response.code !== 200 ) alert("여행 삭제에 실패했습니다.") 
+  
+  router.push({
+    name: "home",
   });
 }
 

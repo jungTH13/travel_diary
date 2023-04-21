@@ -79,8 +79,83 @@ th {
   padding: 0;
 }
 
-body {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 0 1.5vh;
+div{
+
+  &.full-hidden{
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+  // box-sizing: border-box;
+  // overflow-x: clip;
+}
+
+div::-webkit-scrollbar {
+  width: 0px; /*스크롤바의 너비*/
+}
+
+div::-webkit-scrollbar-thumb {
+  background-color: gray; /*스크롤바의 색상*/
+}
+
+div::-webkit-scrollbar-track {
+  background-color: rgb(255, 255, 255); /*스크롤바 트랙 색상*/
+}
+
+
+// 화면 사이즈에 따른 크기 설정
+
+//화면 비율이 4대3 이하일 경우
+@media( 133vw < height) or (width <= 600px){
+  @media (max-width: 400px){
+    html{
+      font-size:8px;
+    }
+  }
+  
+  @media (min-width: 400px) and (max-width: 719px){
+    html{
+      font-size:2vw;
+    }
+  }
+  
+  @media (min-width: 720px){
+    html{
+      font-size:14.4px;
+    }
+  }
+}
+
+
+//화면 비율이 4대3을 넘길 경우
+@media( 133vw >= height) and (width > 600px){
+  @media (max-width: 800px){
+    html{
+      font-size:8px;
+    }
+  }
+  
+  @media (min-width: 800px) and (max-width: 1438px){
+    html{
+      font-size:1vw;
+    }
+  }
+  
+  @media (min-width: 1439px){
+    html{
+      font-size:14.4px;
+    }
+  }
+  #app{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .main-sub{
+    display: block;
+    height:100%;
+    width: 100%;
+    display: flex; 
+    flex-direction: column;
+  }
 }
