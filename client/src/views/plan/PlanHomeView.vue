@@ -9,22 +9,32 @@
         </li>
       </ul>
     </nav>
-    <router-view />
+    <div class="contents">
+      <router-view />
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 #plan-page {
-
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   .nav{
-    margin-top:2vh;
-    margin-bottom: 1vh;
+    margin-top:2rem;
+    margin-bottom: 1rem;
+
+  }
+  .contents{
+    flex:1;
+    height: 100%;
+    overflow: hidden;
   }
 
   ul {
     display: flex;
     justify-content: space-between;
-    height: 5vh;
+    height: 3.5rem;
     
     li {
       width: 100%;
@@ -33,10 +43,10 @@
       border-bottom: 2px solid rgba(128, 128, 128, 0.486);
       .item-box{
         text-align: center;
-        padding-top:5%;
+        padding-top:0.5rem;
 
         p{
-          font-size: 2vh;
+          font-size: 1.8rem;
           font-weight: 600;
         }
       }

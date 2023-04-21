@@ -1,7 +1,9 @@
 <template>
-<Search class="search-bar" v-model="searchText" @submit="search" />
-<div style="width:100%; height:93%;">
-    <div id="map" style="width:100%; height:100%;">
+<div class="full-hidden">
+    <div class="search-bar">
+        <Search  v-model="searchText" @submit="search" class="search" />
+    </div>
+    <div id="map" style="width:100%; height:100%; overflow: visible !important;">
     </div>
 </div>
 
@@ -12,20 +14,27 @@
 #map{
     width: 100%;
     height: 100%;
-
 }
 
 .search-bar{
-    position:absolute;
-    border-radius: 5px;
-    left:2.5vh;
-    margin-top:52px;
-    padding:  1px 1px 0px 5px;
-    width:70%;
-    max-width: 400px;
-    box-shadow: 2px 2px 2px 2px rgb(184, 184, 184);
-    z-index: 1000;
-    background-color: rgb(255, 255, 255);
+    position:relative;
+    width:100%;
+
+    .search{
+        position:absolute;
+        z-index: 1000;
+        left:1vw;
+        width:80%;
+        margin:auto;
+        border-radius: 5px;
+        
+        margin-top:1vw;
+        padding:  1px 1px 0px 5px;
+        
+        box-shadow: 2px 2px 2px 2px rgb(184, 184, 184);
+        
+        background-color: rgb(255, 255, 255);
+    }
     // border:2px solid green;
 }
 

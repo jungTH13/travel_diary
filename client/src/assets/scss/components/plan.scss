@@ -2,27 +2,27 @@
     width:100%;
     background-color: $gray;
     border-radius: 10px;
-    min-height:80px;
-    padding:2.5vh;
+    min-height:8rem;
+    padding:1.5rem;
 
     .plan-head{
 
-        border-bottom: 2px solid gray;
+        border-bottom: 0.2rem solid gray;
         padding-bottom: 1vh;
         display: flex;
         flex-direction: row;
-        min-height:3vh;
-        font-size:2.2vh;
+        min-height:3rem;
+        font-size:2rem;
 
         #name{
             width: 100%;
             text-align: left;
             margin:auto;
-            font-size:2vh;
+            font-size:2rem;
             font-weight:900;
             p{
                 // margin-left: 10px;
-                font-size:1.2vh;
+                font-size:1.2rem;
                 // display: inline;
             }
         }
@@ -33,7 +33,7 @@
             margin:auto;
             font-weight:900;
             p{
-                font-size:1.2vh;
+                font-size:1.2rem;
             }
         }
         #progress-ico{
@@ -48,28 +48,28 @@
             margin:auto;
             font-weight:900;
             p{
-                font-size:1.2vh;
+                font-size:1.2rem;
             }
         }
         
     }
 
     .plan-contents{
-        padding-top:15px;
+        padding-top:1.8rem;
 
         table{
             width:100%;
-            margin-bottom: 2vh;
+            margin-bottom: 2rem;
 
             th{
                 width:33%;
-                font-size: 1.7vh;
+                font-size: 1.7rem;
                 text-align: left;
                 font-weight: 600;
-                padding-bottom: 1px;
+                padding-bottom: 0.2rem;
             }
             td{
-                font-size: 1.4vh;
+                font-size: 1.4rem;
             }
         }
     }

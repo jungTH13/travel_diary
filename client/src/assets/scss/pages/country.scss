@@ -1,6 +1,7 @@
 #search-page {
   width: 100%;
-  height: calc(100vh - 70px);
+  height: 100%;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -21,8 +22,8 @@
       outline: none;
     }
     #search-button {
-      width: 34px;
-      height: 34px;
+      width: 4rem;
+      height: 4rem;
       margin-left: 2px;
       background: none;
       border: none;

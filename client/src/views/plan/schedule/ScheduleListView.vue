@@ -16,47 +16,53 @@
 <style lang="scss" scoped>
 
 .schedule-container{
-  padding: 1vh 0vh 1vh 1vh;
+  padding: 1rem 0vh 0vh 0vh;
   display: flex;
   flex-direction: row;
+  height: 100%;
+  overflow: hidden;
   .schedule-day-container{
     max-width:100px;
-    width:10%;
+    width: 5rem;
     height: 100%;
-    margin:5px;
+    overflow-y: auto;
+    overflow-x: clip;
+    padding:1rem;
     text-align: center;
 
     h1{
       cursor: pointer;
-      font-size:2.5vh;
-      margin-bottom: 5vh;
+      font-size:2rem;
+      margin-bottom: 3rem;
     }
 
     .schedule-date{
       cursor: pointer;
-      width: 5vh;
-      height: 5vh;
+      width: 3rem;
+      height: 3rem;
       position:relative;
       padding-top: 0px;
       margin: auto;
-      margin-bottom: 3vh;
-      border: 3px solid rgba(0, 0, 0, 0.404);
+      margin-bottom: 2rem;
+      border: 0.25rem solid rgba(0, 0, 0, 0.404);
       border-radius: 50%;
-      font-size:3vh;
+      font-size:1.8rem;
     }
 
     h1.active{
       color: $orange;
     }
     div.active{
-      border: 3px solid $orange;
+      border: 0.25rem solid $orange;
       color: $orange;
     }
   }
 
   .schdule-contents-container{
-    width:100%;
-    margin:5px;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    margin:0rem;
 
     .contents{
       padding:2%;
@@ -68,11 +74,11 @@
         margin-right:1%;
       }
       h1{
-        font-size:3vh;
+        font-size:2.3rem;
         display: inline;
       }
       p{
-        font-size: 1.5vh;
+        font-size: 1.3rem;
         display: inline;
       }
     }

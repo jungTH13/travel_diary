@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="full-hidden">
     <div id="search-page">
       <form id="search-input-wrapper" @submit.prevent="handleCountrySearch">
         <input class="text-lg" type="text" v-model="searchInput" />
