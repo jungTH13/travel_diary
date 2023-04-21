@@ -1,6 +1,6 @@
 <template>
 <Search class="search-bar" v-model="searchText" @submit="search" />
-<div style="width:100%; height:95%;">
+<div style="width:100%; height:93%;">
     <div id="map" style="width:100%; height:100%;">
     </div>
 </div>
@@ -18,8 +18,8 @@
 .search-bar{
     position:absolute;
     border-radius: 5px;
-    left:200px;
-    margin-top: 10px;
+    left:2.5vh;
+    margin-top:52px;
     padding:  1px 1px 0px 5px;
     width:70%;
     max-width: 400px;

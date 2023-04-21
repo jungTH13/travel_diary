@@ -51,4 +51,13 @@ API.api.interceptors.response.use(
 });
 </script>
 
-<style scoped></style>
+<style lang="scss">
+#app{
+  height:100%;
+  max-width: 720px; 
+  overflow:auto;
+  margin: 0 auto;
+  padding: 0 1.5vh 1.5vh 1.5vh;
+}
+
+</style>
