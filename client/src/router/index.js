@@ -10,12 +10,7 @@ import PlanHomeView from "../views/plan/PlanHomeView.vue";
 import ScheduleListView from "../views/plan/schedule/ScheduleListView.vue";
 import ChecklistView from "../views/plan/checklist/ChecklistView.vue";
 import BookHomeView from "../views/plan/book/BookHomeView.vue";
-import BookListView from "../views/plan/book/BookListView.vue";
-import BookFlightView from "../views/plan/book/BookFlightView.vue";
-import BookHotelView from "../views/plan/book/BookHotelView.vue";
-import BookFoodView from "../views/plan/book/BookFoodView.vue";
-import BookOtherView from "../views/plan/book/BookOtherView.vue";
-import BookTransportView from "../views/plan/book/BookTransportView.vue";
+import BookDetailView from "../views/plan/book/BookDetailView.vue";
 import MapGoogle from "../components/MapGoogle.vue";
 
 const router = createRouter({
@@ -52,6 +47,11 @@ const router = createRouter({
           component: NewTravelView,
         },
         {
+          path:":id/plan/book/:planType/:planId",
+          name:"book-detail",
+          component: BookDetailView,
+        },
+        {
           path: ":id/plan",
           name: "plan",
           component: PlanHomeView,
@@ -65,38 +65,6 @@ const router = createRouter({
               path: "book",
               name: "book",
               component: BookHomeView,
-              children: [
-                {
-                  path: "",
-                  name: "book-all",
-                  component: BookListView,
-                },
-                {
-                  path: "flight",
-                  name: "book-flight",
-                  component: BookFlightView,
-                },
-                {
-                  path: "hotel",
-                  name: "book-hotel",
-                  component: BookHotelView,
-                },
-                {
-                  path: "food",
-                  name: "book-food",
-                  component: BookFoodView,
-                },
-                {
-                  path: "transport",
-                  name: "book-transport",
-                  component: BookTransportView,
-                },
-                {
-                  path: "other",
-                  name: "book-other",
-                  component: BookOtherView,
-                },
-              ],
             },
             {
               path: "budget",

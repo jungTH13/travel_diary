@@ -41,6 +41,12 @@
             text-align: center;
             margin:auto;
             font-weight:900;
+
+            #plane-img {
+                width: 2rem;
+                height: 2rem;
+                margin: 0 1.5vh;
+            }
         }
         #checkoutDate,#arriveLocation{
             width:40%;

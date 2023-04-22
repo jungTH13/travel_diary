@@ -6,7 +6,7 @@
     <div class="schdule-contents-container">
       <div class="contents" v-for="day,index in dayList">
         <h1 class="date">DAY {{ index+1 }} </h1> <p class="description"> {{ DateToStringFormat1(setDate(startDate,index)) }}</p>
-        <div class="plan" v-for="plan,index2 in dailyScheduleList[index]">
+        <div class="plan" v-for="plan,index2 in dailyScheduleList[index]" @click="goDetailPage(plan)" >
           <PlanItem v-if="nowTap['type']==='' || nowTap['type'] === dailyScheduleList[index][index2]['type'] " v-model="dailyScheduleList[index][index2]"/>
         </div>
       </div>
@@ -143,6 +143,17 @@ const setDate = (date,index)=>{
   newDate.setDate(date.getDate()+index)
   
   return newDate
+}
+
+const goDetailPage = (plan)=>{
+  router.push({
+    name:'book-detail',
+    params:{
+      id : travelId.value,
+      planId : plan.id,
+      planType:plan.type
+    }
+  })
 }
 
 onMounted(() => {

@@ -7,7 +7,9 @@
                 {{plan['departLocation']}}
                 <p>{{ toAMPMString(plan['departDate']) }}</p>
             </div>
-            <div id="progress-ico">-></div>
+            <div id="progress-ico">
+                <font-awesome-icon icon="fa-solid fa-van-shuttle" />
+            </div>
             <div id="checkoutDate">
                 <p>도착지</p>
                 {{plan['arriveLocation']}}
@@ -31,12 +33,12 @@
             <table>
                 <thead>
                     <tr>
-                        <th>번호 / 등급</th>
+                        <th>플랫폼</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ 'undefined' }}</td>
+                        <td>{{ plan['boardingGate'] }}</td>
                     </tr>
                 </tbody>
             </table>

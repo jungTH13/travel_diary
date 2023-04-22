@@ -7,7 +7,9 @@
                 {{DateToStringFormat1(new Date(plan['checkinDate']))}}
                 <p>{{ toAMPMString(plan['checkinDate']) }}</p>
             </div>
-            <div id="progress-ico">-></div>
+            <div id="progress-ico">
+                <font-awesome-icon icon="fa-solid fa-bed" />
+            </div>
             <div id="checkoutDate">
                 <p>체크아웃</p>
                 {{DateToStringFormat1(new Date(plan['checkoutDate']))}}

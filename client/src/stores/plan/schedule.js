@@ -14,8 +14,9 @@ export const useScheduleStore = defineStore("schedule", () => {
       //시간 정보 전처리
       data.results.planList.forEach((plan)=>{
         for(const key of Object.keys(plan)){
-            if(key.includes("Date")){
-                plan[key] = plan[key].split('.')[0]
+            if(key.includes("Date") || key.includes("Time") || key.includes("date")){
+              if(!plan[key]) continue  
+              plan[key] = plan[key].split('.')[0]
             }
         }
       })
