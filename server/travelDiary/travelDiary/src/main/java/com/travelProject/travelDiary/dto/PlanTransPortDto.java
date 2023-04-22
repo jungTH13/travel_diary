@@ -31,7 +31,9 @@ public class PlanTransPortDto {
     private String departLocation;
 
     private Date departDate;
+
     private String boardingGate;
+
     private String reservationNumber;
 
     private String line;
@@ -41,4 +43,8 @@ public class PlanTransPortDto {
     private Double x;
 
     private Double y;
+
+    private Double x2;
+
+    private Double y2;
 }

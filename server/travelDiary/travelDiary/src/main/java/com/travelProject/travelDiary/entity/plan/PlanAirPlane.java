@@ -85,6 +85,12 @@ public class PlanAirPlane {
     @Column(name="pa_y")
     private Double y;
 
+    @Column(name="pa_x2")
+    private Double x2;
+
+    @Column(name="pa_y2")
+    private Double y2;
+
     @Column(nullable = false)
     @ColumnDefault("false")
     protected boolean deleted;
@@ -117,6 +123,8 @@ public class PlanAirPlane {
         map.put("reservationNumber", this.reservationNumber);
         map.put("x", this.x);
         map.put("y", this.y);
+        map.put("x2", this.x2);
+        map.put("y2", this.y2);
         return map;
     }
 }

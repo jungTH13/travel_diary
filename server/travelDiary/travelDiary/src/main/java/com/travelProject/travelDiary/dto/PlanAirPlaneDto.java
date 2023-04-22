@@ -36,4 +36,7 @@ public class PlanAirPlaneDto {
     private String reservationNumber;
     private Double x;
     private Double y;
+
+    private Double x2;
+    private Double y2;
 }

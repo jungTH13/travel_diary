@@ -73,10 +73,14 @@ public class PlanHotelController {
         return ResponseBody.builder().code(200).msg("수정 성공 했습니다.").results(result).build();
     }
 
-    @DeleteMapping("/travel/{travelId}/plan/hotel/hotelDelete")
-    public ResponseBody setPlanHotelDelete(HttpServletRequest request, @RequestBody PlanHotelDto planHotelDto, @PathVariable Long travelId) {
+    @DeleteMapping("/travel/{travelId}/plan/hotel/hotelDelete/{planId}")
+    public ResponseBody setPlanHotelDelete(HttpServletRequest request
+            , @RequestBody PlanHotelDto planHotelDto
+            , @PathVariable Long travelId
+            , @PathVariable Long planId) {
         User user = (User) request.getAttribute("user");
 
+        planHotelDto.setId(planId);
         setTravelId(travelId, user, planHotelDto);
         planHotelService.planHotelDelete(planHotelDto);
         return ResponseBody.builder().code(200).msg("삭제 성공 했습니다.").build();

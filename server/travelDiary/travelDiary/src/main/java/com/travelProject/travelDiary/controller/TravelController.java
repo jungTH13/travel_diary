@@ -1,5 +1,7 @@
 package com.travelProject.travelDiary.controller;
 
+import com.travelProject.travelDiary.config.exceptionCode;
+import com.travelProject.travelDiary.dto.ErrorCode;
 import com.travelProject.travelDiary.dto.ResponseBody;
 import com.travelProject.travelDiary.dto.TravelDto;
 import com.travelProject.travelDiary.entity.Travel;
@@ -75,6 +77,7 @@ public class TravelController {
         User user = (User) request.getAttribute("user");
 
         Travel travel = modelMapper.map(travelDto, Travel.class);
+        setTravelId(travel.getId(), user);
         String[] countryArr = travelDto.getCountry();
         travel.setUser(user);
 
@@ -83,12 +86,24 @@ public class TravelController {
         return ResponseBody.builder().code(200).msg("수정 성공 했습니다.").results(result).build();
     }
 
-    @DeleteMapping("/travel/travelDelete")
-    public ResponseBody setTravelDelete(HttpServletRequest request, @RequestBody Travel travel) {
+    @DeleteMapping("/travel/travelDelete/{travelId}")
+    public ResponseBody setTravelDelete(HttpServletRequest request, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
-        travel.setUser(user);
-
+        Travel travel = setTravelId(travelId, user);
+        
         travelService.travelDelete(travel);
         return ResponseBody.builder().code(200).msg("삭제 성공 했습니다.").build();
+    }
+
+    public Travel setTravelId(Long travelId, User user) {
+        Travel resultTravel = travelService.selectPlanTravelOne(user.getId(), travelId);
+        if(resultTravel == null){
+            throw new exceptionCode(ErrorCode.INVALID_TRAVEL_ID_PARAMETER);
+        }
+
+        Travel travel = new Travel();
+        travel.setUser(user);
+        travel.setId(travelId);
+        return travel;
     }
 }
