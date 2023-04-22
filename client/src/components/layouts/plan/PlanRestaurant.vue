@@ -3,6 +3,7 @@
     <div class="plan">
         <div class="plan-head">
             <div id="name">
+                <font-awesome-icon icon="fa-solid fa-utensils" id="restaurant-icon"/>
                 {{ plan['name'] }}
                 <p>{{ toAMPMString(plan['date']) }}</p>
             </div>
@@ -17,7 +18,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ plan['reservationNumber']||'undefined' }}</td>
+                        <td>{{ plan['reservationNumber'] }}</td>
                     </tr>
                 </tbody>
             </table>

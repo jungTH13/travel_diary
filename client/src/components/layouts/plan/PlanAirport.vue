@@ -6,7 +6,9 @@
                 {{plan['departLocation']}}
                 <p>{{ toAMPMString(plan['departDate']) }}</p>
             </div>
-            <div id="progress-ico">-></div>
+            <div id="progress-ico">
+                <font-awesome-icon icon="fa-solid fa-jet-fighter" id="plane-img" />
+            </div>
             <div id="arriveLocation">
                 {{plan['arriveLocation']}}
                 <p>{{ toAMPMString(plan['arriveDate']) }}</p>
@@ -24,7 +26,7 @@
                 <tbody>
                     <tr>
                         <td>{{ plan['flightNumber'] }}</td>
-                        <td>{{ 'undefined' }}</td>
+                        <td>{{ plan['seatNumber'] }}</td>
                         <td>{{ plan['airline'] }}</td>
                     </tr>
                 </tbody>
@@ -40,7 +42,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ 'undefined' }}</td>
+                        <td>{{ toAMPMString(plan['boardingTime']).split('AM ')[1] }}</td>
                         <td>{{ plan['boardingGate'] }}</td>
                         <td>{{ plan['terminal'] }}</td>
                     </tr>
