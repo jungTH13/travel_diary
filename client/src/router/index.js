@@ -10,7 +10,7 @@ import PlanHomeView from "../views/plan/PlanHomeView.vue";
 import ScheduleListView from "../views/plan/schedule/ScheduleListView.vue";
 import ChecklistView from "../views/plan/checklist/ChecklistView.vue";
 import BookHomeView from "../views/plan/book/BookHomeView.vue";
-import BookListView from "../views/plan/book/BookListView.vue";
+import BookAllView from "../views/plan/book/BookAllView.vue";
 import BookFlightView from "../views/plan/book/BookFlightView.vue";
 import BookHotelView from "../views/plan/book/BookHotelView.vue";
 import BookFoodView from "../views/plan/book/BookFoodView.vue";
@@ -65,7 +65,7 @@ const router = createRouter({
             {
               path: "all",
               name: "book-all",
-              component: BookListView,
+              component: BookAllView,
             },
             {
               path: "flight",

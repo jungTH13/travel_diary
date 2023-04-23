@@ -9,7 +9,6 @@
         :class="{ active: item.path === tabMenu ? true : false }"
       >
         {{ item.name }}
-        <!-- <router-link :to="{ path: item.path }">{{ item.name }}</router-link> -->
       </li>
     </ul>
     <router-view></router-view>

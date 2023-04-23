@@ -24,7 +24,7 @@ const defaultFlight = () => ({
   y: null,
 });
 
-export const useFlightStore = defineStore("plan", () => {
+export const useBookFlightStore = defineStore("plan", () => {
   const API = useApi();
 
   const bookFlight = defaultFlight();
@@ -41,8 +41,6 @@ export const useFlightStore = defineStore("plan", () => {
     console.log("data", data);
     bookFlightList.value = data.results.planAirPlaneList;
   };
-
-  // const getPlanCountries = computed(() => planCountries.value);
 
   return { bookFlightList, getBookFlight };
 });

@@ -13,14 +13,14 @@
 import { ref, reactive, onBeforeMount, onMounted, computed, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
-import { useFlightStore } from "../../../stores/plan/book/flight";
+import { useBookFlightStore } from "../../../stores/plan/book/flight";
 
 const router = useRouter();
 const route = useRoute();
 
-const bookStore = useFlightStore();
+const bookFlightStore = useBookFlightStore();
 
-const flightList = computed(() => bookStore.bookFlightList);
+const flightList = computed(() => bookFlightStore.bookFlightList);
 
 watch(
   () => flightList.value,
@@ -34,6 +34,6 @@ watch(
 onMounted(() => {
   console.log(route.params.id);
   const planId = route.params.id;
-  bookStore.getBookFlight(planId);
+  bookFlightStore.getBookFlight(planId);
 });
 </script>
