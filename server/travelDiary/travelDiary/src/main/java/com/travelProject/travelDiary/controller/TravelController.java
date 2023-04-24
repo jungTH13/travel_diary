@@ -6,6 +6,7 @@ import com.travelProject.travelDiary.dto.ResponseBody;
 import com.travelProject.travelDiary.dto.TravelDto;
 import com.travelProject.travelDiary.entity.Travel;
 import com.travelProject.travelDiary.entity.User;
+import com.travelProject.travelDiary.service.PlanService;
 import com.travelProject.travelDiary.service.TravelCountryService;
 import com.travelProject.travelDiary.service.TravelService;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +30,9 @@ public class TravelController {
     private TravelCountryService travelCountryService;
 
     @Autowired
+    private PlanService planService;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     @PostMapping ("/travel/userTravelOne")
@@ -37,8 +42,19 @@ public class TravelController {
         Map<String, Object> result = new HashMap<>();
         Travel travelOne = travelService.selectPlanTravelOne(user.getId(), travelDto.getId());
         String[] travelCountryList = travelCountryService.travelCountrySelect(travelDto.getId());
+        List<Map<String,Object>> planList = planService.getUserPlan(user.getId(), travelDto.getId());
+
+        Date minDate = null;
+        Date maxDate = null;
+
+        if(planList.size() > 0) {
+            minDate = (Date) planList.get(0).getOrDefault("orderDate", "");
+            maxDate = (Date) planList.get(planList.size() - 1).getOrDefault("orderDate", "");
+        }
 
         result.put("travelOne", travelOne);
+        result.put("minDate", minDate == null ? "" : minDate);
+        result.put("maxDate", maxDate == null ? "" : maxDate);
         result.put("travelCountryList", travelCountryList);
 
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
