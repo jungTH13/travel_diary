@@ -25,13 +25,16 @@
                             <div>
                                 <font-awesome-icon icon="fa-solid fa-car-side" class="icon" />
                                 <input type="text" placeholder="출발지" v-model="book.departLocation">
-                                <font-awesome-icon :icon="['fas', 'location-crosshairs']" class="icon" />
+                                <MapLocationIcon :search-text="book.departLocation" v-model="departMapResult" :width="iconWidth" :height="iconheight" />
+                                
                             </div>
                         </td>
                         <td>
                             <div>
                                 <font-awesome-icon icon="fa-solid fa-calendar-check" class="icon" />
-                                <input type="text" placeholder="시간" v-model="book.departDate">
+                                <div class="date-picker">
+                                    <DateTime v-model="book.departDate" placeholder="시간 입력하기" />
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -43,13 +46,15 @@
                             <div>
                                 <font-awesome-icon icon="fa-solid fa-car" class="icon" />
                                 <input type="text" placeholder="도착지" v-model="book.arriveLocation">
-                                <font-awesome-icon :icon="['fas', 'location-crosshairs']" class="icon" />
+                                <MapLocationIcon :search-text="book.arriveLocation" v-model="arriveMapResult" :width="iconWidth" :height="iconheight" />
                             </div>
                         </td>
                         <td>
                             <div>
                                 <font-awesome-icon icon="fa-solid fa-calendar-check" class="icon" />
-                                <input type="text" placeholder="시간" v-model="book.arriveDate">
+                                <div class="date-picker">
+                                    <DateTime v-model="book.arriveDate" placeholder="시간 입력하기" />
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -99,13 +104,45 @@
 
 <script setup>
 
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { toAMPMString } from "../../../composable/util";
 import { useBookStore } from "../../../stores/plan/book";
+import DateTime from "../DateTime.vue";
+import MapLocationIcon from "../MapLocationIcon.vue";
 
 const bookStore = useBookStore()
 
 const book = computed(()=>bookStore.book)
+const departMapResult = ref({})
+const arriveMapResult =ref({})
+const iconWidth = '1.8rem'
+const iconheight = '1.8rem'
 
+const init = ()=>{
+    if(book.value.x && book.value.y){
+        departMapResult.value.geometry = [book.value.x, book.value.y]
+    }
+    if(book.value.x2 && book.value.y2){
+        arriveMapResult.value.geometry = [book.value.x2, book.value.y2]
+    }
+}
+
+watch(()=>arriveMapResult.value,()=>{
+    book.value.arriveLocation = arriveMapResult.value.name
+    book.value.x = arriveMapResult.value.geometry[0]
+    book.value.y = arriveMapResult.value.geometry[1]
+})
+
+watch(()=>departMapResult.value,()=>{
+    book.value.departLocation = departMapResult.value.name
+    book.value.x2 = departMapResult.value.geometry[0]
+    book.value.y2 = departMapResult.value.geometry[1]
+})
+
+watch(()=>book.value,()=>init())
+
+onMounted(()=>{
+    init()
+})
 </script>
             

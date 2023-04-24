@@ -37,6 +37,13 @@
                    
                 }
 
+                .date-picker{
+                    width:100%;
+                    border:0px;
+                    border-bottom: 0.2rem solid $gray;
+                    float: left;
+                }
+
                 input{
                     width: 100%;
                     border:0px;
@@ -51,7 +58,7 @@
                 }
 
                 .icon{
-                    margin:auto;
+                    
                     width: 1.8rem;
                     height: 1.8rem;
                     
@@ -62,7 +69,33 @@
             }
         }
     }
+    // .date-picker{
+    //     width: 200px;
+    //     height:200px;
+    //     overflow: hidden;
+    //     position: absolute;
+    //     .dp__main{
+    //         height:100%;
+    //         width: 100%;
+    //         overflow: hidden;
+    //         div{
+    //             height: 10px !important;
+    //             width: 10px !important;
+    //         }
+            
+
+    //         // visibility: hidden;
+    //         // position: absolute;
+    //         .dp__input_icon {
+    //             display: none !important;
+    //         }
+            
+    //     }
+    // }
+    
 }
+
+
 
 .etc{
     background-color: rgb(253, 224, 204);

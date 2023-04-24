@@ -1,0 +1,63 @@
+.dp__outer_menu_wrap{
+    width: 100%;
+    height: 100%;
+    font-size:1.8rem;
+    overflow: hidden;
+
+    .dp__menu{
+        width: 100% !important;
+        height: auto !important;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+
+        div{
+            height:auto;
+            width: 100%;
+        }
+
+        div{
+            //빈 클래스의 div객체로 묶여있음
+            .dp__instance_calendar{
+                height: 100% !important;
+                font-size:1.8rem !important;
+
+                .dp__button{
+                    .dp__icon{
+                        width: 2rem;
+                        height: 2rem;
+                    }
+                }
+            }
+        }
+        
+
+        //선택 date 정보 표시 부
+        .dp__action_row{
+            
+            .dp__selection_preview{
+                font-size:1.5rem !important;
+            }
+            .dp__action_buttons{
+                font-size:2rem !important;
+            }
+        }
+
+        .dp__overlay{
+            height:80%;
+
+            .dp__overlay_container{
+                height:100% !important;
+            }
+            .dp__button{
+                background-color: rgb(204, 204, 204);
+                border-bottom: 1px solid black;
+            }
+        }
+    }
+
+    .dp__icon{
+        height: 2rem;
+        width: 2rem;
+    }
+}

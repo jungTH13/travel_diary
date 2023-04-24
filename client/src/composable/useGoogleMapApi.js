@@ -90,6 +90,13 @@ export const useGoogleMapApi = ()=>{
     const getMap = async ()=>{
         if(mapObj !== null) {
             const result = await Promise.all([mapObj])
+            
+            //생성한 map이 있는경우 해닫 객체의 element를 reinstall
+            const element = document.getElementById('map')
+            const parentElement = element.parentElement
+            parentElement.removeChild(element)
+            parentElement.appendChild(mapObj.getDiv())
+
             return result[0]
         }
 

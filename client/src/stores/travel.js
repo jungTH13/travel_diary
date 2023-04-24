@@ -92,9 +92,8 @@ export const useTravelStore = defineStore("travel", () => {
   }
 
   async function delTravel(){
-    const form = {id: travel.value.id};
 
-    const { data } = await API.delete("/travel/travelDelete", form);
+    const { data } = await API.delete(`/travel/travelDelete/${travel.value.id}`);
 
     return data;
   }

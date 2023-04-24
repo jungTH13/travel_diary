@@ -8,8 +8,8 @@
     </div>
   </div>
 
-  <div class="main-sub">
-    <MapGoogle />
+  <div class="main-sub" id="main-sub">
+    <MapGoogle v-if="mainSubVisible" />
   </div>
 </template>
 
@@ -18,9 +18,12 @@ import { RouterLink, RouterView, useRouter } from "vue-router";
 import TheHeader from "../src/components/TheHeader.vue";
 import * as API from "./composable/api";
 import MapGoogle from "./components/MapGoogle.vue";
+import { computed, onMounted, ref } from "vue";
+import { useCommonStore } from "./stores/common";
 
 
 const router = useRouter();
+const commonStore = useCommonStore()
 
 // # 인터셉터 설정 # //
 let reqeustNumber = 0;
@@ -58,6 +61,15 @@ API.api.interceptors.response.use(
     // 오류 응답을 처리
     return Promise.reject(error);
 });
+
+const mainSubVisible= computed(()=>commonStore.mainSubVisible)
+
+
+onMounted(()=>{
+  commonStore.initMainSubLisner()
+})
+
+
 </script>
 
 <style lang="scss">

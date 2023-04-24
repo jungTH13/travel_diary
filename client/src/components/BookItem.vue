@@ -19,7 +19,7 @@
 
 <script setup>
 
-import { computed, ref, watch } from "vue";
+import { computed, onUnmounted, ref, watch } from "vue";
 import { toAMPMString } from "../composable/util";
 import { useBookStore } from "../stores/plan/book";
 import BookAirport from "./layouts/book/BookAirport.vue";
@@ -34,6 +34,10 @@ const bookStore = useBookStore()
 
 const book = computed(()=>bookStore.book)
 const planType = computed(()=>route.params.planType)
+
+onUnmounted(()=>{
+    bookStore.resetBook()
+})
 
 </script>
           

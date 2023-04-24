@@ -41,14 +41,14 @@
 
 .submit-button {
   width: 100%;
-  height: 5rem;
+  padding: 1rem 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   border-radius: 10px;
   font-weight: bold;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
 
   background-color: $green;
   color: #fff;

@@ -24,7 +24,7 @@
                         <td>
                             <div>
                                 <font-awesome-icon icon="fa-solid fa-hotel" class="icon"/>
-                                <input type="text" placeholder="호텔 이름" v-model="book.name">
+                                <input type="text" placeholder="음식점 이름" v-model="book.name">
                             </div>
                         </td>
                     </tr>
@@ -35,7 +35,7 @@
                             <div>
                                 <font-awesome-icon icon="fa-solid fa-location-dot" class="icon"/>
                                 <input type="text" placeholder="주소" v-model="book.address">
-                                <font-awesome-icon :icon="['fas', 'location-crosshairs']" class="icon" />
+                                <MapLocationIcon :search-text="book.address" v-model="mapResult" :width="iconWidth" :height="iconheight" />
                             </div>
                         </td>
                     </tr>
@@ -49,7 +49,9 @@
                         <td>
                             <div>
                                 <font-awesome-icon icon="fa-solid fa-calendar-check" class="icon" />
-                                <input type="text" placeholder="예약 날짜" v-model="book.date">
+                                <div class="date-picker">
+                                    <DateTime v-model="book.date" />
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -91,13 +93,37 @@
 
 <script setup>
 
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { toAMPMString } from "../../../composable/util";
 import { useBookStore } from "../../../stores/plan/book";
+import DateTime from "../DateTime.vue";
+import MapLocationIcon from "../MapLocationIcon.vue";
 
 const bookStore = useBookStore()
 
 const book = computed(()=>bookStore.book)
+const mapResult = ref({})
+const iconWidth = '1.8rem'
+const iconheight = '1.8rem'
+
+const init = ()=>{
+    if(book.value.x && book.value.y){
+        mapResult.value.geometry = [book.value.x, book.value.y]
+    }
+}
+
+watch(()=>mapResult.value,()=>{
+    book.value.name = mapResult.value.name
+    book.value.address = mapResult.value.address.join(' ')
+    book.value.x = mapResult.value.geometry[0]
+    book.value.y = mapResult.value.geometry[1]
+})
+
+watch(()=>book.value,()=>init())
+
+onMounted(()=>{
+    init()
+})
 
 </script>
             

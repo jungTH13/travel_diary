@@ -5,3 +5,19 @@
 .font-weight-600 {
   font-weight:600;
 }
+
+.full-hidden{
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.col{
+  display:flex;
+  flex-direction: column;
+}
+
+.row{
+  display: flex;
+  flex-direction: row;
+}

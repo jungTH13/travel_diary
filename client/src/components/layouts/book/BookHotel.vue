@@ -35,7 +35,8 @@
                             <div>
                                 <font-awesome-icon icon="fa-solid fa-location-dot" class="icon"/>
                                 <input type="text" placeholder="주소" v-model="book.address">
-                                <font-awesome-icon :icon="['fas', 'location-crosshairs']" class="icon" />
+                                <MapLocationIcon :search-text="searchText" v-model="mapResult" :width="iconWidth" :height="iconheight" />
+                                
                             </div>
                         </td>
                     </tr>
@@ -46,16 +47,20 @@
             <table>
                 <tbody>
                     <tr>
-                        <td>
+                        <td class="width:50%">
                             <div>
                                 <font-awesome-icon icon="fa-solid fa-calendar-check" class="icon" />
-                                <input type="text" placeholder="체크인" v-model="book.departDate">
+                                <div class="date-picker">
+                                    <DateTime v-model="book.checkinDate" placeholder="체크인" />
+                                </div>
                             </div>
                         </td>
-                        <td>
+                        <td class="width:50%">
                             <div>
                                 <font-awesome-icon icon="fa-solid fa-calendar-check" class="icon" />
-                                <input type="text" placeholder="체크아웃" v-model="book.departDate">
+                                <div class="date-picker">
+                                    <DateTime v-model="book.checkoutDate" placeholder="체크아웃" />
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -97,13 +102,38 @@
 
 <script setup>
 
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { toAMPMString } from "../../../composable/util";
 import { useBookStore } from "../../../stores/plan/book";
+import DateTime from "../DateTime.vue";
+import MapLocationIcon from "../MapLocationIcon.vue";
 
 const bookStore = useBookStore()
 
 const book = computed(()=>bookStore.book)
+const searchText = computed(()=> `${book.value.address?book.value.address:''} ${book.value.name?book.value.name:''}`)
+const mapResult = ref({})
+const iconWidth = '1.8rem'
+const iconheight = '1.8rem'
+
+const init = ()=>{
+    if(book.value.x && book.value.y){
+        mapResult.value.geometry = [book.value.x, book.value.y]
+    }
+}
+
+watch(()=>mapResult.value,()=>{
+    book.value.name = mapResult.value.name
+    book.value.address = mapResult.value.address.join(' ')
+    book.value.x = mapResult.value.geometry[0]
+    book.value.y = mapResult.value.geometry[1]
+})
+
+watch(()=>book.value,()=>init())
+
+onMounted(()=>{
+    init()
+})
 
 </script>
             

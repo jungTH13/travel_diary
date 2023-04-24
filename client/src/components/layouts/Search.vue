@@ -41,12 +41,12 @@ const handleSearch = ()=>{
 
 
 watch(()=>props.modelValue,()=>{
-    if(searchInput.value == props.modelValue) return;
+    if(searchInput.value === props.modelValue) return;
     searchInput.value = props.modelValue
 })
 
 watch(()=>searchInput.value,()=>{
-    if(searchInput.value == props.modelValue) return;
+    if(searchInput.value === props.modelValue) return;
     emit("update:modelValue",searchInput.value)
 })
 

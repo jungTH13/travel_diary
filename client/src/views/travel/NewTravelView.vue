@@ -1,17 +1,22 @@
 <template>
-  <div class="plan-container">
-    <section>
+  <div class="plan-container full-hidden">
+    <section class="full-hidden col">
       <SelectedCountries v-model="travel.countryList" />
-      <div class="plan-title">
+      <div class="plan-title row">
+        <font-awesome-icon icon="fa-solid fa-book" class="icon" />
         <input
           type="text"
           v-model="travel.title"
         />
       </div>
-      <div class="plan-date">
-        <a-space direction="vertical" :size="12">
-          <a-range-picker v-model:value="planDate" />
-        </a-space>
+      <div class="plan-date full-hidden col">
+        <div class="plan-date-range">
+          <font-awesome-icon icon="fa-solid fa-calendar-check" class="icon" />
+          <span >{{ planDate[0] }} ~ {{ planDate[1] }}</span>
+        </div>
+        <div class="plan-date-picker">
+          <VueDatePicker v-model="planDate" model-type="yyyy-MM-dd" range inline class="datePicker" />
+        </div>
       </div>
     </section>
     <div class="plan-footer">
@@ -22,7 +27,8 @@
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" >
+</style>
 
 <script setup>
 import { ref, onMounted, computed, watch } from "vue";
@@ -36,17 +42,23 @@ const travelStore = useTravelStore();
 
 //콘텐츠
 const travel = computed(()=>travelStore.travel)
-const planDate = ref([]);
+const planDate = ref([travel.value.startDate.split('T')[0],travel.value.endDate.split('T')[0]]);
 
 
 watch(()=>planDate.value,()=>{
-  travel.value.startDate = toKoreaTimeString(planDate.value[0].$d).split('T')[0];
-  travel.value.endDate = toKoreaTimeString(planDate.value[1].$d).split('T')[0];
+  travel.value.startDate = planDate.value[0];
+  travel.value.endDate = planDate.value[1];
 })
 
+watch(()=>travel.value.countryList,()=>{
+  if (travel.value.countryList.length <= 0) {
+    alert("나라를 선택해주세요");
+    return router.push({name:"new-country"});
+  }
+})
 
 async function postPlan() {
-  if (planDate.value.length <= 0) {
+  if (planDate.value[0]==='' || planDate.value[1]==='') {
     return alert("날짜를 선택해주세요");
   }
 
@@ -83,7 +95,7 @@ onMounted(() => {
     return router.push({name:"new-country"});
   }
 
-  travel.value.title = travel.value.countryList.map(country=>country.name).join(',');
+  if(!travel.value.title || travel.value.title === '')travel.value.title = travel.value.countryList.map(country=>country.name).join(',');
 
 });
 </script>
