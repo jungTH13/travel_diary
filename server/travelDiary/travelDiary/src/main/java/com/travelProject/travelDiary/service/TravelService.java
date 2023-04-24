@@ -97,6 +97,7 @@ public class TravelService {
             throw new exceptionCode(ErrorCode.DIFFERENT_USER_PARAMETER);
         }
 
+        travelCountryService.travelCountryDelete(travel.getId());
         travelRepository.delete(travel);
     }
 }
