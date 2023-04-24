@@ -55,6 +55,9 @@ public class PlanEtc {
     @Column(name = "pe_address")
     private String address;
 
+    @Column(name = "pe_c_id")
+    private String cId;
+
     @Column(name="pe_x")
     private Double x;
 
@@ -84,6 +87,7 @@ public class PlanEtc {
         map.put("reservationNumber", this.reservationNumber);
         map.put("name", this.name);
         map.put("address", this.address);
+        map.put("cId", this.cId);
         map.put("x", this.x);
         map.put("y", this.y);
         return map;

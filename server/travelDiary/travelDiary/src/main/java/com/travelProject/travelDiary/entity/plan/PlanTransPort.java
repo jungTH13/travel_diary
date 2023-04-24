@@ -67,6 +67,9 @@ public class PlanTransPort {
     @Column(name = "pt_seat_number")
     private String seatNumber;
 
+    @Column(name = "pt_c_id")
+    private String cId;
+
     @Column(name="pt_x")
     private Double x;
 
@@ -106,6 +109,7 @@ public class PlanTransPort {
         map.put("reservationNumber", this.reservationNumber);
         map.put("line", this.line);
         map.put("seatNumber", this.seatNumber);
+        map.put("cId", this.cId);
         map.put("x", this.x);
         map.put("y", this.y);
         map.put("x2", this.x2);

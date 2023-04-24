@@ -58,6 +58,9 @@ public class PlanRestaurant {
     @Column(name = "pr_phone")
     private String phone;
 
+    @Column(name = "pr_c_id")
+    private String cId;
+
     @Column(name="pr_x")
     private Double x;
 
@@ -88,6 +91,7 @@ public class PlanRestaurant {
         map.put("address", this.address);
         map.put("reservationNumber", this.reservationNumber);
         map.put("phone", this.phone);
+        map.put("cId", this.cId);
         map.put("x", this.x);
         map.put("y", this.y);
         return map;

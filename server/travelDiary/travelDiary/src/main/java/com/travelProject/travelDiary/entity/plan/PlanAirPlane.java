@@ -79,6 +79,9 @@ public class PlanAirPlane {
     @Column(name="pa_reservation_number")
     private String reservationNumber;
 
+    @Column(name = "pa_c_id")
+    private String cId;
+
     @Column(name="pa_x")
     private Double x;
 
@@ -121,6 +124,7 @@ public class PlanAirPlane {
         map.put("boardingTime", this.boardingTime);
         map.put("terminal", this.terminal);
         map.put("reservationNumber", this.reservationNumber);
+        map.put("cId", this.cId);
         map.put("x", this.x);
         map.put("y", this.y);
         map.put("x2", this.x2);
