@@ -5,6 +5,7 @@ import com.travelProject.travelDiary.dto.ErrorCode;
 import com.travelProject.travelDiary.entity.plan.*;
 import com.travelProject.travelDiary.repository.plan.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
