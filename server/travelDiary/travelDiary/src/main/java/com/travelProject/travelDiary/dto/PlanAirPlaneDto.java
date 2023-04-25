@@ -18,25 +18,45 @@ import java.util.Date;
 public class PlanAirPlaneDto {
 
     private Long id;
+
     private Travel travel;
+
     private User user;
+
     private String title;
+
     private String memo;
+
     private String departLocation;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date departDate;
+
     private String arriveLocation;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date arriveDate;
+
     private String flightNumber;
+
     private String seatNumber;
+
     private String airline;
+
     private String boardingGate;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private Date boardingTime;
+
     private String terminal;
+
     private String reservationNumber;
+
     private Double x;
+
     private Double y;
 
     private Double x2;
+
     private Double y2;
 }
