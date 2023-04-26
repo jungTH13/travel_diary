@@ -27,6 +27,9 @@ export const useTravelStore = defineStore("travel", () => {
   async function getTravelList() {
     const { data } = await API.get("/travel/userTravelList");
 
+    for(const plan of data.results.planTravel) convertTimeFormat(plan)
+    for(const plan of data.results.endTravel) convertTimeFormat(plan)
+
     travelList.plan = data.results.planTravel;
     travelList.end = data.results.endTravel;
 
