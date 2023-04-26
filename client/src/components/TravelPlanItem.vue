@@ -6,7 +6,7 @@
       <div id="item-detail">
         <p id="item-title">{{ planItem.title }}</p>
         <p id="item-date" class="text-sm">
-          {{ planItem.fromDate }} - {{ planItem.endDate }}
+          {{ planItem.fromDate.split('T')[0] }} - {{ planItem.endDate.split('T')[0] }}
         </p>
       </div>
     </div>

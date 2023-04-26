@@ -1,154 +1,154 @@
 <template>
   <div id="budget-container" class="full-hidden">
-
-    <v-container id="category" class="pa-0">
-      <v-slide-group id="category-list" show-arrows>
-        <div v-for="(cate, index) in categories" :key="index">
-          <input
-            type="radio"
-            :id="cate"
-            name="category"
-            :value="cate"
-            v-model="budget.categoryType"
-          />
-          <label :for="cate">{{ cate }}</label>
-        </div>
-      </v-slide-group>
-    </v-container>
-
-    <div id="budget-title">
-      <div>
-        <font-awesome-icon icon="fa-solid fa-tag" class="icon"/>
-      </div>
-      <input
-        type="text"
-        placeholder="내용을 입력하세요"
-        v-model="budget.title"
-      />
-    </div>
-
-    <div id="plan-dates">
-
-      <div id="date-title">
-        <div>
-          <font-awesome-icon icon="fa-regular fa-calendar-check" class="icon" />
-        </div>
-        <h3>날짜 선택</h3>
-      </div>
-
-      <div id="plan-budget-date-picker">
-        <DateTime v-model="budget.paymentDate" placeholder="날짜를 선택해주세요" />
-      </div>
-
-      <v-container id="select-date" class="pa-0">
-        <v-slide-group show-arrows>
-          
-          <div class="item">
+    <div id="budget-contents-container" class="full-hidden col">
+      <v-container id="category" class="pa-0">
+        <v-slide-group id="category-list" show-arrows>
+          <div v-for="(cate, index) in categories" :key="index">
             <input
               type="radio"
-              id="pre"
-              name="dates"
-              :value="preparationDateTime"
-              v-model="budget.paymentDate"
+              :id="cate"
+              name="category"
+              :value="cate"
+              v-model="budget.categoryType"
             />
-            <label for="pre">여행 준비</label>
+            <label :for="cate">{{ cate }}</label>
           </div>
-
-          <div class="item">
-            <input
-              type="radio"
-              id="now"
-              name="dates"
-              :value="nowDateTime"
-              v-model="budget.paymentDate"
-            />
-            <label for="now"> 현재 </label>
-          </div>
-
         </v-slide-group>
       </v-container>
+
+      <div id="budget-title">
+        <div>
+          <font-awesome-icon icon="fa-solid fa-tag" class="icon"/>
+        </div>
+        <input
+          type="text"
+          placeholder="내용을 입력하세요"
+          v-model="budget.title"
+        />
+      </div>
+
+      <div id="plan-dates">
+
+        <div id="date-title">
+          <div>
+            <font-awesome-icon icon="fa-regular fa-calendar-check" class="icon" />
+          </div>
+          <h3>날짜 선택</h3>
+        </div>
+
+        <div id="plan-budget-date-picker">
+          <DateTime v-model="budget.paymentDate" placeholder="날짜를 선택해주세요" />
+        </div>
+
+        <v-container id="select-date" class="pa-0">
+          <v-slide-group show-arrows>
+            
+            <div class="item">
+              <input
+                type="radio"
+                id="pre"
+                name="dates"
+                :value="preparationDateTime"
+                v-model="budget.paymentDate"
+              />
+              <label for="pre">여행 준비</label>
+            </div>
+
+            <div class="item">
+              <input
+                type="radio"
+                id="now"
+                name="dates"
+                :value="nowDateTime"
+                v-model="budget.paymentDate"
+              />
+              <label for="now"> 현재 </label>
+            </div>
+
+          </v-slide-group>
+        </v-container>
+      </div>
+
+      <div id="payment-method">
+        <div id="title">
+          <div>
+            <font-awesome-icon icon="fa-solid fa-wallet" style="color: #000000" class="icon" />
+          </div>
+          <h3>결제 수단</h3>
+        </div>
+        <div id="select-date">
+          <div>
+            <input
+              type="radio"
+              id="card"
+              name="payment"
+              value="card"
+              v-model="budget.paymentType"
+            />
+            <label for="card">카드</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="cash"
+              name="payment"
+              value="cash"
+              v-model="budget.paymentType"
+            />
+            <label for="cash">현금</label>
+          </div>
+        </div>
+      </div>
+
+      <div id="amount">
+        <div>
+          <font-awesome-icon icon="fa-solid fa-won-sign" class="icon" />
+          <h3>결제 금액</h3>
+        </div>
+        <input
+          type="text"
+          placeholder="금액 입력"
+          v-model="budget.amountOfPayment"
+        />
+
+        <div id="amount-type">
+          <div>
+            <input
+              type="radio"
+              id="amount-type-minus"
+              name="payment-type-value"
+              value="-"
+              v-model="paymentTypeValue"
+            />
+            <label for="amount-type-minus">지출</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="amount-type-plus"
+              name="payment-type-value"
+              value=""
+              v-model="paymentTypeValue"
+            />
+            <label for="amount-type-plus">수입</label>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="plan-select">
+        <div>
+          <font-awesome-icon icon="fa-solid fa-hand-pointer" class="icon" />
+          <h3>일정과 연결하기</h3>
+        </div>
+
+        <select id="plan-select-box" v-model="selectPlan" >
+          <option :value="{}">연결하고 싶은 일정과 선택하세요</option>
+          <option v-for="plan of scheduleList" :value="plan">{{ plan.title }} | {{ plan.name }}</option>
+        </select>
+      </div>
     </div>
-
-    <div id="payment-method">
-      <div id="title">
-        <div>
-          <font-awesome-icon icon="fa-solid fa-wallet" style="color: #000000" class="icon" />
-        </div>
-        <h3>결제 수단</h3>
-      </div>
-      <div id="select-date">
-        <div>
-          <input
-            type="radio"
-            id="card"
-            name="payment"
-            value="card"
-            v-model="budget.paymentType"
-          />
-          <label for="card">카드</label>
-        </div>
-        <div>
-          <input
-            type="radio"
-            id="cash"
-            name="payment"
-            value="cash"
-            v-model="budget.paymentType"
-          />
-          <label for="cash">현금</label>
-        </div>
-      </div>
-    </div>
-
-    <div id="amount">
-      <div>
-        <font-awesome-icon icon="fa-solid fa-won-sign" class="icon" />
-        <h3>결제 금액</h3>
-      </div>
-      <input
-        type="text"
-        placeholder="금액 입력"
-        v-model="budget.amountOfPayment"
-      />
-
-      <div id="amount-type">
-        <div>
-          <input
-            type="radio"
-            id="amount-type-minus"
-            name="payment-type-value"
-            value="-"
-            v-model="paymentTypeValue"
-          />
-          <label for="amount-type-minus">지출</label>
-        </div>
-        <div>
-          <input
-            type="radio"
-            id="amount-type-plus"
-            name="payment-type-value"
-            value=""
-            v-model="paymentTypeValue"
-          />
-          <label for="amount-type-plus">수입</label>
-        </div>
-      </div>
-
-    </div>
-
-    <div id="plan-select">
-      <div>
-        <font-awesome-icon icon="fa-solid fa-hand-pointer" class="icon" />
-        <h3>일정과 연결하기</h3>
-      </div>
-
-      <select id="plan-select-box" v-model="selectPlan" >
-        <option :value="{}">연결하고 싶은 일정과 선택하세요</option>
-        <option v-for="plan of scheduleList" :value="plan">{{ plan.title }} | {{ plan.name }}</option>
-      </select>
-    </div>
-
-    <div class="space"></div>
+    
     <div class="summit-footer">
         <button v-if="budget.id" class="font-weight-600" @click="putBudget">수정</button>
         <button v-if="budget.id" class="font-weight-600" @click="delBudget">삭제</button>
@@ -168,6 +168,11 @@
   padding-top: 3rem;
   display: flex;
   flex-direction: column;
+
+  #budget-contents-container{
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 
   #budget-title {
     display: flex;
@@ -328,9 +333,6 @@
     height:100%;
   }
 
-  button {
-    margin-top: 40px;
-  }
 }
 </style>
 
