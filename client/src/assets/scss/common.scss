@@ -109,11 +109,11 @@ div::-webkit-scrollbar-track {
 
 //화면 비율이 4대3 이하일 경우
 @media( min-height: 128vw){
-  @media (max-width: 600px){
+  // @media (max-width: 600px){
 
     @media (max-width: 400px){
       html{
-        font-size:10px !important;
+        font-size:8px !important;
       }
     }
     
@@ -128,7 +128,7 @@ div::-webkit-scrollbar-track {
         font-size:14.4px !important;
       }
     }
-  }
+  // }
 }
 
 @media (max-height: 128vw){
