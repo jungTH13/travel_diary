@@ -82,6 +82,9 @@ public class PlanAirPlane {
     @Column(name = "pa_c_id")
     private String cId;
 
+    @Column(name = "pa_c_id2")
+    private String cId2;
+
     @Column(name="pa_x")
     private Double x;
 

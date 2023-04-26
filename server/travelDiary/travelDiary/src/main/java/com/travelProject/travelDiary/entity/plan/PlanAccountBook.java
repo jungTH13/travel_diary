@@ -26,7 +26,7 @@ import java.util.Date;
 @Table(name="tbl_plan_account_book")
 public class PlanAccountBook {
     @Id
-    @Column(name = "pat_id")
+    @Column(name = "pab_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -40,28 +40,28 @@ public class PlanAccountBook {
     @JsonIgnore
     private User user;
 
-    @Column(name = "pat_title")
+    @Column(name = "pab_title")
     private String title;
 
-    @Column(name = "pat_memo")
+    @Column(name = "pab_memo")
     private String memo;
 
-    @Column(name = "pat_payment_date")
+    @Column(name = "pab_payment_date")
     private Date paymentDate;
 
-    @Column(name = "pat_payment_type")
+    @Column(name = "pab_payment_type")
     private String paymentType;
 
-    @Column(name="pat_amount_of_payment", precision = 20, scale = 5)
+    @Column(name="pab_amount_of_payment", precision = 20, scale = 5)
     private BigDecimal amountOfPayment;
 
-    @Column(name = "pat_plan_type")
+    @Column(name = "pab_plan_type")
     private String planType;
 
-    @Column(name="pat_plan_type_id")
+    @Column(name="pab_plan_type_id")
     private Long planTypeId;
 
-    @Column(name = "pat_category_type")
+    @Column(name = "pab_category_type")
     private String categoryType;
 
     @Column(nullable = false)
