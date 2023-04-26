@@ -1,5 +1,6 @@
 <template>
   <div class="full-hidden col">
+
     <div class="payment-state-container">
       <div class="payment-state-box">
         <span>잔액 </span>
@@ -49,7 +50,7 @@
     background-color: $gray;
 
     span{
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: 600;
       
       &.minus{

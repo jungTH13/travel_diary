@@ -69,11 +69,30 @@ export const useScheduleStore = defineStore("schedule", () => {
     searchscheduleList.value = []
   }
 
+  function _createForm (plan){
+    const form = {};
+
+    form['memo'] = plan['memo']
+    form['planType'] = plan['type']
+    form['planId'] = plan['id']
+    
+    return form
+  }
+
+  async function putPlanMemoOnly (travelId,plan){
+    const form = _createForm(plan)
+
+    const { data } = await API.put(`/travel/${travelId}/plan/memoUpdate`, form);
+    
+    return data
+  }
+
   return {
     scheduleList,
     searchscheduleList,
     dailyScheduleList,
     getscheduleList,
     resetScheduleList,
+    putPlanMemoOnly
   };
 });

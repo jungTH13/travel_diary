@@ -10,9 +10,20 @@
                 <div class="plan-contents">
                     <p class="time">{{ toAMPMString(getFirstDateString(plan)) }}</p>
                     <p class="description">{{ getDescription(plan,'first') }} </p>
-                    <div class="plan-memo">
-                        <p class="title">{{ plan['title'] }}</p>
-                        <p class="memo"> {{ plan['memo'] }}</p>
+                    <div class="plan-memo col">
+                        <div class="title">{{ plan['title'] }}</div>
+                        <div v-if="!memoState[`${plan['type']}-${plan['id']}`]">
+                            <div class="memo"> {{ plan['memo'] }}</div>
+                            <div class="modify-box">
+                                <font-awesome-icon icon="fa-solid fa-pen-to-square" class="icon" @click="memoState[`${plan['type']}-${plan['id']}`]=!memoState[`${plan['type']}-${plan['id']}`]" />
+                            </div>
+                        </div>
+                        <div v-else>
+                            <div class="memo"><textarea v-model="plan['memo']"></textarea></div>
+                            <div class="modify-box">
+                                <font-awesome-icon icon="fa-solid fa-pen-to-square" class="icon" style="color:green;" @click="putPlanMemo(plan)" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -67,6 +78,7 @@
                     border-radius: 10px;
                     min-height:8rem;
                     padding:8px;
+                    overflow: hidden;
 
                     .title{
                         font-size:1.4rem;
@@ -76,7 +88,27 @@
                     .memo{
                         font-size:1.2rem;
                         font-weight: 300;
+                        min-height: 4rem;
                     }
+                    textarea{
+                        width: 100%;
+                        background-color: white;
+                        border-radius: 5px;
+                    }
+
+                    .modify-box{
+                        position: relative;
+                        .icon{
+                            cursor: pointer;
+                            position:absolute;
+                            bottom:1rem;
+                            right:0;
+                            width:1.5rem;
+                            height: 1.5rem;
+                        }
+                    }
+                    
+
                 }
             }
         }
@@ -106,13 +138,20 @@
 
 import { computed, defineProps, ref, watch } from "vue";
 import {toAMPMString} from "../composable/util"
+import {useScheduleStore} from "../stores/plan/schedule"
+import { useRoute } from "vue-router";
 
 const props = defineProps({
 modelValue: Array,
 });
 const emit = defineEmits(['update:modelValue'])
 
+const scheduleStore = useScheduleStore()
+const route = useRoute()
+
 const planList = computed(()=>props.modelValue||[])
+const travelId = computed(()=>route.params.id||null)
+const memoState = ref({})
 
 const getPlanType = (pl)=>{
 
@@ -153,6 +192,13 @@ const getSecondDateString = (plan)=>{
     }
 }
 
+const putPlanMemo = async(plan)=>{
+    const response = await scheduleStore.putPlanMemoOnly(travelId.value,plan)
+
+    if(response.code !== 200) alert('수정에 실패 했습니다.')
+    memoState.value={}
+    scheduleStore.getscheduleList(travelId.value)
+}
 
 </script>
   
