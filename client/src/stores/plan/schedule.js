@@ -1,8 +1,11 @@
 import { ref, computed, reactive } from "vue";
 import { defineStore } from "pinia";
 import * as API from "../../composable/api";
+import { useTravelStore } from "../travel";
 
 export const useScheduleStore = defineStore("schedule", () => {
+  const travelStore = useTravelStore()
+
   const scheduleList = ref([]);
   const searchscheduleList = ref([]);
   const dailyScheduleList = ref([]);
@@ -37,6 +40,10 @@ export const useScheduleStore = defineStore("schedule", () => {
   
 
   function _setDailyScheduleList(){
+    const travel = travelStore.travel
+    const startDate = new Date(travel.startDate.split('T')[0])
+    const dayList = travelStore.dayList
+    
     const dailyList = {}
     for(const schedule of searchscheduleList.value||[]){
         const date = schedule['orderDate'].split('T')[0]
@@ -44,7 +51,16 @@ export const useScheduleStore = defineStore("schedule", () => {
         if(!dailyList[date])dailyList[date] = []
         dailyList[date].push(schedule)
     }
-    dailyScheduleList.value = Object.keys(dailyList).map((key)=>dailyList[key])
+
+    dailyScheduleList.value = dayList.map((date)=>{
+      const nowDate = startDate.getDate()
+      const now = startDate.toJSON().split('T')[0]
+      if(date !== nowDate) return console.log('일정 정렬에 실패했습니다.')
+
+      startDate.setDate(startDate.getDate()+1)
+      if(dailyList[now]) return dailyList[now]
+      else []
+    })
   }
 
 

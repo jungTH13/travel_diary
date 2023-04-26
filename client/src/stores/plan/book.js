@@ -13,6 +13,51 @@ export const useBookStore = defineStore("book", () => {
     if(type === 'pe') return _getBookEtc(travelId,planId)
   }
 
+  const putBook = async (travelId,type)=>{
+    const form = {}
+
+    Object.keys(book.value).forEach((key)=>form[key] = book.value[key]);
+    delete form.deleted
+    delete form.createdDate
+    delete form.modifiedDate
+
+    let response = null
+    if(type === 'pa') response = await API.put(`/travel/${travelId}/plan/airPlane/airPlaneUpdate`, form)
+    if(type === 'ph') response = await API.put(`/travel/${travelId}/plan/hotel/hotelUpdate`, form)
+    if(type === 'pr') response = await API.put(`/travel/${travelId}/plan/restaurant/restaurantUpdate`, form)
+    if(type === 'pt') response = await API.put(`/travel/${travelId}/plan/transPort/transPortUpdate`, form)
+    if(type === 'pe') response = await API.put(`/travel/${travelId}/plan/etc/etcUpdate`, form)
+
+    return response.data
+  }
+
+  const postBook = async (travelId,type)=>{
+    const form = {}
+
+    Object.keys(book.value).forEach((key)=>form[key] = book.value[key]);
+
+    let response = null
+    if(type === 'pa') response = await API.post(`/travel/${travelId}/plan/airPlane/airPlaneInsert`, form)
+    if(type === 'ph') response = await API.post(`/travel/${travelId}/plan/hotel/hotelInsert`, form)
+    if(type === 'pr') response = await API.post(`/travel/${travelId}/plan/restaurant/restaurantInsert`, form)
+    if(type === 'pt') response = await API.post(`/travel/${travelId}/plan/transPort/transPortInsert`, form)
+    if(type === 'pe') response = await API.post(`/travel/${travelId}/plan/etc/etcInsert`, form)
+
+    return response.data
+  }
+
+  const delBook = async (travelId,type)=>{
+
+    let response = null
+    if(type === 'pa') response = await API.delete(`/travel/${travelId}/plan/airPlane/airPlaneDelete/${book.value.id}`)
+    if(type === 'ph') response = await API.delete(`/travel/${travelId}/plan/hotel/hotelDelete/${book.value.id}`)
+    if(type === 'pr') response = await API.delete(`/travel/${travelId}/plan/restaurant/restaurantDelete/${book.value.id}`)
+    if(type === 'pt') response = await API.delete(`/travel/${travelId}/plan/transPort/transPortDelete/${book.value.id}`)
+    if(type === 'pe') response = await API.delete(`/travel/${travelId}/plan/etc/etcDelete/${book.value.id}`)
+
+    return response.data
+  }
+
   const resetBook = ()=>{
     book.value= {}
   }
@@ -73,6 +118,10 @@ export const useBookStore = defineStore("book", () => {
 
   return { 
     book,
-    getBook 
+    getBook,
+    resetBook,
+    putBook,
+    postBook,
+    delBook
   };
 });

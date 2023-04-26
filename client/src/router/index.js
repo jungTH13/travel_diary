@@ -46,11 +46,7 @@ const router = createRouter({
           name: "new-travel",
           component: NewTravelView,
         },
-        {
-          path:":id/plan/book/:planType/:planId",
-          name:"book-detail",
-          component: BookDetailView,
-        },
+        
         {
           path: ":id/plan",
           name: "plan",
@@ -67,20 +63,19 @@ const router = createRouter({
               component: BookHomeView,
             },
             {
+              path:"book/:planType/:planId",
+              name:"book-detail",
+              component: BookDetailView,
+            },
+            {
               path: "budget",
               name: "budget",
-              children: [
-                {
-                  path: "",
-                  name: "plan-budget",
-                  component: BudgetHomeView,
-                },
-                {
-                  path: "new",
-                  name: "new-plan-budget",
-                  component: NewBudgetView,
-                },
-              ],
+              component: BudgetHomeView,
+            },
+            {
+              path: "budget/:budgetId",
+              name: "budget-detail",
+              component: NewBudgetView,
             },
             {
               path: "checklist",

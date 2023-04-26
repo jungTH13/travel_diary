@@ -9,7 +9,7 @@
         </li>
       </ul>
     </nav>
-    <div class="contents">
+    <div v-if="contentsLoaded" class="contents">
       <router-view />
     </div>
   </div>
@@ -64,7 +64,7 @@
 </style>
 
 <script setup>
-import { ref, reactive, watch, onMounted, computed, onBeforeUnmount } from "vue";
+import { ref, reactive, watch, onMounted, computed, onBeforeUnmount, onBeforeMount } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useTravelStore } from "../../stores/travel";
@@ -79,7 +79,7 @@ const scheduleStore = useScheduleStore();
 //contents
 const travelId = computed(()=>route.params.id);
 const tapName = computed(()=>route.name.split('-')[0])
-
+const contentsLoaded = ref(false)
 
 const goPage = (navItem)=>{
   router.push({
@@ -97,14 +97,20 @@ const nav = [
   { routeName: 'checklist', name: "체크리스트" },
 ];
 
-watch(()=>travelId.value,()=>{
-  travelStore.getTravel(travelId.value)
+watch(()=>travelId.value,async()=>{
+  contentsLoaded.value = false
+  await travelStore.getTravel(travelId.value)
+
+  contentsLoaded.value = true
 })
 
-onMounted(() => {
+onBeforeMount(async()=>{
+  await travelStore.getTravel(travelId.value)
+  contentsLoaded.value = true
+})
+
+onMounted(async() => {
   console.log("Mounted!");
-  travelStore.getTravel(travelId.value)
-  // console.log(route.path);
 });
 
 onBeforeUnmount(()=>{

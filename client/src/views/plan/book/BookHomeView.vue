@@ -13,9 +13,9 @@
     </div>
   </div>
   <div class="create-container">
-    <div class="create-botton">
+    <div v-if="nowTap.name !== '전체'" class="create-botton">
       <span class="plus-button green">
-        <font-awesome-icon icon="fa-solid fa-plus" id="plus-button-img" />
+        <font-awesome-icon icon="fa-solid fa-plus" id="plus-button-img" @click="createPlan(nowTap.type)" />
       </span>
     </div>
   </div>
@@ -137,6 +137,17 @@ const nav = ref([
 const startDate  = computed(()=>new Date(travelStore.travel.startDate.split('T')[0]))
 const dayList = computed(()=>travelStore.dayList)
 const dailyScheduleList = computed(()=>scheduleStore.dailyScheduleList)
+
+const createPlan = (type)=>{
+  router.push({
+    name: 'book-detail',
+    params:{
+      id : travelId.value,
+      planType:type,
+      planId:'register'
+    }
+  })
+}
 
 const setDate = (date,index)=>{
   const newDate = new Date(date)

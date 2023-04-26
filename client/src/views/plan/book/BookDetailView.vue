@@ -57,11 +57,13 @@ import { useRouter, useRoute } from "vue-router";
 import { computed } from "@vue/reactivity";
 import BookItem from "../../../components/BookItem.vue";
 import { useBookStore } from "../../../stores/plan/book";
+import { useScheduleStore } from "../../../stores/plan/schedule";
 
 
 const route = useRoute();
 const router = useRouter();
 const bookStore = useBookStore()
+const scheduleStore = useScheduleStore()
 
 //contents
 const travelId = computed(()=>route.params.id)
@@ -81,6 +83,32 @@ const nav = ref([
 { type:'pt', name: "교통" },
 { type:'pe', name: "기타" },
 ]);
+
+const goBook = ()=>{
+    scheduleStore.getscheduleList(travelId.value)
+    router.push({name:"book"})
+}
+
+const postPlan = async ()=>{
+    const response = await bookStore.postBook(travelId.value,planType.value)
+    
+    if(response.code !== 200) alert('등록에 실패 했습니다.')
+    else goBook()
+}
+
+const putPlan =async ()=>{
+    const response = await bookStore.putBook(travelId.value,planType.value)
+    
+    if(response.code !== 200) alert('수정에 실패 했습니다.')
+    else goBook()
+}
+
+const delPlan =async ()=>{
+    const response = await bookStore.delBook(travelId.value,planType.value)
+    
+    if(response.code !== 200) alert('삭제에 실패 했습니다.')
+    else goBook()
+}
 
 
 onMounted(() => {
