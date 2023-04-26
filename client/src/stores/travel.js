@@ -2,6 +2,7 @@ import { ref, computed, reactive } from "vue";
 import { defineStore } from "pinia";
 import * as API from "../composable/api";
 import { useCountryStore } from "./country";
+import { convertTimeFormat } from "../composable/util";
 
 const defaultTravel = ()=> ({
   title:"",
@@ -40,6 +41,7 @@ export const useTravelStore = defineStore("travel", () => {
     await countryStore.getCountryList()
     // countryList의 code 정보를 country 정보로 변경
     data.results.travelOne.countryList = data.results.travelCountryList.map((code)=>countryStore.countryList.filter((country)=>code===country.code.split('_')[1])[0])
+    convertTimeFormat(data.results.travelOne)
 
     travel.value = data.results.travelOne
 

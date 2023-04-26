@@ -5,7 +5,8 @@
         <div class="date-picker">
             <v-overlay v-model="visible" contained class="align-center justify-center">
                 <v-card class="pa-2">
-                    <VueDatePicker v-model="dateTime" inline model-type="yyyy-MM-dd, hh:mm:ss" />
+                    <VueDatePicker v-if="!DateUnlimit && travel.id && minDate && maxDate" v-model="dateTime" :min-date="minDate" :max-date="maxDate" inline model-type="yyyy-MM-dd, HH:mm:ss" />
+                    <VueDatePicker v-else v-model="dateTime" inline model-type="yyyy-MM-dd, HH:mm:ss" />
                 </v-card>
             </v-overlay>
         </div>
@@ -38,13 +39,20 @@ input{
 
 <script setup>
 import { computed, ref, watch } from "vue";
+import { useTravelStore } from "../../stores/travel";
 
-const props = defineProps({modelValue:String, placeholder:String})
+const props = defineProps({modelValue:String, placeholder:String, DateUnlimit:Boolean})
 const emit = defineEmits(["update:modelValue"])
+
+const travelStore = useTravelStore()
 
 const dateTime = ref(props.modelValue?.split("T").join(', '))
 const placeholder = computed(()=>props.placeholder || '')
 const visible = ref(false)
+const DateUnlimit = computed(()=>props.DateUnlimit || false)
+const travel = computed(()=>travelStore.travel||{})
+const minDate = computed(()=>new Date(travel.value.startDate)||null)
+const maxDate = computed(()=>new Date(travel.value.endDate)||null)
 
 watch(()=>props.modelValue,()=>{
     if(dateTime.value === props.modelValue?.split("T").join(', ')) return;

@@ -51,3 +51,35 @@ export const toAMPMString = (date)=>{
   if(hour>=12) return `PM ${hour<10?`0${hour}`:hour} : ${min<10?`0${min}`:min}`
   else return `AM ${hour<10?`0${hour}`:hour} : ${min<10?`0${min}`:min}`
 }
+
+/**
+ * 
+ * @param {Number|String} number 
+ * @returns '1,576,302.05'
+ */
+export const toComaNumberString =(number)=>{
+  const parts = (`${number}`).split('.')
+  const regex = /\B(?=(\d{3})+(?!\d))/g
+  parts[0] = parts[0].replace( regex,",")
+
+  let result = parts[0]
+  if(parts.length===2) result+= (parts[1]?'.'+parts[1].slice(0,2):'.')
+  
+  return result
+}
+
+/**
+ * 
+ * @param {*} obj Date,Time,date 이름을 가지는 String변수를 포함
+ * 
+ * YYYY-MM-DDThh:mm:ss.xxxZ -> YYYY-MM-DDThh:mm:ss 변환
+ */
+export const convertTimeFormat = (obj)=>{
+  //시간 정보 전처리
+  for(const key of Object.keys(obj)){
+      if(key.includes("Date") || key.includes("Time") ||key.includes("date")){
+        if(!obj[key]) continue  
+        obj[key] = obj[key].split('.')[0]
+      }
+  }
+}

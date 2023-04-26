@@ -13,6 +13,8 @@ import "ant-design-vue/dist/antd.css";
 import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
 
+import 'vuetify/dist/vuetify.min.css';
+
 //vue3에서 달력 컴포넌트 사용
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'

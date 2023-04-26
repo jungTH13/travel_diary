@@ -61,3 +61,28 @@
   //   color: #fff;
   // }
 }
+
+
+.summit-footer {
+  position: inherit;
+  bottom: 0%;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+
+  button {
+      padding: 10px 10px;
+      margin: 0px 5px 0px 5px;
+      border: 1px solid $green;
+      background-color: $green;
+      border-radius: 5px;
+      width: 100%;
+      color: white;
+      font-size:1.4rem;
+
+      &:hover {
+          background-color: $lite-green;
+          border: 1px solid $green;
+      }
+  }
+}

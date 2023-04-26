@@ -42,11 +42,12 @@ async function put(endpoint, bodyData) {
 }
 
 async function del(endpoint) {
-  console.log(`%DELETE 요청 ${BASE_URL + endpoint}`, "color: red");
+  console.log(`%cDELETE 요청 ${BASE_URL + endpoint}`, "color: red");
   // console.log(`%cDELTE 요청 데이터 :`, "color: red");
 
   return api.delete(endpoint, {
     withCredentials: true,
+    data:{}
   });
 }
 

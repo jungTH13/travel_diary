@@ -5,7 +5,7 @@
         <div class="date-picker">
             <v-overlay v-model="visible" contained class="align-center justify-center">
                 <v-card class="pa-2">
-                    <VueDatePicker v-model="dateTime" inline time-picker model-type="yyyy-MM-dd, hh:mm:ss" />
+                    <VueDatePicker v-model="dateTime" inline time-picker model-type="yyyy-MM-dd, HH:mm:ss" />
                 </v-card>
             </v-overlay>
         </div>

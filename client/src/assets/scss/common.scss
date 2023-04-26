@@ -29,7 +29,9 @@ h1,
 h2{
  
 }
-h3,
+h3{
+  font-size: 2.2rem;
+}
 h4{
   font-size:medium;
   font-weight: 600;
@@ -125,6 +127,14 @@ div::-webkit-scrollbar-track {
       html{
         font-size:14.4px !important;
       }
+    }
+  }
+}
+
+@media (max-height: 128vw){
+  @media (min-width: 600px){
+    html{
+      font-size:5px !important;
     }
   }
 }
