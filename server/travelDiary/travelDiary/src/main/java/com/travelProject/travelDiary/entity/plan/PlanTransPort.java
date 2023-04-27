@@ -70,6 +70,9 @@ public class PlanTransPort {
     @Column(name = "pt_c_id")
     private String cId;
 
+    @Column(name = "pt_c_id2")
+    private String cId2;
+
     @Column(name="pt_x")
     private Double x;
 

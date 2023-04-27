@@ -43,6 +43,10 @@ public class PlanTransPortDto {
 
     private String seatNumber;
 
+    private String cId;
+
+    private String cId2;
+
     private Double x;
 
     private Double y;

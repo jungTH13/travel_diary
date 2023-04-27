@@ -34,6 +34,8 @@ public class PlanEtcDto {
 
     private String address;
 
+    private String cId;
+
     private Double x;
 
     private Double y;

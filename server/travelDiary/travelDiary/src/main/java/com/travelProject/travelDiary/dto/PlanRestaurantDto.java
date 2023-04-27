@@ -36,6 +36,8 @@ public class PlanRestaurantDto {
 
     private String phone;
 
+    private String cId;
+
     private Double x;
 
     private Double y;
