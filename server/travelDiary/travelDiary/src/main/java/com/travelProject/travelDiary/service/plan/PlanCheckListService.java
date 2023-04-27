@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PlanCheckListService {
@@ -36,10 +38,25 @@ public class PlanCheckListService {
         PlanCheckListTitle planCheckListTitle = planCheckListTitleRepository.findByIdAndUser_Id(planCheckListTitleId, userId);
         if(planCheckListTitle == null) {
             throw new exceptionCode(ErrorCode.INVALID_ID_PARAMETER);
-        } else {
-            //planCheckListDetailRepository.findAllByIdAndPlanCheckListTitle_Id(planCheckListTitle.getId(), planCheckListTitle.getId());
         }
+
         return planCheckListTitle;
+    }
+
+    public List<Map<String, Object>> selectPlanCheckListTitleList(PlanCheckListTitleDto planCheckListTitleDto, String userId) {
+        if(userId.equals("") || userId == null) {
+            throw new exceptionCode(ErrorCode.INVALID_USER_PARAMETER);
+        }
+
+        List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
+
+        Long travelId = planCheckListTitleDto.getTravel().getId();
+        List<PlanCheckListTitle> planCheckListTitle = planCheckListTitleRepository.findAllByTravel_IdAndUser_Id(travelId, userId);
+        for(PlanCheckListTitle param : planCheckListTitle) {
+            resultList.add(param.toMap());
+        }
+
+        return resultList;
     }
 
     public Long planCheckListInsert(PlanCheckListTitleDto planCheckListTitleDto) {

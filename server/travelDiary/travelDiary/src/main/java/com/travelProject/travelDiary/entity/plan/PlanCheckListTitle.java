@@ -11,6 +11,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @AllArgsConstructor
@@ -50,6 +52,9 @@ public class PlanCheckListTitle {
     @Column(name = "pct_require_date")
     private Date requireDate;
 
+    @Column(name = "pct_is_completed")
+    private Boolean isCompleted;
+
     @Column(nullable = false)
     @ColumnDefault("false")
     protected boolean deleted;
@@ -61,4 +66,16 @@ public class PlanCheckListTitle {
     @LastModifiedDate
     @Column(name = "modified_at", nullable = false)
     protected LocalDateTime modifiedDate;
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", this.id);
+        map.put("title", this.title);
+        map.put("memo", this.memo);
+        map.put("planType", this.planType);
+        map.put("planTypeId", this.planTypeId);
+        map.put("requireDate", this.requireDate);
+        map.put("isCompleted", this.isCompleted);
+        return map;
+    }
 }

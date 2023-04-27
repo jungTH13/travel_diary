@@ -8,4 +8,6 @@ import java.util.List;
 public interface PlanCheckListTitleRepository extends JpaRepository<PlanCheckListTitle, Long> {
 
     PlanCheckListTitle findByIdAndUser_Id(Long t_id,String id);
+
+    List<PlanCheckListTitle> findAllByTravel_IdAndUser_Id(Long t_id,String id);
 }

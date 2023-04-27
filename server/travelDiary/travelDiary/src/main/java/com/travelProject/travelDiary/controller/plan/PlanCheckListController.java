@@ -44,6 +44,18 @@ public class PlanCheckListController {
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }
 
+    @PostMapping("/travel/{travelId}/plan/checkList/checkListList")
+    public ResponseBody  getPlanCheckListList(HttpServletRequest request, @RequestBody(required = false) PlanCheckListTitleDto planCheckListTitleDto, @PathVariable Long travelId) {
+        User user = (User) request.getAttribute("user");
+
+        Map<String, Object> result = new HashMap<>();
+        setTravelId(travelId, user, planCheckListTitleDto);
+        List<Map<String, Object>> planCheckListTitleList = planCheckListService.selectPlanCheckListTitleList(planCheckListTitleDto, user.getId());
+
+        result.put("planCheckListTitleList", planCheckListTitleList);
+        return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
+    }
+
     @PostMapping("/travel/{travelId}/plan/checkList/checkListInsert")
     public ResponseBody setPlanCheckListInsert(HttpServletRequest request, @RequestBody PlanCheckListTitleDto planCheckListTitleDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
