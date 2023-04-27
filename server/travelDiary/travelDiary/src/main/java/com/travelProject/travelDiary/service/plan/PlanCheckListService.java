@@ -59,6 +59,11 @@ public class PlanCheckListService {
         return resultList;
     }
 
+    public List<PlanCheckListDetail> selectPlanCheckListDetailList(Long planCheckListTitleId) {
+        List<PlanCheckListDetail> planCheckListDetailList = planCheckListDetailRepository.findAllByPlanCheckListTitle_Id(planCheckListTitleId);
+        return planCheckListDetailList;
+    }
+
     public Long planCheckListInsert(PlanCheckListTitleDto planCheckListTitleDto) {
         LocalDateTime time = LocalDateTime.now();
 
@@ -92,45 +97,45 @@ public class PlanCheckListService {
         }
     }
 
-    public List<PlanCheckListDetail> selectPlanCheckListDetailList(Long planCheckListTitleId) {
-        List<PlanCheckListDetail> planCheckListDetailList = planCheckListDetailRepository.findAllByPlanCheckListTitle_Id(planCheckListTitleId);
-        return planCheckListDetailList;
+    public Long planCheckListUpdate(PlanCheckListTitleDto planCheckListTitleDto) {
+        LocalDateTime time = LocalDateTime.now();
+
+        PlanCheckListTitle planCheckListTitle = modelMapper.map(planCheckListTitleDto, PlanCheckListTitle.class);
+        planCheckListTitle.setModifiedDate(time);
+        Long id = planCheckListTitle.getId();
+        Long travelId = planCheckListTitle.getTravel().getId();
+
+        if(travelId < 0 || travelId == null) {
+            throw new exceptionCode(ErrorCode.INVALID_TRAVEL_ID_PARAMETER);
+        }
+
+        if(id == null) {
+            throw new exceptionCode(ErrorCode.INVALID_ID_PARAMETER);
+        }
+
+        PlanCheckListTitle planCheckListTitle2 = planCheckListTitleRepository.findByIdAndUser_Id(id, planCheckListTitle.getUser().getId());
+        if(!planCheckListTitle.getUser().getId().equals(planCheckListTitle2.getUser().getId())){
+            throw new exceptionCode(ErrorCode.DIFFERENT_USER_PARAMETER);
+        }
+
+        Long planCheckListTitleId = planCheckListTitleRepository.save(planCheckListTitle).getId();
+        return planCheckListTitleId;
     }
-//
-//    public Long planAccountBookUpdate(PlanAccountBookDto accountBookDto) {
-//        LocalDateTime time = LocalDateTime.now();
-//
-//        PlanAccountBook planAccountBook = modelMapper.map(accountBookDto, PlanAccountBook.class);
-//        planAccountBook.setModifiedDate(time);
-//        Long id = planAccountBook.getId();
-//        Long travelId = accountBookDto.getTravel().getId();
-//
-//        if(travelId < 0 || travelId == null) {
-//            throw new exceptionCode(ErrorCode.INVALID_TRAVEL_ID_PARAMETER);
-//        }
-//
-//        if(id == null) {
-//            throw new exceptionCode(ErrorCode.INVALID_ID_PARAMETER);
-//        }
-//
-//        PlanAccountBook planAccountBook2 = planAccountBookRepository.findByIdAndUser_Id(id, planAccountBook.getUser().getId());
-//        if(!planAccountBook.getUser().getId().equals(planAccountBook2.getUser().getId())){
-//            throw new exceptionCode(ErrorCode.DIFFERENT_USER_PARAMETER);
-//        }
-//
-//        Long planAccountBookId = planAccountBookRepository.save(planAccountBook).getId();
-//        return planAccountBookId;
-//    }
-//
-//    public void planAccountBookDelete(PlanAccountBookDto accountBookDto) {
-//        PlanAccountBook planAccountBook = modelMapper.map(accountBookDto, PlanAccountBook.class);
-//        Long id = planAccountBook.getId();
-//
-//        PlanAccountBook planAccountBook2 = planAccountBookRepository.findByIdAndUser_Id(id, accountBookDto.getUser().getId());
-//        if(!planAccountBook.getUser().getId().equals(planAccountBook2.getUser().getId())){
-//            throw new exceptionCode(ErrorCode.DIFFERENT_USER_PARAMETER);
-//        }
-//
-//        planAccountBookRepository.delete(planAccountBook);
-//    }
+
+    public void planCheckListTitleDelete(PlanCheckListTitleDto planCheckListTitleDto) {
+        PlanCheckListTitle planCheckListTitle = modelMapper.map(planCheckListTitleDto, PlanCheckListTitle.class);
+        Long id = planCheckListTitle.getId();
+
+        PlanCheckListTitle planCheckListTitle2 = planCheckListTitleRepository.findByIdAndUser_Id(id, planCheckListTitle.getUser().getId());
+        if(!planCheckListTitle.getUser().getId().equals(planCheckListTitle2.getUser().getId())){
+            throw new exceptionCode(ErrorCode.DIFFERENT_USER_PARAMETER);
+        }
+
+        List<PlanCheckListDetail> planCheckListDetail = planCheckListDetailRepository.findAllByPlanCheckListTitle_Id(id);
+        for (PlanCheckListDetail param: planCheckListDetail) {
+            planCheckListDetailRepository.deleteById(param.getId());
+        }
+
+        planCheckListTitleRepository.delete(planCheckListTitle);
+    }
 }

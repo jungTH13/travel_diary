@@ -67,29 +67,29 @@ public class PlanCheckListController {
         return ResponseBody.builder().code(200).msg("저장 성공 했습니다.").results(result).build();
     }
 
-//    @PutMapping("/travel/{travelId}/plan/checkList/checkListUpdate")
-//    public ResponseBody setPlanCheckListUpdate(HttpServletRequest request, @RequestBody PlanCheckListTitleDto planCheckListTitleDto, @PathVariable Long travelId) {
-//        User user = (User) request.getAttribute("user");
-//
-//        Map<String, Object> result = new HashMap<>();
-//        setTravelId(travelId, user, accountBookDto);
-//        Long accountBookId = planCheckListService.planAccountBookUpdate(accountBookDto);
-//        result.put("accountBookId", accountBookId);
-//        return ResponseBody.builder().code(200).msg("수정 성공 했습니다.").results(result).build();
-//    }
-//
-//    @DeleteMapping("/travel/{travelId}/plan/checkList/checkListDelete/{planId}")
-//    public ResponseBody setPlanCheckListDelete(HttpServletRequest request
-//            , @RequestBody PlanCheckListTitleDto planCheckListTitleDto
-//            , @PathVariable Long travelId
-//            , @PathVariable Long planId) {
-//        User user = (User) request.getAttribute("user");
-//
-//        accountBookDto.setId(planId);
-//        setTravelId(travelId, user, accountBookDto);
-//        planCheckListService.planAccountBookDelete(accountBookDto);
-//        return ResponseBody.builder().code(200).msg("삭제 성공 했습니다.").build();
-//    }
+    @PutMapping("/travel/{travelId}/plan/checkList/checkListUpdate")
+    public ResponseBody setPlanCheckListUpdate(HttpServletRequest request, @RequestBody PlanCheckListTitleDto planCheckListTitleDto, @PathVariable Long travelId) {
+        User user = (User) request.getAttribute("user");
+
+        Map<String, Object> result = new HashMap<>();
+        setTravelId(travelId, user, planCheckListTitleDto);
+        Long planCheckListTitleId = planCheckListService.planCheckListUpdate(planCheckListTitleDto);
+        result.put("planCheckListTitleId", planCheckListTitleId);
+        return ResponseBody.builder().code(200).msg("수정 성공 했습니다.").results(result).build();
+    }
+
+    @DeleteMapping("/travel/{travelId}/plan/checkList/checkListDelete/{planId}")
+    public ResponseBody setPlanCheckListDelete(HttpServletRequest request
+            , @RequestBody PlanCheckListTitleDto planCheckListTitleDto
+            , @PathVariable Long travelId
+            , @PathVariable Long planId) {
+        User user = (User) request.getAttribute("user");
+
+        planCheckListTitleDto.setId(planId);
+        setTravelId(travelId, user, planCheckListTitleDto);
+        planCheckListService.planCheckListTitleDelete(planCheckListTitleDto);
+        return ResponseBody.builder().code(200).msg("삭제 성공 했습니다.").build();
+    }
 
     public PlanCheckListTitleDto setTravelId(Long travelId, User user, PlanCheckListTitleDto planCheckListTitleDto) {
         Travel resultTravel = travelService.selectPlanTravelOne(user.getId(), travelId);
