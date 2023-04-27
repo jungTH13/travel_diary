@@ -119,6 +119,19 @@ public class PlanCheckListService {
         }
 
         Long planCheckListTitleId = planCheckListTitleRepository.save(planCheckListTitle).getId();
+
+        PlanCheckListDetailDto[] planCheckListDetailDtoList = planCheckListTitleDto.getPlanCheckListDetail();
+
+        PlanCheckListTitle insertTitle = new PlanCheckListTitle();
+        insertTitle.setId(id);
+
+        for (PlanCheckListDetailDto planCheckListDetailDto: planCheckListDetailDtoList) {
+            PlanCheckListDetail planCheckListDetail = modelMapper.map(planCheckListDetailDto, PlanCheckListDetail.class);
+            planCheckListDetail.setPlanCheckListTitle(insertTitle);
+            planCheckListDetail.setCreatedDate(time);
+            planCheckListDetail.setModifiedDate(time);
+            planCheckListDetailRepository.save(planCheckListDetail);
+        }
         return planCheckListTitleId;
     }
 
