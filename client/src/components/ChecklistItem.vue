@@ -137,7 +137,7 @@ table{
 
 <script setup>
 
-import { computed, defineProps, onMounted, ref, watch } from "vue";
+import { computed, defineProps, onBeforeMount, onMounted, onUnmounted, ref, watch } from "vue";
 import {toAMPMString, toComaNumberString} from "../composable/util"
 import { useRoute, useRouter } from "vue-router";
 import { useTravelStore } from "../stores/travel";
@@ -148,7 +148,7 @@ const props = defineProps({
     editState: Boolean
 });
 
-const emits = defineEmits(['isUpdated'])
+const emits = defineEmits(['isUpdated','rendering'])
 
 const checklistStore = useChecklistStore()
 const route = useRoute()
@@ -170,6 +170,7 @@ const resetChecklist = ()=>{
 
 const init = async()=>{
     checklist.value = await checklistStore.getChecklist(travelId.value,checklistTitleId.value)
+    emits('rendering',true)
 }
 
 const delChecklistDetail = (targetDetail)=>{
@@ -218,6 +219,10 @@ watch(()=>editState.value,()=>{
 
 onMounted(()=>{
     init()
+})
+
+onUnmounted(()=>{
+    emits('rendering',false)
 })
 
 </script>
