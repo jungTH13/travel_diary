@@ -20,6 +20,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  margin-right:0.2rem;
   .nav{
     margin-top:2rem;
     margin-bottom: 1rem;

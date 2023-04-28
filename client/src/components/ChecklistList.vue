@@ -17,30 +17,12 @@
                             <font-awesome-icon icon="fa-solid fa-angle-down" class="icon margin-right" />
                         </div>
                     </div>
-                    <div class="checklist-item" :class="{max : panels[checklist.id]}">
-                        <ChecklistItem v-if="panels[checklist.id]" id="content-checklist-detail" v-model="checklist.id" :edit-state="panelsEdit[checklist.id]" @is-updated="()=>{panelsEdit[checklist.id]= false; }" />
+                    <div class="checklist-item-expense" :class="{max : rendering[checklist.id]}">
+                        <div>
+                            <ChecklistItem v-if="panels[checklist.id]" id="content-checklist-detail" v-model="checklist.id" :edit-state="panelsEdit[checklist.id]" @is-updated="()=>{panelsEdit[checklist.id]= false; }" @rendering="(state)=>rendering[checklist.id]=state" />
+                        </div>
                     </div>
-                    <!-- <v-expansion-panels v-model="panels[checklist.id]" class="flat elevation-0">
-                        <v-expansion-panel  color="white" class="flat elevation-0" selected-class="expansion-container" id="expansion-container">
-                        
-                            <v-expansion-panel-title class="title-container" style="color: white;">
-                                
-                            </v-expansion-panel-title>
-                        
-                            <v-expansion-panel-text class="contents-container">
-                                
-                            </v-expansion-panel-text>
-                        </v-expansion-panel>
-                    </v-expansion-panels> -->
                 </td>
-                <!-- <td>
-                    <div class='content'>
-                        <span class="payment" :style="{color: checklist['amountOfPayment']>=0?'blue':'red'}">
-                            <font-awesome-icon  icon="fa-solid fa-won-sign" class="icon margin-right" />
-                            {{ 'complete' }}
-                        </span>
-                    </div>
-                </td> -->
             </tr>
         </tbody>
     </table>
@@ -49,13 +31,14 @@
 
 <style lang="scss" scoped>
 
-// .checklist-item{
-//     transition: 4s; 
-//     max-height: 0px;
-// }
-// .max{
-//     max-height: 2000px;
-// }
+.checklist-item-expense{
+    transition: all ease 1s 0s;
+    overflow: hidden;
+    max-height: 0px;
+}
+.max{
+    max-height: 2000px;
+}
 
 table{
     width:100%;
@@ -152,9 +135,6 @@ table{
 <script setup>
 
 import { computed, defineProps, ref, watch } from "vue";
-import {toAMPMString, toComaNumberString} from "../composable/util"
-import { useRouter } from "vue-router";
-import { useTravelStore } from "../stores/travel";
 import ChecklistItem from "./ChecklistItem.vue";
 
 const props = defineProps({
@@ -162,13 +142,10 @@ modelValue: Array,
 });
 const emit = defineEmits(['update:modelValue'])
 
-const router = useRouter()
-const travelStore = useTravelStore()
-
 const checklistList = computed(()=>props.modelValue||[])
-const travelId = computed(()=>travelStore.travel.id)
 const panels = ref({})
 const panelsEdit = ref({}) 
+const rendering = ref({})
 
 watch(()=>props.modelValue,()=>{
   panelsEdit.value ={}
