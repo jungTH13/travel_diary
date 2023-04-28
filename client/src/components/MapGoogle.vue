@@ -124,11 +124,11 @@ const setInfowindow = ()=>{
     <div id="content">
         <div id="siteNotice">
         </div>
-        <h1 id="firstHeading" class="firstHeading" style="font-size: larger; font-weight: 600;">${name}</h1>
+        <h1 id="firstHeading" class="firstHeading" style="font-size: larger; font-weight: 600;">${name?name:''}</h1>
         <div id="bodyContent">
-            <p>${address}</p>
+            <p>${address?address:''}</p>
             ${!isOverlay.value ?'':`<button onclick="searchComplete()" id="searchInfowindow" style="background-color:green; color:white !important; margin:2px; padding:1rem; border-radius: 5px;">등록하기</botton>`}
-                ${!cid?'':`<a style="color:white !important;" href="https://maps.google.com/maps?ll=${geometry[0]},${geometry[1]}&z=16&t=m&hl=ko-KR&gl=US&mapclient=embed&cid=${cid}">
+                ${!cid?'':`<a style="color:white !important;" href="https://maps.google.com/maps?ll=${geometry[0]},${geometry[1]}&z=16&t=m&hl=ko-KR&gl=US&mapclient=embed&cid=${cid?cid:''}">
                     <button style="background-color:green; color:white; margin:2px; padding:1rem; border-radius: 5px;">구글 지도</botton>
                 </a>`}
         </div>
@@ -161,7 +161,8 @@ const search = async()=>{
 const init = ()=>{
     if(searchInfo.value.geometry && searchInfo.value.geometry[0] && searchInfo.value.geometry[1]){
         if(infowindow.value !==null) infowindow.value.close()
-        setMarker(props.modelValue.geometry[0],props.modelValue.geometry[1])
+        setMarker()
+        setInfowindow()
     }
     else{
         if(searchText.value.length>0) search()

@@ -1,15 +1,9 @@
 <template>
 <div @click="visible=!visible">
-    <input type="text" :value="dateTime?.slice(0,-3)" :placeholder="placeholder" disabled>
-    <div v-if="visible" class="date-picker-back-ground"> 
-        <div class="date-picker">
-            <v-overlay v-model="visible" contained class="align-center justify-center">
-                <v-card class="pa-2">
-                    <VueDatePicker v-if="!DateUnlimit && travel.id && minDate && maxDate" v-model="dateTime" :min-date="minDate" :max-date="maxDate" inline model-type="yyyy-MM-dd, HH:mm:ss" />
-                    <VueDatePicker v-else v-model="dateTime" inline model-type="yyyy-MM-dd, HH:mm:ss" />
-                </v-card>
-            </v-overlay>
-        </div>
+    <input v-if="!visible" type="text" :value="dateTime?.slice(0,-3)" :placeholder="placeholder" disabled>
+    <div v-else>
+        <VueDatePicker v-if="!DateUnlimit && travel.id && minDate && maxDate" v-model="dateTime" :min-date="minDate" :max-date="maxDate" inline model-type="yyyy-MM-dd, HH:mm:ss" />
+        <VueDatePicker v-else v-model="dateTime" inline model-type="yyyy-MM-dd, HH:mm:ss" />
     </div>
 </div>
 </template>
@@ -53,6 +47,10 @@ const DateUnlimit = computed(()=>props.DateUnlimit || false)
 const travel = computed(()=>travelStore.travel||{})
 const minDate = computed(()=>travel.value.startDate?new Date(travel.value.startDate):null)
 const maxDate = computed(()=>travel.value.endDate?new Date(travel.value.endDate):null)
+
+watch(()=>dateTime.value,()=>{
+    visible.value=false
+})
 
 watch(()=>props.modelValue,()=>{
     if(dateTime.value === props.modelValue?.split("T").join(', ')) return;

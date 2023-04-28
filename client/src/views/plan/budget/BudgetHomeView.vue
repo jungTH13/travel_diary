@@ -9,16 +9,19 @@
     </div>
 
     <div class="budget-container">
+
       <div class="budget-day-container">
         <h1 :class="{active: !dailybudgetVisibleList.length || !dailybudgetVisibleList.includes(false)}" @click="setAllDailyVisible">전체</h1>
         <div class="budget-date" :class="{active: dailybudgetVisibleList[index]}"  v-for="date,index in dayList" @click="setDailyVisible(index)">{{ date }}</div>
       </div>
+
       <div class="budget-contents-container">
         <div class="contents" v-for="day,index in dayList" v-show="dailybudgetVisibleList.length===0 || dailybudgetVisibleList[index]">
-          <h1 class="date">DAY {{ index+1 }} </h1> <p class="description"> {{ DateToStringFormat1(setDate(startDate,index)) }}</p>
+          <h1 class="date">{{(`DAY ${index}`) }} </h1> <p class="description"> {{ (index ? DateToStringFormat1(setDate(startDate,index-1)) : '여행준비')}}</p>
           <BudgetList v-model="dailyBudgetList[index]" />
         </div>
       </div>
+
     </div>
 
     <div class="create-container">
@@ -217,10 +220,10 @@ const travelStore = useTravelStore();
 //contents
 const budgetlList = computed(()=>budgetStore.searchbudgetList);
 const dailybudgetVisibleList = ref([])
-const dailyBudgetList = computed(()=>budgetStore.dailyBudgetList||[])
+const dailyBudgetList = computed(()=>[budgetStore.preparationBudgetList,...budgetStore.dailyBudgetList]||[])
 const startDate  = computed(()=>new Date(travelStore.travel.startDate.split('T')[0]))
 const travelId = computed(()=>route.params.id)
-const dayList = computed(()=>travelStore.dayList)
+const dayList = computed(()=>[0,...travelStore.dayList])
 const amountOfPaymentState = computed(()=>{
   let payment = 0
   let account = 0
@@ -233,17 +236,6 @@ const amountOfPaymentState = computed(()=>{
     }
   }
   return {payment,account}
-})
-const allPayment = computed(()=>{
-  let payment = 0
-  for(let index=0;index<dailyBudgetList.value.length;index++){
-    if(dailybudgetVisibleList.value.length && !dailybudgetVisibleList.value[index]) continue
-
-    for(const budget of dailyBudgetList.value[index]){
-      if(budget['amountOfPayment']<0)payment +=budget['amountOfPayment']
-    }
-  }
-  return payment
 })
 
 
@@ -259,6 +251,7 @@ const setDailyVisible = (dailybudgetIndex)=>{
   }
   dailybudgetVisibleList.value = []
 }
+
 const setAllDailyVisible = ()=>{
   dailybudgetVisibleList.value = []
 }
