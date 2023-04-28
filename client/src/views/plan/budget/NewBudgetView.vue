@@ -409,7 +409,6 @@ const validate = ()=>{
   const keyList = ['title','amountOfPayment','paymentDate','paymentType','categoryType']
   for(const key of keyList){
     if(!budget.value[key] || budget.value[key] === ""){
-      console.log(key,budget.value[key])
       alert("내용을 채워주세요!")
       return false
     }

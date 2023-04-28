@@ -133,22 +133,28 @@ const iconheight = '1.8rem'
 const init = ()=>{
     if(book.value.x && book.value.y){
         departMapResult.value.geometry = [book.value.x, book.value.y]
+        departMapResult.value.name = book.value.departLocation
+        departMapResult.value.cid = book.value.cid
     }
     if(book.value.x2 && book.value.y2){
         arriveMapResult.value.geometry = [book.value.x2, book.value.y2]
+        arriveMapResult.value.name = book.value.arriveLocation
+        arriveMapResult.value.cid = book.value.cid2
     }
 }
 
 watch(()=>arriveMapResult.value,()=>{
     book.value.arriveLocation = arriveMapResult.value.name
-    book.value.x = arriveMapResult.value.geometry[0]
-    book.value.y = arriveMapResult.value.geometry[1]
+    book.value.x2 = arriveMapResult.value.geometry[0]
+    book.value.y2 = arriveMapResult.value.geometry[1]
+    book.value.cid2 = arriveMapResult.value.cid
 })
 
 watch(()=>departMapResult.value,()=>{
     book.value.departLocation = departMapResult.value.name
-    book.value.x2 = departMapResult.value.geometry[0]
-    book.value.y2 = departMapResult.value.geometry[1]
+    book.value.x = departMapResult.value.geometry[0]
+    book.value.y = departMapResult.value.geometry[1]
+    book.value.cid = departMapResult.value.cid
 })
 
 watch(()=>book.value,()=>init())

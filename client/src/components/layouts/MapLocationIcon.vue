@@ -1,9 +1,9 @@
 <template>
 
-<font-awesome-icon style="cursor: pointer;" :class="{checked: (searchMapResult.geometry && searchMapResult.geometry[0] && searchMapResult.geometry[0]),progress: mapVisible}" :style="{width:width,height:height}" :icon="['fas', 'location-crosshairs']" @click="iconClick" />
+<font-awesome-icon style="cursor: pointer;" :class="{checked: (searchMapResult.geometry && searchMapResult.geometry[0] && searchMapResult.geometry[0]),progress: mapVisible}" :style="{width:width,height:height}" icon="fa-solid fa-map-location-dot" @click="iconClick" />
 
 <div v-if="mapVisible" class="overlay">
-    <div :class="{half:subMapVisible, full:!subMapVisible}" >
+    <div class="full" >
         <MapGoogle :search-text="searchText" v-model="searchMapResult" :is-overlay="isOverlay" @cancle="cancle" />
     </div>
 </div>
@@ -26,20 +26,13 @@
     top:0px;
     width: 100%;
     height:100%;
+    background-color: rgba(255, 255, 255, 0.5);
     .full{
         position: relative;
-        left: 0px;
+        left: v-bind(mapLeft);
         top:0px;
         height:100%;
-        width:100%;
-    }
-
-    .half{
-        position: relative;
-        left: 50%;
-        top:0px;
-        height:100%;
-        width:50%;
+        width:v-bind(mapWidth);
     }
 }
 </style>
@@ -66,6 +59,8 @@ const width = computed(()=>props.width||'auto')
 const height = computed(()=>props.height||'auto')
 const isOverlay = ref(false)
 const subMapVisible = computed(()=>commonStore.mainSubVisible)
+const mapLeft = ref('0px')
+const mapWidth = ref('100%')
 
 const iconClick = async()=>{
     isOverlay.value = true
@@ -75,6 +70,20 @@ const iconClick = async()=>{
 
 const cancle = ()=>{
     mapVisible.value = false
+}
+
+const resizeMap = ()=>{
+    if(document.getElementById('main-sub').offsetWidth){
+        const mainWidth = document.getElementById('main').offsetWidth
+        const targetWidth = document.getElementById('main-sub').offsetWidth
+        mapLeft.value = `${mainWidth}px`
+        mapWidth.value = `${targetWidth}px`
+    }
+    else{
+        mapLeft.value = '0px'
+        mapWidth.value = '100%'
+    }
+
 }
 
 watch(()=>props.modelValue,()=>{
@@ -88,9 +97,14 @@ watch(()=>searchMapResult.value,()=>{
     emit("update:modelValue",searchMapResult.value)
 })
 
+onBeforeMount(()=>{
+    resizeMap()
+    window.removeEventListener('resize',resizeMap)
+    window.addEventListener('resize',resizeMap)
+})
 
 onMounted(async()=>{
-
+    
 })
 
 </script>

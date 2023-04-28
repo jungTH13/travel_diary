@@ -101,6 +101,8 @@ const iconheight = '1.8rem'
 const init = ()=>{
     if(book.value.x && book.value.y){
         mapResult.value.geometry = [book.value.x, book.value.y]
+        mapResult.value.name = book.value.name
+        mapResult.value.cid = book.value.cid
     }
 }
 
@@ -109,6 +111,7 @@ watch(()=>mapResult.value,()=>{
     book.value.address = mapResult.value.address.join(' ')
     book.value.x = mapResult.value.geometry[0]
     book.value.y = mapResult.value.geometry[1]
+    book.value.cid = mapResult.value.cid
 })
 
 watch(()=>book.value,()=>init())

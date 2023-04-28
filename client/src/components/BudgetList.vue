@@ -30,7 +30,7 @@ table{
     margin-bottom: 1rem;
     border-collapse: separate;
     border-spacing: 0 10px;
-    padding: 0 2rem 0 2rem;
+    padding: 0 0rem 0 2rem;
 
     th{
         width:33%;
@@ -41,7 +41,7 @@ table{
         display: flex;
         flex-direction: row;
         padding-left: 1rem;
-        padding-right:1rem;
+        // padding-right:1rem;
     }
 
     td{

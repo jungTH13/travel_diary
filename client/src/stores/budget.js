@@ -23,6 +23,7 @@ export const useBudgetStore = defineStore("budget", () => {
   const budgetList = ref([]);
   const searchbudgetList = ref([]);
   const dailyBudgetList = ref([]);
+  const preparationBudgetList = ref([])
   const budget = ref(defaultBudget())
   
   function resetBudget(){
@@ -71,13 +72,23 @@ export const useBudgetStore = defineStore("budget", () => {
     const dayList = travelStore.dayList
     
     const dailyList = {}
+    const preparationList = []
     for(const budget of searchbudgetList.value||[]){
-        const date = budget['paymentDate'].split('T')[0]
+      //여행준비에 해당하는 정보를 따로 저장
+      if(budget['paymentDate']===travel.startDate) {
+        preparationList.push(budget)
+        continue
+      }
+      
+      //여행일자별로 정보 분류
+      const date = budget['paymentDate'].split('T')[0]
         
-        if(!dailyList[date])dailyList[date] = []
-        dailyList[date].push(budget)
+      if(!dailyList[date])dailyList[date] = []
+      dailyList[date].push(budget)
     }
 
+    //여행의 일자정보를 가지는 리스트의 위치와 맵핑하여 정보 정렬
+    preparationBudgetList.value = preparationList
     dailyBudgetList.value = dayList.map((date)=>{
       const nowDate = startDate.getDate()
       const now = startDate.toJSON().split('T')[0]
@@ -120,9 +131,7 @@ export const useBudgetStore = defineStore("budget", () => {
   }
 
   const delBudget = async(travelId)=>{
-    const form = _createForm()
-
-    const { data } = await API.delete(`/travel/${travelId}/plan/accountBook/accountBookDelete/${budget.value.id}`, form);
+    const { data } = await API.delete(`/travel/${travelId}/plan/accountBook/accountBookDelete/${budget.value.id}`);
     
     return data
   }
@@ -131,6 +140,7 @@ export const useBudgetStore = defineStore("budget", () => {
     budgetList,
     searchbudgetList,
     dailyBudgetList,
+    preparationBudgetList,
     budget,
     getbudgetList,
     getbudget,
