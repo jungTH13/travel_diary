@@ -1,8 +1,13 @@
 <template>
-<div class="full-hidden" id="googl-map-component">
+<div class="full-hidden col" id="googl-map-component">
     <div class="search-bar">
         <Search  v-model="searchText" @submit="search" class="search" />
         <button  v-if="isOverlay" @click="cancle">{{ "<-" }}</button>
+    </div>
+    <div class="marker-controll">
+        <div class="marker-date-controll">
+            <MapMarkerCotroll />
+        </div>
     </div>
     <div id="map" style="width:100%; height:100%; overflow: visible !important;">
     </div>
@@ -54,6 +59,17 @@
     // border:2px solid green;
 }
 
+.marker-controll{
+    position:relative;
+    width:100%;
+    .marker-date-controll{
+        top:5rem;
+        right:0;
+        position: absolute;
+        z-index: 100000;
+    }
+}
+
 .firstHeading{
     font-size: larger;
     font-weight: 600;
@@ -64,6 +80,7 @@
 import { computed, defineProps, onBeforeMount, onMounted, onUnmounted, ref, watch } from "vue";
 import {useGoogleMapApi} from "../composable/useGoogleMapApi"
 import Search from "./layouts/Search.vue";
+import MapMarkerCotroll from "./layouts/MapMarkerCotroll.vue";
 
 const props = defineProps({
     modelValue: Object,
@@ -178,7 +195,7 @@ onMounted(async()=>{
     map.value = await googleMap.getMap(127,36)
     window.map = map.value
     console.log(map.value)
-    window.marker = searchMarker.value
+    window.marker = searchMarker
 
     init()
 })

@@ -57,14 +57,17 @@ const disabledDates = computed(()=>{
   if(!travel.value.id || !travel.value.startDate || !travel.value.endDate) return []
   const disabledList = []
   const date = new Date(minDate.value)
+
   date.setDate(date.getDate()+1)
+
   
   while(date.toJSON().split('T')[0]<maxDate.value.toJSON().split('T')[0]){
     disabledList.push(new Date(date))
+
     date.setDate(date.getDate()+1)
   }
 
-  return disabledList
+  return disabledList.slice(0,-1)
 })
 
 // watch(()=>planDate.value,()=>{

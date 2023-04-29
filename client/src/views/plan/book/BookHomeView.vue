@@ -111,12 +111,16 @@ import { useTravelStore } from "../../../stores/travel";
 import { DateToStringFormat1 } from "../../../composable/util";
 import { computed } from "@vue/reactivity";
 import PlanItem from "../../../components/PlanItem.vue";
+import { useMapStore } from "../../../stores/map";
+import { useBookStore } from "../../../stores/plan/book";
 
 
 const route = useRoute();
 const router = useRouter();
 const scheduleStore = useScheduleStore();
 const travelStore = useTravelStore();
+const mapStore = useMapStore()
+const bookStore =useBookStore()
 
 //contents
 const travelId = computed(()=>route.params.id)
@@ -125,14 +129,7 @@ const tapChange = (tap)=>{
   nowTap.value = tap
 }
 
-const nav = ref([
-  { type:'', name: "전체" },
-  { type:'pa', name: "항공권" },
-  { type:'ph', name: "호텔" },
-  { type:'pr', name: "음식점" },
-  { type:'pt', name: "교통" },
-  { type:'pe', name: "기타" },
-]);
+const nav = computed(()=>bookStore.nav)
 
 const startDate  = computed(()=>new Date(travelStore.travel.startDate.split('T')[0]))
 const dayList = computed(()=>travelStore.dayList)
@@ -167,9 +164,14 @@ const goDetailPage = (plan)=>{
   })
 }
 
-onMounted(() => {
+const setDailyMarkerList = ()=>{
+  // mapStore.setDailyMarkerList(dailyScheduleList.value)
+}
+
+onMounted(async() => {
   console.log("Mounted!");
-  scheduleStore.getscheduleList(travelId.value)
+  await scheduleStore.getscheduleList(travelId.value)
+  setDailyMarkerList()
   nowTap.value = nav.value[0]
 });
 </script>

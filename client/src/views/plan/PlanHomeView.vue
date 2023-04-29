@@ -70,12 +70,14 @@ import { useRouter, useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useTravelStore } from "../../stores/travel";
 import { useScheduleStore } from "../../stores/plan/schedule";
+import { useMapStore } from "../../stores/map";
 
 //stores
 const route = useRoute();
 const router = useRouter();
 const travelStore = useTravelStore()
 const scheduleStore = useScheduleStore();
+const mapStore = useMapStore()
 
 //contents
 const travelId = computed(()=>route.params.id);
@@ -117,6 +119,7 @@ onMounted(async() => {
 onBeforeUnmount(()=>{
   travelStore.resetTravel
   scheduleStore.resetScheduleList
+  mapStore.removeMarkerAll()
 })
 
 </script>
