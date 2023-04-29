@@ -95,19 +95,26 @@ public class PlanService {
                 .filter(title -> title.getPlanTypeId() == planTypeId && title.getPlanType().equals(planType))
                 .collect(Collectors.toList());
 
-        Optional<PlanCheckListTitle> checkResult = checkList.stream()
+        List<PlanCheckListTitle> checkResult = checkList.stream()
                 .filter(title -> title.getPlanTypeId() == planTypeId && title.getPlanType().equals(planType))
-                .findAny();
+                .collect(Collectors.toList());
 
         if (accountBookResult.size() > 0) {
             BigDecimal sumAmount = accountBookResult.stream()
                     .map(PlanAccountBook::getAmountOfPayment)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
-            insertMapValue.put("amountOfPayment", sumAmount);
+            insertMapValue.put("sumAmount", sumAmount);
         }
 
-        if (checkResult.isPresent()) {
-            insertMapValue.put("isCompleted", checkResult.map(PlanCheckListTitle::getIsCompleted));
+        if (checkResult.size() > 0) {
+            List<Map<String, Object>> insertCheckList = new ArrayList<>();
+            for(PlanCheckListTitle findCheck : checkResult) {
+                Map<String, Object> insertParam = new HashMap<>();
+                insertParam.put("title", findCheck.getTitle());
+                insertParam.put("isCompleted", findCheck.getIsCompleted());
+                insertCheckList.add(insertParam);
+            }
+            insertMapValue.put("checkList", insertCheckList);
         }
     }
 }
