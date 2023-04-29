@@ -8,8 +8,9 @@
                         <div class='contents-title row' @click="()=>{panels[checklist.id]= !panels[checklist.id];panelsEdit[checklist.id] = false }">
                             <span class="title">{{ checklist['title'] }}</span>
                             <span class="category">{{ checklist['categoryType'] }}</span>
-                            
+                            <span v-if="checklist['isCompleted']" class="complete" >Complete</span>
                         </div>
+                        
                         <div v-if="panels[checklist.id]" class="contents-icon">
                             <font-awesome-icon icon="fa-solid fa-gear" class="icon margin-right curser" :class="{active:panelsEdit[checklist.id]}" @click="()=>{panelsEdit[checklist.id] = !panelsEdit[checklist.id]}" />
                         </div>
@@ -91,6 +92,12 @@ table{
                         &.payment{
                             float: right;
                             font-size: 1.8rem;
+                        }
+
+                        &.complete{
+                            font-weight: 600;
+                            color: $green;
+                            font-size: 1.5rem;
                         }
                         
                     }

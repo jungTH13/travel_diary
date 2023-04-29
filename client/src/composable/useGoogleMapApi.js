@@ -1,6 +1,7 @@
 import axios from "axios"
 
 let mapObj = null
+let planMarkers = []
 
 export const useGoogleMapApi = ()=>{
     const init = async()=>{
@@ -117,7 +118,7 @@ export const useGoogleMapApi = ()=>{
      * 입력된 좌표를 맵에 표시하고 화면을 전환합니다.
      */
     const setMarker = (x,y,isTrace)=>{
-        if(mapObj === null) return alert("지도가 생성되어 있지 않습니다!")
+        if(mapObj === null) throw new Error("지도가 생성되어 있지 않습니다!")
         
         const marker = new window.google.maps.Marker({
             position: {lat:x,lng:y},
@@ -131,8 +132,43 @@ export const useGoogleMapApi = ()=>{
         return marker
     }
 
+
+    /**
+     * 
+     * @param {Number} x lat
+     * @param {Number} y lng
+     * @param {Boolean} isTrace 마커 추적여부 
+     * 
+     * 입력된 좌표를 맵에 표시하고 화면을 전환합니다.
+     */
+    const setAdvancedMarker = (x,y,isTrace)=>{
+        // if(mapObj === null) throw new Error("지도가 생성되어 있지 않습니다!")
+        
+        // const pinViewBackground = new google.maps.marker.PinView({
+        //     background: "#FBBC04",
+        // })
+
+        // const marker = new google.maps.marker.AdvancedMarkerView({
+        //     map: mapObj,
+        //     position: {lat:x,lng:y},
+        //     content: pinViewBackground.element,
+        // })
+        // if(isTrace === true) {
+        //     mapObj.setCenter({lat:x,lng:y})
+        //     mapObj.setZoom(16)
+        // }
+
+        // return marker
+    }
+
+
     const removeListeners = (marker,eventName)=>{
         window.google.maps.event.clearListeners(marker,eventName)
+    }
+
+    const removeMarker = (marker)=>{
+        moveMarker(marker,0,0,false)
+        marker.setMap(null)
     }
 
     const createInfoWindow = (label,content)=>{
@@ -155,24 +191,45 @@ export const useGoogleMapApi = ()=>{
      * @returns 
      */
     const moveMarker = (marker,x,y,isTrace)=>{
-        if(!marker) return alert("마커가 존재하지 않습니다!")
+        if(!marker) {
+            console.log("마커가 존재하지 않습니다!")
+            return null
+        }
         
         marker.setPosition({lat:x,lng:y})
 
         if(isTrace === true) {
             mapObj.setCenter({lat:x,lng:y})
-            mapObj.setZoom(20)
+            mapObj.setZoom(18)
         }
+    }
+
+    const moveMap = (x,y)=>{
+        mapObj.setCenter({lat:x,lng:y})
+        mapObj.setZoom(16)
+    }
+
+
+    const setPlanList = async (map,planList)=>{
+
+        planList.forEach((plan)=>{
+            const marker = setMarker()
+            planMarkers.push()
+        })
+
     }
 
     return{
         init,
         createMap,
+        moveMap,
         getMap,
         setMarker,
+        setAdvancedMarker,
         moveMarker,
         searchPlace,
         createInfoWindow,
-        removeListeners
+        removeListeners,
+        removeMarker
     }
 }

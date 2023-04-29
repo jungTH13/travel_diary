@@ -97,6 +97,7 @@ import { ref, reactive, onBeforeMount, onMounted, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useScheduleStore } from "../../../stores/plan/schedule";
+import { useMapStore } from "../../../stores/map";
 import { useTravelStore } from "../../../stores/travel";
 import { DateToStringFormat1 } from "../../../composable/util";
 import PlanList from "../../../components/PlanList.vue";
@@ -105,7 +106,7 @@ const route = useRoute()
 const router = useRouter();
 const scheduleStore = useScheduleStore();
 const travelStore = useTravelStore();
-
+const mapStore = useMapStore()
 
 //contents
 const schedulelList = computed(()=>scheduleStore.searchscheduleList);
@@ -115,19 +116,26 @@ const startDate  = computed(()=>new Date(travelStore.travel.startDate.split('T')
 const travelId = computed(()=>route.params.id)
 const dayList = computed(()=>travelStore.dayList)
 
+const setDailyMarkerList = ()=>{
+  // mapStore.setDailyMarkerList(dailyScheduleList.value,dailyScheduleVisibleList.value)
+}
 
 const setDailyVisible = (dailyScheduleIndex)=>{
+  // dayList에 매칭되어 길이만큼 리스트를 추가
   if(dailyScheduleVisibleList[dailyScheduleIndex]==undefined) {
     while(dailyScheduleVisibleList.value.length < dayList.value.length)dailyScheduleVisibleList.value.push(false)
   }
 
   dailyScheduleVisibleList.value[dailyScheduleIndex] = !dailyScheduleVisibleList.value[dailyScheduleIndex]
   
+  //선택된 일자가 없는 경우 dailyScheduleVisibleList 를 초기화 
   for(const state of dailyScheduleVisibleList.value){
     if(state == true) return
   }
   dailyScheduleVisibleList.value = []
+
 }
+
 const setAllDailyVisible = ()=>{
   dailyScheduleVisibleList.value = []
 }
@@ -139,11 +147,12 @@ const setDate = (date,index)=>{
   return newDate
 }
 
-onBeforeMount(() => {
+onBeforeMount(async() => {
   console.log("Before Mount!");
+  await scheduleStore.getscheduleList(travelId.value)
 });
 
 onMounted(() => {
-  scheduleStore.getscheduleList(travelId.value)
+  
 });
 </script>

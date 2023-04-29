@@ -5,6 +5,15 @@ import * as API from "../../composable/api";
 export const useBookStore = defineStore("book", () => {
   const book = ref({});
 
+  const nav = ref([
+    { type:'', name: "전체" },
+    { type:'pa', name: "항공권" },
+    { type:'ph', name: "호텔" },
+    { type:'pr', name: "음식점" },
+    { type:'pt', name: "교통" },
+    { type:'pe', name: "기타" },
+  ]);
+
   const getBook = (travelId,planId,type) => {
     if(type === 'pa') return _getBookAirPlan(travelId,planId)
     if(type === 'ph') return _getBookHotel(travelId,planId)
@@ -118,6 +127,7 @@ export const useBookStore = defineStore("book", () => {
 
   return { 
     book,
+    nav,
     getBook,
     resetBook,
     putBook,
