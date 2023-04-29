@@ -100,9 +100,17 @@ public class PlanService {
                 .collect(Collectors.toList());
 
         if (accountBookResult.size() > 0) {
-            BigDecimal sumAmount = accountBookResult.stream()
-                    .map(PlanAccountBook::getAmountOfPayment)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            //모든값을 합치는 용도
+            //BigDecimal sumAmount = accountBookResult.stream()
+            //        .map(PlanAccountBook::getAmountOfPayment)
+            //        .reduce(BigDecimal.ZERO, BigDecimal::add);
+            BigDecimal sumAmount = BigDecimal.ZERO;
+            for(PlanAccountBook findAccountBook : accountBookResult) {
+                BigDecimal findSumValue = findAccountBook.getAmountOfPayment();
+                if(findSumValue.doubleValue() < 0) {
+                    sumAmount = sumAmount.add(findSumValue.negate());
+                }
+            }
             insertMapValue.put("sumAmount", sumAmount);
         }
 
