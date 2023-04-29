@@ -2,12 +2,10 @@ package com.travelProject.travelDiary.controller.plan;
 
 import com.travelProject.travelDiary.config.exceptionCode;
 import com.travelProject.travelDiary.dto.ErrorCode;
-import com.travelProject.travelDiary.dto.PlanAccountBookDto;
 import com.travelProject.travelDiary.dto.PlanCheckListTitleDto;
 import com.travelProject.travelDiary.dto.ResponseBody;
 import com.travelProject.travelDiary.entity.Travel;
 import com.travelProject.travelDiary.entity.User;
-import com.travelProject.travelDiary.entity.plan.PlanAccountBook;
 import com.travelProject.travelDiary.entity.plan.PlanCheckListDetail;
 import com.travelProject.travelDiary.entity.plan.PlanCheckListTitle;
 import com.travelProject.travelDiary.service.TravelService;

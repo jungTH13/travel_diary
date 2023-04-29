@@ -4,7 +4,6 @@ import com.travelProject.travelDiary.config.exceptionCode;
 import com.travelProject.travelDiary.dto.ErrorCode;
 import com.travelProject.travelDiary.dto.PlanCheckListDetailDto;
 import com.travelProject.travelDiary.dto.PlanCheckListTitleDto;
-import com.travelProject.travelDiary.entity.plan.PlanAccountBook;
 import com.travelProject.travelDiary.entity.plan.PlanCheckListDetail;
 import com.travelProject.travelDiary.entity.plan.PlanCheckListTitle;
 import com.travelProject.travelDiary.repository.plan.PlanCheckListDetailRepository;
@@ -14,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class PlanCheckListService {
@@ -118,20 +115,49 @@ public class PlanCheckListService {
             throw new exceptionCode(ErrorCode.DIFFERENT_USER_PARAMETER);
         }
 
-        Long planCheckListTitleId = planCheckListTitleRepository.save(planCheckListTitle).getId();
-
         PlanCheckListDetailDto[] planCheckListDetailDtoList = planCheckListTitleDto.getPlanCheckListDetail();
+        List<PlanCheckListDetail> planCheckListDetailList = planCheckListDetailRepository.findAllByPlanCheckListTitle_Id(id);
 
         PlanCheckListTitle insertTitle = new PlanCheckListTitle();
         insertTitle.setId(id);
 
+        //Dto 배열에서 해당 아이디가 DB에 있는 ID가 같을 경우에만 수정하고
+        //Dto 에 ID가 없을 경우에는 저장을 한다.
         for (PlanCheckListDetailDto planCheckListDetailDto: planCheckListDetailDtoList) {
+            Long findId = planCheckListDetailDto.getId();
+            Optional<PlanCheckListDetail> result = planCheckListDetailList.stream()
+                    .filter(dto -> dto.getId().equals(findId))
+                    .findFirst();
             PlanCheckListDetail planCheckListDetail = modelMapper.map(planCheckListDetailDto, PlanCheckListDetail.class);
-            planCheckListDetail.setPlanCheckListTitle(insertTitle);
-            planCheckListDetail.setCreatedDate(time);
-            planCheckListDetail.setModifiedDate(time);
-            planCheckListDetailRepository.save(planCheckListDetail);
+
+            if (result.isPresent()) {
+                planCheckListDetail.setPlanCheckListTitle(insertTitle);
+                planCheckListDetail.setModifiedDate(time);
+                planCheckListDetailRepository.save(planCheckListDetail);
+
+                planCheckListDetailList.removeIf(detail -> detail.getId() == planCheckListDetailDto.getId());
+            } else {
+                if(planCheckListDetailDto.getId() == null){
+                    planCheckListDetail.setPlanCheckListTitle(insertTitle);
+                    planCheckListDetail.setCreatedDate(time);
+                    planCheckListDetail.setModifiedDate(time);
+                    planCheckListDetailRepository.save(planCheckListDetail);
+                }
+            }
         }
+
+        //위에 for 문에서 insert, update 를 하고 난뒤 남은 값들은 삭제를 한다.
+        for (PlanCheckListDetail deleteParam: planCheckListDetailList) {
+            planCheckListDetailRepository.deleteById(deleteParam.getId());
+        }
+
+        PlanCheckListDetail isCompletedCheck = planCheckListDetailRepository.findByPlanCheckListTitle_IdAndChecked(id,false);
+        if(isCompletedCheck != null) {
+            planCheckListTitle.setIsCompleted(false);
+        } else {
+            planCheckListTitle.setIsCompleted(true);
+        }
+        Long planCheckListTitleId = planCheckListTitleRepository.save(planCheckListTitle).getId();
         return planCheckListTitleId;
     }
 
