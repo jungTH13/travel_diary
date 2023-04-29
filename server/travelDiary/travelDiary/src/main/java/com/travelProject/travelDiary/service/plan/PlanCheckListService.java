@@ -141,7 +141,7 @@ public class PlanCheckListService {
                     planCheckListDetail.setPlanCheckListTitle(insertTitle);
                     planCheckListDetail.setCreatedDate(time);
                     planCheckListDetail.setModifiedDate(time);
-                    planCheckListDetailRepository.save(planCheckListDetail);
+                    planCheckListDetailRepository.save(planCheckListDetail).getId();
                 }
             }
         }
@@ -151,8 +151,8 @@ public class PlanCheckListService {
             planCheckListDetailRepository.deleteById(deleteParam.getId());
         }
 
-        PlanCheckListDetail isCompletedCheck = planCheckListDetailRepository.findByPlanCheckListTitle_IdAndChecked(id,false);
-        if(isCompletedCheck != null) {
+        List<PlanCheckListDetail> isCompletedCheck = planCheckListDetailRepository.findAllByPlanCheckListTitle_IdAndChecked(id,false);
+        if(isCompletedCheck.size() > 0) {
             planCheckListTitle.setIsCompleted(false);
         } else {
             planCheckListTitle.setIsCompleted(true);

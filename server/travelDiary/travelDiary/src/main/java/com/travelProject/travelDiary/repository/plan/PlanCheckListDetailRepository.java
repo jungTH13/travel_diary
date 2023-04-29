@@ -8,5 +8,5 @@ import java.util.List;
 public interface PlanCheckListDetailRepository extends JpaRepository<PlanCheckListDetail, Long> {
     List<PlanCheckListDetail> findAllByPlanCheckListTitle_Id(Long planCheckListTitleId);
 
-    PlanCheckListDetail findByPlanCheckListTitle_IdAndChecked(Long planCheckListTitleId, boolean checked);
+    List<PlanCheckListDetail> findAllByPlanCheckListTitle_IdAndChecked(Long planCheckListTitleId, boolean checked);
 }
