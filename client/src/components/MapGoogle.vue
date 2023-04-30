@@ -46,8 +46,8 @@
     button{
         position:absolute;
         z-index: 1000;
-        right:2vw;
-        top:2vw;
+        right:1vw;
+        top:1vw;
         background-color: gray;
         color:white;
         height:3rem;
@@ -63,10 +63,12 @@
     position:relative;
     width:100%;
     .marker-date-controll{
-        top:5rem;
+        top:15vh;
         right:0;
         position: absolute;
         z-index: 100000;
+        max-height: 85vh;
+        overflow: auto;
     }
 }
 

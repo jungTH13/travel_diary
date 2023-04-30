@@ -119,17 +119,35 @@ export const useGoogleMapApi = ()=>{
      */
     const setMarker = (x,y,isTrace)=>{
         if(mapObj === null) throw new Error("지도가 생성되어 있지 않습니다!")
-        
-        const marker = new window.google.maps.Marker({
+
+        const options = {
             position: {lat:x,lng:y},
             map: mapObj,
-        })
+        }
+        
+        const marker = new window.google.maps.Marker(options)
         if(isTrace === true) {
             mapObj.setCenter({lat:x,lng:y})
             mapObj.setZoom(16)
         }
 
         return marker
+    }
+
+    /**
+     * 
+     * @param {Object} marker 
+     * @param {Object} info
+     * 
+     * 마커 클릭시 인포 정보 시각화 설정 
+     */
+    const setMarkerInfo = (marker,info)=>{
+        marker.addListener("click",()=>{
+            info.open({
+                anchor:marker,
+                map:mapObj
+            })
+        })
     }
 
 
@@ -141,24 +159,29 @@ export const useGoogleMapApi = ()=>{
      * 
      * 입력된 좌표를 맵에 표시하고 화면을 전환합니다.
      */
-    const setAdvancedMarker = (x,y,isTrace)=>{
-        // if(mapObj === null) throw new Error("지도가 생성되어 있지 않습니다!")
+    const setSvgMarker = (x,y,isTrace,svgPath)=>{
+        if(mapObj === null) throw new Error("지도가 생성되어 있지 않습니다!")
+
+        const options = {
+            position: {lat:x,lng:y},
+            map: mapObj,
+            icon:{
+                path: svgPath,
+                fillColor: 'blue',
+                fillOpacity: 0.6,
+                scale: 0.05,
+                strokeColor: 'blue',
+                strokeWeight: 0.8
+            }
+        }
         
-        // const pinViewBackground = new google.maps.marker.PinView({
-        //     background: "#FBBC04",
-        // })
+        const marker = new window.google.maps.Marker(options)
+        if(isTrace === true) {
+            mapObj.setCenter({lat:x,lng:y})
+            mapObj.setZoom(16)
+        }
 
-        // const marker = new google.maps.marker.AdvancedMarkerView({
-        //     map: mapObj,
-        //     position: {lat:x,lng:y},
-        //     content: pinViewBackground.element,
-        // })
-        // if(isTrace === true) {
-        //     mapObj.setCenter({lat:x,lng:y})
-        //     mapObj.setZoom(16)
-        // }
-
-        // return marker
+        return marker
     }
 
 
@@ -204,28 +227,30 @@ export const useGoogleMapApi = ()=>{
         }
     }
 
+    const setMapLatLngBounds = (minX,minY,maxX,maxY)=>{
+        if(mapObj === null) throw new Error("지도가 생성되어 있지 않습니다!")
+
+        const sw = new google.maps.LatLng(minX, minY)
+        const ne = new google.maps.LatLng(maxX, maxY)
+        const bounds = new google.maps.LatLngBounds(sw, ne)
+        console.log(mapObj)
+        mapObj.fitBounds(bounds)
+    }
+
     const moveMap = (x,y)=>{
         mapObj.setCenter({lat:x,lng:y})
         mapObj.setZoom(16)
-    }
-
-
-    const setPlanList = async (map,planList)=>{
-
-        planList.forEach((plan)=>{
-            const marker = setMarker()
-            planMarkers.push()
-        })
-
     }
 
     return{
         init,
         createMap,
         moveMap,
+        setMapLatLngBounds,
         getMap,
         setMarker,
-        setAdvancedMarker,
+        setMarkerInfo,
+        setSvgMarker,
         moveMarker,
         searchPlace,
         createInfoWindow,

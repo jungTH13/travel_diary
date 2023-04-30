@@ -117,8 +117,8 @@ onMounted(async() => {
 });
 
 onBeforeUnmount(()=>{
-  travelStore.resetTravel
-  scheduleStore.resetScheduleList
+  travelStore.resetTravel()
+  scheduleStore.resetScheduleList()
   mapStore.removeMarkerAll()
 })
 
