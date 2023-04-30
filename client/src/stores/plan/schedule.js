@@ -67,6 +67,7 @@ export const useScheduleStore = defineStore("schedule", () => {
   function resetScheduleList (){
     scheduleList.value = []
     searchscheduleList.value = []
+    dailyScheduleList.value = []
   }
 
   function _createForm (plan){

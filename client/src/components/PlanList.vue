@@ -10,6 +10,7 @@
                 <div class="plan-contents">
                     <p class="time">{{ toAMPMString(getFirstDateString(plan)) }}</p>
                     <p class="description">{{ getDescription(plan,'first') }} </p>
+                    <p class="consumption-amount">{{ plan.sumAmount?`소비금액: ${ toComaNumberString(plan.sumAmount) } 원`:'' }}</p>
                     <div class="plan-memo col">
                         <div class="title">{{ plan['title'] }}</div>
                         <div v-if="!memoState[`${plan['type']}-${plan['id']}`]">
@@ -23,6 +24,12 @@
                             <div class="modify-box">
                                 <font-awesome-icon icon="fa-solid fa-pen-to-square" class="icon" style="color:green;" @click="putPlanMemo(plan)" />
                             </div>
+                        </div>
+                        <div class="checklist" v-if="plan.checkList?.length">
+                            <p v-for="checklist in plan.checkList" :class="{completed:checklist.isCompleted===true}">
+                                <font-awesome-icon icon="fa-solid fa-list-check" class="icon"/>
+                                {{ checklist.title }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -73,6 +80,14 @@
                     color:gray
                 }
 
+                .consumption-amount{
+                    display: inline;
+                    float: right;
+                    font-size: 1.2rem;
+                    font-weight: 600;
+                    color:red;
+                }
+
                 .plan-memo{
                     background-color: $gray;
                     border-radius: 10px;
@@ -110,6 +125,19 @@
                     
 
                 }
+
+                .checklist{
+                    border-top: 1px dashed gray;
+                    p{
+                        display: inline;
+                        margin-right: 1rem;
+                        color:red;
+
+                        &.completed{
+                            color:$green;
+                        }
+                    }
+                }
             }
         }
     }
@@ -137,7 +165,7 @@
 <script setup>
 
 import { computed, defineProps, ref, watch } from "vue";
-import {toAMPMString} from "../composable/util"
+import {toAMPMString, toComaNumberString} from "../composable/util"
 import {useScheduleStore} from "../stores/plan/schedule"
 import { useRoute } from "vue-router";
 

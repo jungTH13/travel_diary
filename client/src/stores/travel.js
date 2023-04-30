@@ -22,6 +22,7 @@ export const useTravelStore = defineStore("travel", () => {
   //methods
   function resetTravel(){
     travel.value = defaultTravel()
+    dayList.value = []
   }
 
   async function getTravelList() {
