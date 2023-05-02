@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="plan">
+    <div class="plan pt">
         <div class="plan-head">
             <div id="checkinDate">
                 <p>출발지</p>

@@ -1,99 +1,172 @@
 <template>
 <div>
-    <v-expansion-panels v-model="panel">
-        <v-expansion-panel id="check-list-create-container" :class="{containerActive:panel===0}">
-        <v-expansion-panel-title class="create-container-title" expand-icon="mdi-plus" collapse-icon="mdi-minus">체크리스트 생성하기</v-expansion-panel-title>
-        <v-expansion-panel-text class="create-container-contents">
-            <div id="checklist-title">
-                <div>
-                    <font-awesome-icon icon="fa-solid fa-tag" class="icon"/>
+    <div id="check-list-create-container" class="col">
+        <div class="create-container-title-container"  @click="disabled=!disabled">
+            <div class="create-container-title">체크리스트 생성하기</div>
+        </div>
+
+    </div>
+
+
+    <div :class="{active:(!disabled)}" id="overlay" class="col"> 
+            <div id="overlay-empty" @click="disabled=!disabled"></div>
+            
+            <div class="create-container-contents default-shadow" :class="{active:!disabled}">
+                <div id="checklist-title" >
+                    <div>
+                        <font-awesome-icon icon="fa-solid fa-tag" class="icon"/>
+                    </div>
+                    <input
+                        type="text"
+                        placeholder="제목을 입력하세요"
+                        v-model="checklist.title"
+                    />
                 </div>
-                <input
-                    type="text"
-                    placeholder="제목을 입력하세요"
-                    v-model="checklist.title"
-                />
-            </div>
-
-            <div id="plan-select">
-                <div>
-                    <font-awesome-icon icon="fa-solid fa-hand-pointer" class="icon" />
-                </div>
-
-                <select id="plan-select-box" v-model="selectPlan" >
-                    <option :value="{}">연결하고 싶은 일정과 선택하세요</option>
-                    <option v-for="plan of scheduleList" :value="plan">{{ plan.title }} | {{ plan.name }}</option>
-                </select>
-            </div>
-
-            <div id="plan-dates">
-                <div>
-                    <font-awesome-icon icon="fa-regular fa-calendar-check" class="icon" />
-                </div>
-
-                <div id="plan-checklist-date-picker">
-                    <DateTimeInline v-model="checklist.requireDate" placeholder="날짜를 선택해주세요" />
-                </div>
-
-                <v-container id="select-date" class="pa-0">
-                <v-slide-group show-arrows>
-                    
-                    <div class="item">
-                        <input
-                            type="radio"
-                            id="pre"
-                            name="dates"
-                            :value="preparationDateTime"
-                            v-model="checklist.requireDate"
-                        />
-                        <label for="pre">여행 준비</label>
+                <div id="plan-select">
+                    <div>
+                        <font-awesome-icon icon="fa-solid fa-hand-pointer" class="icon" />
                     </div>
 
-                </v-slide-group>
-                </v-container>
+                    <select id="plan-select-box" v-model="selectPlan" >
+                        <option :value="{}">연결하고 싶은 일정과 선택하세요</option>
+                        <option v-for="plan of scheduleList" :value="plan">{{ plan.title }} | {{ plan.name }}</option>
+                    </select>
+                </div>
+
+                <div id="plan-dates">
+                    <div>
+                        <font-awesome-icon icon="fa-regular fa-calendar-check" class="icon" />
+                    </div>
+
+                    <div id="plan-checklist-date-picker">
+                        <DateTime v-model="checklist.requireDate" placeholder="날짜를 선택해주세요" />
+                    </div>
+
+                    <v-container id="select-date" class="pa-0">
+                    <v-slide-group show-arrows>
+                        
+                        <div class="item">
+                            <input
+                                type="radio"
+                                id="pre"
+                                name="dates"
+                                :value="preparationDateTime"
+                                v-model="checklist.requireDate"
+                            />
+                            <label for="pre">여행 준비</label>
+                        </div>
+
+                    </v-slide-group>
+                    </v-container>
+
+                    
+                </div>
+                <div style="height:100%;"></div>
+                <div>
+                    <div class="summit-footer white-style">
+                        <button class="font-weight-600" @click="disabled=!disabled">취소</button>
+                        <button class="font-weight-600" @click="postChecklist">등록</button>
+                    </div>
+                </div>
+                
             </div>
-
-            <div class="summit-footer">
-                <button class="font-weight-600" @click="postChecklist">등록</button>
-            </div>
-
-        </v-expansion-panel-text>
-        </v-expansion-panel>
-
-    </v-expansion-panels>
-    
-    
-    
+        </div>
 </div>
 </template>
 
 <style lang="scss" scoped>
 div{
     #check-list-create-container{
-        border-radius: 2rem;
+        // background-color: $gray;
+        border-radius: 0;
+        min-height:4rem;
+        overflow: hidden;
+        padding:1rem;
+        
     }
 
-    .create-container-title{
-        background-color: $gray;
-        font-size: 1.5rem;
-        font-weight: 600;
-        border-radius: 2rem;
+    .create-container-title-container{
+        height:4rem;
+        background-color: $green;
+        border-radius: 50px;
+        overflow: hidden;
+        display: flex;
+        cursor: pointer;
+        .create-container-title{
+        
+            font-size: 1.5rem;
+            font-weight: 600;
+            
+            text-align: center;
+            margin:auto;
+            color:white;
+            
+        }
+    }
+
+
+    .containerActive{
+        border-radius: 2rem !important;
+        overflow: hidden;
+        background-color: rgb(185, 185, 185);
+    }
+
+    #check-list-contents-container{
+    height: 100%;
+    }
+
+}
+
+
+#overlay{
+    position: absolute;
+    z-index: 10000;
+    background-color: rgba(0, 0, 0, 0.164);
+    width: 100%;
+    height: 0;
+    bottom:0;
+    left:0;
+    overflow: hidden;
+
+    &.active{
+        height: 100vh;
+    }
+
+    #overlay-empty{
+        height: 100%;
     }
 
     .create-container-contents{
         display: flex;
         flex-direction: column;
-        background-color: $gray;
+        // background-color: $gray;
+        overflow: hidden;
+        max-height: 0px;
+        position: absolute;
+        left:50%;
+        top:50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        height:70rem;
+        width:40rem;
+        padding:1rem;
+        
 
         .icon{
         width: 1.5rem;
         height: 1.5rem;
         }
 
+        &.active{
+            max-height: 50vh;
+        }
+
         #checklist-title {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
+            margin-bottom: 1rem;
+
             input {
                 font-size:1.5rem;
                 margin-left: 1rem;
@@ -110,6 +183,8 @@ div{
             display: flex;
             flex-direction: row;
             align-items: center;
+            margin-bottom: 1rem;
+
             > div {
                 display: flex;
                 flex-wrap: wrap;
@@ -171,18 +246,6 @@ div{
 
 
     }
-
-
-    .containerActive{
-        border-radius: 2rem !important;
-        overflow: hidden;
-        background-color: rgb(185, 185, 185);
-    }
-
-    #check-list-contents-container{
-    height: 100%;
-    }
-
 }
 </style>
 
@@ -193,6 +256,7 @@ import { useTravelStore } from '../stores/travel';
 import { useRoute } from 'vue-router';
 import DateTimeInline from './layouts/DateTimeInline.vue';
 import { useChecklistStore } from '../stores/plan/checklist';
+import DateTime from './layouts/DateTime.vue';
 
 const scheduleStore = useScheduleStore()
 const travelStore = useTravelStore()
@@ -206,9 +270,9 @@ const selectPlan = ref({})
 const scheduleList = computed(()=>scheduleStore.scheduleList)
 const preparationDateTime = computed(()=>travelStore.travel.startDate||null)
 
-const disabled =ref(false)
+const disabled =ref(true)
 
-watch(()=>panel.value,()=>{
+watch(()=>disabled.value,()=>{
     checklistStore.resetChecklist()
 })
 

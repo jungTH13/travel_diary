@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="plan">
+    <div class="plan pa">
         <div class="plan-head">
             <div id="departLocation">
                 {{plan['departLocation']}}

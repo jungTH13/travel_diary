@@ -18,7 +18,7 @@
       <div class="budget-contents-container">
         <div class="contents" v-for="day,index in dayList" v-show="dailybudgetVisibleList.length===0 || dailybudgetVisibleList[index]">
           <h1 class="date">{{(`DAY ${index}`) }} </h1> <p class="description"> {{ (index ? DateToStringFormat1(setDate(startDate,index-1)) : '여행준비')}}</p>
-          <BudgetList v-model="dailyBudgetList[index]" />
+          <BudgetList v-model="dailyBudgetList[index]"  />
         </div>
       </div>
 

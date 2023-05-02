@@ -2,15 +2,15 @@
 <div>
     <table>
         <tbody>
-            <tr v-for="budget in budgetList" @click="goDetailPage(budget)">
-                <td style="width:60%;">
+            <tr v-for="budget in budgetList" @click="goDetailPage(budget)" >
+                <td style="width:100%;">
                     <div class='content'>
                         <span class="title">{{ budget['title'] }}</span>
-                        <span class="category">{{ budget['categoryType'] }}</span>
+                        <span class="category" style="white-space: nowrap;">{{ budget['categoryType'] }} {{  }}</span>
                     </div>
                 </td>
                 <td style="width:40%;">
-                    <div class='content'>
+                    <div class='content' style="white-space: nowrap;">
                         
                         <span class="payment" :style="{color: budget['amountOfPayment']>=0?'blue':'red'}">
                             <font-awesome-icon  icon="fa-solid fa-won-sign" class="icon margin-right" />
@@ -48,15 +48,17 @@ table{
         width:auto;
         font-size: 1.4rem;
         padding-top: 0.8rem;
-        padding-bottom: 0.2rem;
+        padding-bottom: 0.4rem;
         border-bottom: 1px solid $gray;
+        margin-bottom: 0.5rem;
         div{
             width:100%;
 
             span{
                 left:auto;
+                
                 &.title{
-    
+                    font-weight: 600;
                     font-size:2rem;
                     margin-right:1.5rem;
                 }
@@ -79,6 +81,16 @@ table{
                 &.margin-right{
                     margin-right:0.3rem;
                 }
+            }
+
+            &.content{
+                position: relative;
+            }
+
+            &.dscription{
+                position: absolute;
+                bottom:-1.2rem;
+                right:1rem;
             }
         }
         

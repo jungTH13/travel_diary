@@ -45,6 +45,10 @@ export const useTravelStore = defineStore("travel", () => {
     await countryStore.getCountryList()
     // countryList의 code 정보를 country 정보로 변경
     data.results.travelOne.countryList = data.results.travelCountryList.map((code)=>countryStore.countryList.filter((country)=>code===country.code.split('_')[1])[0])
+    if(data.results.minDate?.length>0 && data.results.maxDate?.length>0){
+      data.results.travelOne.minDate = data.results.minDate
+      data.results.travelOne.maxDate = data.results.maxDate
+    }
     convertTimeFormat(data.results.travelOne)
 
     travel.value = data.results.travelOne

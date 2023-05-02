@@ -20,7 +20,7 @@
     color: red !important;;
 }
 .overlay{
-    position:absolute;
+    position:fixed;
     z-index: 100000;
     left:0px;
     top:0px;

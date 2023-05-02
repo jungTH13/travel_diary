@@ -35,7 +35,7 @@
             </tr>
         </tbody>
     </table>
-    <div class="summit-footer">
+    <div class="summit-footer white-style">
         <button v-if="editState" class="font-weight-600" @click="delChecklist">체크리스트 삭제</button>
         <button v-if="(checklist.detailList && checklist.detailList.length) || editState" class="font-weight-600" @click="putChecklist">{{editState?'수정하기':'저장하기'}}</button>
     </div>
@@ -71,7 +71,7 @@ table{
     td{
         width:auto;
         font-size: 1.4rem;
-        padding-top: 0.5rem;
+        padding-top: 1rem;
         padding-bottom: 0.2rem;
         border-bottom: 1px solid $gray;
 

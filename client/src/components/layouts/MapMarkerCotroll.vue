@@ -137,6 +137,10 @@
         }
     }
 }
+
+.schedule-plan-container{
+    
+}
 </style>
 
 <script setup>
@@ -203,7 +207,7 @@ watch(()=>scheduleStore.scheduleList,()=>{
 
 onMounted(async()=>{
     await googleAPi.init()
-    
+    await googleAPi.getMap()
     setDailyMarkerList()
 })
 

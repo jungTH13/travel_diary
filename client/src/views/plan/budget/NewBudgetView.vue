@@ -147,12 +147,24 @@
           <option v-for="plan of scheduleList" :value="plan">{{ plan.title }} | {{ plan.name }}</option>
         </select>
       </div>
+
+      <div id="budget-memo">
+        <div>
+          <h3>메모</h3>
+        </div>
+        <div>
+          <textarea placeholder="메모" v-model="budget.memo" style="border:0px;"></textarea>
+        </div>
+      </div>
+
     </div>
+
+
     
     <div class="summit-footer">
-        <button v-if="budget.id" class="font-weight-600" @click="putBudget">수정</button>
-        <button v-if="budget.id" class="font-weight-600" @click="delBudget">삭제</button>
-        <button v-else class="font-weight-600" @click="postBudget">등록</button>
+      <button v-if="budget.id" class="font-weight-600" @click="delBudget">삭제</button>
+      <button v-if="budget.id" class="font-weight-600" @click="putBudget">수정</button>
+      <button v-else class="font-weight-600" @click="postBudget">등록</button>
     </div>
     <!-- <button class="submit-button" @click="handleBudget">저장</button> -->
   </div>
@@ -329,6 +341,25 @@
     }
   }
 
+  #budget-memo{
+    margin-top: 28px;
+    > div {
+      display: flex;
+      flex-wrap: wrap;
+      // align-items: center;
+      margin-bottom: 10px;
+    }
+    h3 {
+      font-weight: bold;
+    }
+
+    textarea{
+      border:0;
+      width: 100%;
+      height:20rem;
+    }
+  }
+
   .space{
     height:100%;
   }
@@ -409,6 +440,7 @@ const validate = ()=>{
   const keyList = ['title','amountOfPayment','paymentDate','paymentType','categoryType']
   for(const key of keyList){
     if(!budget.value[key] || budget.value[key] === ""){
+      console.log(key,budget.value[key])
       alert("내용을 채워주세요!")
       return false
     }

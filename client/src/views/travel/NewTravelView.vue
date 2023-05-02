@@ -1,6 +1,9 @@
 <template>
   <div class="plan-container full-hidden">
-    <section class="full-hidden col">
+    <section class="col">
+      <div id="travel-country">
+        여행할 나라
+      </div>
       <SelectedCountries v-model="travel.countryList" />
       <div class="plan-title row">
         <font-awesome-icon icon="fa-solid fa-book" class="icon" />
@@ -9,7 +12,7 @@
           v-model="travel.title"
         />
       </div>
-      <div class="plan-date full-hidden col">
+      <div class="plan-date col">
         <div class="plan-date-range">
           <font-awesome-icon icon="fa-solid fa-calendar-check" class="icon" />
           <span >{{ planDate[0] }} ~ {{ planDate[1] }}</span>
@@ -22,12 +25,14 @@
       </div>
       
     </section>
-    <div class="plan-footer">
-      <button v-if="travel.id" class="font-weight-600" @click="putPlan">수정</button>
-      <button v-if="travel.id" class="font-weight-600" @click="delPlan">삭제</button>
-      <button v-else class="font-weight-600" @click="postPlan">등록</button>
+    <div class="summit-footer">
+      <button v-if="travel.id"  class="font-weight-600 " @click="putPlan">수정</button>
+      <button v-if="travel.id" class="font-weight-600 " @click="delPlan">삭제</button>
+      <button v-else class="font-weight-600 " @click="postPlan">등록</button>
     </div>
   </div>
+
+  
 </template>
 
 <style lang="scss" scoped >
@@ -51,10 +56,10 @@ const travelStore = useTravelStore();
 //콘텐츠
 const travel = computed(()=>travelStore.travel)
 const planDate = ref([travel.value.startDate.split('T')[0],travel.value.endDate.split('T')[0]]);
-const minDate = computed(()=>travel.value.startDate?new Date(travel.value.startDate):null)
-const maxDate = computed(()=>travel.value.endDate?new Date(travel.value.endDate):null)
+const minDate = computed(()=>travel.value.minDate?new Date(travel.value.minDate):null)
+const maxDate = computed(()=>travel.value.maxDate?new Date(travel.value.maxDate):null)
 const disabledDates = computed(()=>{
-  if(!travel.value.id || !travel.value.startDate || !travel.value.endDate) return []
+  if(!travel.value.id || !minDate.value || !maxDate.value) return []
   const disabledList = []
   const date = new Date(minDate.value)
 

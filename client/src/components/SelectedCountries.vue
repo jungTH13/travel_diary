@@ -1,12 +1,12 @@
 <template>
   <div id="selected-country-wrapper">
     <div
-      v-for="item in countries"
+      v-for="item,index in countries"
       v-bind:key="item.id"
       class="selected-country"
     >
       <span @click="delCountry(item)">{{ item.name }}</span>
-      <font-awesome-icon icon="fa-solid fa-jet-fighter" id="plane-img" />
+      <font-awesome-icon v-if="countries.length !== index+1" icon="fa-solid fa-jet-fighter" id="plan-img" />
     </div>
   </div>
 </template>

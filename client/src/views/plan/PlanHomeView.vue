@@ -2,10 +2,11 @@
   <div id="plan-page">
     <nav class="nav">
       <ul>
-        <li v-for="item in nav" v-bind:key="item.name" class="nav-item" :class="{active:item.routeName==tapName}" @click="goPage(item)">
+        <li v-for="item in nav" v-bind:key="item.name" class="nav-item" @click="goPage(item)">
             <div class="item-box">
               <p>{{ item.name }}</p>
             </div>
+            <div class="deactive" :class="{active:item.routeName==tapName}"></div>
         </li>
       </ul>
     </nav>
@@ -23,10 +24,11 @@
   margin-right:0.2rem;
   .nav{
     margin-top:2rem;
-    margin-bottom: 1rem;
-
+    padding-bottom: 0.2rem;
+    margin-bottom: 0.5rem;
   }
   .contents{
+    box-shadow: inset 0rem 1rem 0.5rem 0rem rgb(255, 255, 255);
     flex:1;
     height: 100%;
     overflow: hidden;
@@ -41,7 +43,7 @@
       width: 100%;
       height: 100%;
       cursor: pointer;
-      border-bottom: 2px solid rgba(128, 128, 128, 0.486);
+      // border-bottom: 1px solid rgba(128, 128, 128, 0.37);
       .item-box{
         text-align: center;
         padding-top:0.5rem;
@@ -52,13 +54,21 @@
         }
       }
     }
-    .active{
-      box-shadow: 1px -2px 2px #444;
-      border-radius: 10px 10px 0px 0px;
-      border: 2px solid rgba(128, 128, 128, 0.486);
-      border-bottom: 0px solid rgba(128, 128, 128, 0.486);
-      // background-color: rgba(0, 128, 0, 0.623);
+
+    .deactive{
+      width: 0%;
+      border-bottom: 0.3rem solid $green;
       color: $green;
+      transition:all ease 0.5s 0s;
+      margin:auto;
+    }
+    .active{
+      // box-shadow: 1px -2px 2px #444;
+      // border-radius: 10px 10px 0px 0px;
+      // border: 2px solid rgba(128, 128, 128, 0.486);
+      // background-color: rgba(0, 128, 0, 0.623);
+      border-bottom: 0.3rem solid $green;
+      width:100%;
     }
   }
 }

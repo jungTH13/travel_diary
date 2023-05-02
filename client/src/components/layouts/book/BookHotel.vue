@@ -7,10 +7,14 @@
         <div class="book-contents full-hidden">
             <table>
                 <tbody>
+                    <th>
+                        <font-awesome-icon icon="fa-solid fa-book-bookmark" class="icon"/>
+                        타이틀
+                    </th>
                     <tr>
                         <td>
                             <div>
-                                <font-awesome-icon icon="fa-solid fa-book-bookmark" class="icon"/>
+                               
                                 <input type="text" placeholder="타이틀" v-model="book.title">
                             </div>
                         </td>
@@ -20,10 +24,14 @@
 
             <table>
                 <tbody>
+                    <th>
+                        <font-awesome-icon icon="fa-solid fa-location-dot" class="icon"/>
+                        호텔 찾기
+                    </th>
                     <tr>
                         <td>
                             <div>
-                                <font-awesome-icon icon="fa-solid fa-hotel" class="icon"/>
+                                
                                 <input type="text" placeholder="호텔 이름" v-model="book.name">
                             </div>
                         </td>
@@ -33,7 +41,7 @@
                     <tr>
                         <td>
                             <div>
-                                <font-awesome-icon icon="fa-solid fa-location-dot" class="icon"/>
+                                
                                 <input type="text" placeholder="주소" v-model="book.address">
                                 <MapLocationIcon :search-text="searchText" v-model="mapResult" :width="iconWidth" :height="iconheight" />
                                 
@@ -46,10 +54,14 @@
 
             <table>
                 <tbody>
+                    <th>
+                        <font-awesome-icon icon="fa-solid fa-calendar-check" class="icon" />
+                        기간 설정
+                    </th>
                     <tr>
                         <td class="width:50%">
                             <div>
-                                <font-awesome-icon icon="fa-solid fa-calendar-check" class="icon" />
+                                
                                 <div class="date-picker">
                                     <DateTime v-model="book.checkinDate" placeholder="체크인" />
                                 </div>
@@ -57,7 +69,7 @@
                         </td>
                         <td class="width:50%">
                             <div>
-                                <font-awesome-icon icon="fa-solid fa-calendar-check" class="icon" />
+                                
                                 <div class="date-picker">
                                     <DateTime v-model="book.checkoutDate" placeholder="체크아웃" />
                                 </div>
@@ -69,6 +81,10 @@
 
             <table>
                 <tbody>
+                    <th>
+                        <font-awesome-icon icon="fa-solid fa-book-open-reader" class="icon" />
+                        예약 번호
+                    </th>
                     <tr>
                         <td><input type="text" placeholder="예약 번호" v-model="book.reservationNumber"></td>
                     </tr>
@@ -77,6 +93,10 @@
 
             <table>
                 <tbody>
+                    <th>
+                        <font-awesome-icon icon="fa-solid fa-phone" class="icon" />
+                        전화번호
+                    </th>
                     <tr>
                         <td><input type="text" placeholder="전화번호" v-model="book.phone"></td>
                     </tr>
@@ -85,6 +105,9 @@
 
             <table>
                 <tbody>
+                    <th>
+                        메모
+                    </th>
                     <tr>
                         <td><textarea placeholder="메모" v-model="book.memo" style="border:0px;"></textarea></td>
                     </tr>

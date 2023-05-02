@@ -7,10 +7,14 @@
         <div class="book-contents full-hidden">
             <table>
                 <tbody>
+                    <th>
+                        <font-awesome-icon icon="fa-solid fa-book-bookmark" class="icon"/>
+                        타이틀
+                    </th>
                     <tr>
                         <td>
                             <div>
-                                <font-awesome-icon icon="fa-solid fa-book-bookmark" class="icon"/>
+                                
                                 <input type="text" placeholder="타이틀" v-model="book.title">
                             </div>
                         </td>
@@ -20,15 +24,20 @@
 
             <table>
                 <tbody>
+                    <th>
+                        <font-awesome-icon icon="fa-solid fa-car-side" class="icon" />
+                        출발지
+                    </th>
                     <tr>
-                        <td style="width:45%">
+                        <td >
                             <div>
-                                <font-awesome-icon icon="fa-solid fa-car-side" class="icon" />
+                                
                                 <input type="text" placeholder="출발지" v-model="book.departLocation">
                                 <MapLocationIcon :search-text="book.departLocation" v-model="departMapResult" :width="iconWidth" :height="iconheight" />
-                                
                             </div>
                         </td>
+                    </tr>
+                    <tr>
                         <td>
                             <div>
                                 <font-awesome-icon icon="fa-solid fa-calendar-check" class="icon" />
@@ -39,16 +48,23 @@
                         </td>
                     </tr>
                 </tbody>
+            </table>
 
+            <table>
                 <tbody>
+                    <th>
+                        <font-awesome-icon icon="fa-solid fa-car" class="icon" />
+                        도착지
+                    </th>
                     <tr>
                         <td>
                             <div>
-                                <font-awesome-icon icon="fa-solid fa-car" class="icon" />
                                 <input type="text" placeholder="도착지" v-model="book.arriveLocation">
                                 <MapLocationIcon :search-text="book.arriveLocation" v-model="arriveMapResult" :width="iconWidth" :height="iconheight" />
                             </div>
                         </td>
+                    </tr>
+                    <tr>
                         <td>
                             <div>
                                 <font-awesome-icon icon="fa-solid fa-calendar-check" class="icon" />
@@ -59,19 +75,17 @@
                         </td>
                     </tr>
                 </tbody>
+
             </table>
+
 
             <table>
                 <tbody>
+                    <tr>
+                       <td><div class="sub-title"> 좌석과 플랫폼</div></td>
+                    </tr>
                     <tr>
                         <td><input type="text" placeholder="플랫폼" v-model="book.boardingGate"></td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <table>
-                <tbody>
-                    <tr>
                         <td><input type="text" placeholder="좌석" v-model="book.seatNumber"></td>
                     </tr>
                 </tbody>
@@ -79,6 +93,10 @@
 
             <table>
                 <tbody>
+                    <th>
+                        <font-awesome-icon icon="fa-solid fa-book-open-reader" class="icon" />
+                        예약 번호
+                    </th>
                     <tr>
                         <td><input type="text" placeholder="예약 번호" v-model="book.reservationNumber"></td>
                     </tr>
@@ -87,6 +105,9 @@
 
             <table>
                 <tbody>
+                    <th>
+                        메모
+                    </th>
                     <tr>
                         <td><textarea placeholder="메모" v-model="book.memo" style="border:0px;"></textarea></td>
                     </tr>

@@ -7,10 +7,14 @@
         <div class="book-contents full-hidden">
             <table>
                 <tbody>
+                    <th>
+                        <font-awesome-icon icon="fa-solid fa-book-bookmark" class="icon"/>
+                        타이틀
+                    </th>
                     <tr>
                         <td>
                             <div>
-                                <font-awesome-icon icon="fa-solid fa-book-bookmark" class="icon"/>
+
                                 <input type="text" placeholder="타이틀" v-model="book.title">
                             </div>
                         </td>
@@ -20,14 +24,20 @@
 
             <table>
                 <tbody>
+                    <th>
+                        <font-awesome-icon icon="fa-solid fa-plane-departure" class="icon"/>
+                        출발지
+                    </th>
                     <tr>
                         <td style="width:45%">
                             <div>
-                                <font-awesome-icon icon="fa-solid fa-plane-departure" class="icon"/>
+                                
                                 <input type="text" placeholder="출발지" v-model="book.departLocation">
                                 <MapLocationIcon :search-text="book.departLocation" v-model="departMapResult" :width="iconWidth" :height="iconheight" />
                             </div>
                         </td>
+                    </tr>
+                    <tr>
                         <td>
                             <div>
                                 <font-awesome-icon icon="fa-solid fa-calendar-check" class="icon" />
@@ -38,16 +48,23 @@
                         </td>
                     </tr>
                 </tbody>
+            </table>
 
+            <table>
                 <tbody>
+                    <th>
+                        <font-awesome-icon icon="fa-solid fa-plane-arrival" class="icon" />
+                        도착지
+                    </th>
                     <tr>
                         <td>
                             <div>
-                                <font-awesome-icon icon="fa-solid fa-plane-arrival" class="icon" />
                                 <input type="text" placeholder="도착지" v-model="book.arriveLocation">
                                 <MapLocationIcon :search-text="book.arriveLocation" v-model="arriveMapResult" :width="iconWidth" :height="iconheight" />
                             </div>
                         </td>
+                    </tr>
+                    <tr>
                         <td>
                             <div>
                                 <font-awesome-icon icon="fa-solid fa-calendar-check" class="icon" />
@@ -62,9 +79,16 @@
 
             <table>
                 <tbody>
+                    <th>
+                        <font-awesome-icon icon="fa-solid fa-ticket" class="icon" />
+                        상세정보
+                    </th>
+                    <tr>
+                        <td><div class="sub-title">항공사와 편명</div></td>
+                        
+                    </tr>
                     <tr>
                         <td><input type="text" placeholder="편명" v-model="book.flightNumber"></td>
-                        <td><input type="text" placeholder="좌석" v-model="book.seatNumber"></td>
                         <td><input type="text" placeholder="항공사" v-model="book.airline"></td>
                     </tr>
                 </tbody>
@@ -73,7 +97,10 @@
             <table>
                 <tbody>
                     <tr>
-                        <td style="width:33%;">
+                       <td><div class="sub-title"> 탑승시간과 좌석</div></td>
+                    </tr>
+                    <tr>
+                        <td>
                             <div>
                                 <font-awesome-icon icon="fa-regular fa-clock" class="icon" />
                                 <div class="date-picker">
@@ -81,6 +108,17 @@
                                 </div>
                             </div>
                         </td>
+                        <td><input type="text" placeholder="좌석" v-model="book.seatNumber"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <tbody>
+                    <tr>
+                       <td><div class="sub-title"> 탑승구와 터미널</div></td>
+                    </tr>
+                    <tr>
                         <td><input type="text" placeholder="탑승구" v-model="book.boardingGate"></td>
                         <td><input type="text" placeholder="터미널" v-model="book.terminal"></td>
                     </tr>
@@ -89,6 +127,10 @@
 
             <table>
                 <tbody>
+                    <th>
+                        <font-awesome-icon icon="fa-solid fa-book-open-reader" class="icon" />
+                        예약 번호
+                    </th>
                     <tr>
                         <td><input type="text" placeholder="예약 번호" v-model="book.reservationNumber"></td>
                     </tr>
@@ -97,6 +139,9 @@
 
             <table>
                 <tbody>
+                    <th>
+                        메모
+                    </th>
                     <tr>
                         <td><textarea placeholder="메모" v-model="book.memo" style="border:0px;"></textarea></td>
                     </tr>

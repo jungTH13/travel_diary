@@ -4,7 +4,7 @@
 
 <div v-if="mapVisible" class="overlay">
     <div class="full" >
-        <MapGoogle :search-text="searchText" v-model="searchMapResult" :is-overlay="isOverlay" @cancle="cancle" />
+        <MapGoogle :search-text="searchText" v-model="searchMapResult" :is-overlay="isOverlay" :is-registration="true" @cancle="cancle" />
     </div>
 </div>
 
@@ -20,7 +20,7 @@
     color: red !important;;
 }
 .overlay{
-    position:absolute;
+    position:fixed;
     z-index: 100000;
     left:0px;
     top:0px;

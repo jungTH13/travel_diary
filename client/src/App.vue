@@ -14,15 +14,16 @@
 </template>
 
 <script setup>
-import { RouterLink, RouterView, useRouter } from "vue-router";
+import { RouterLink, RouterView, useRoute, useRouter } from "vue-router";
 import TheHeader from "../src/components/TheHeader.vue";
 import * as API from "./composable/api";
 import MapGoogle from "./components/MapGoogle.vue";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useCommonStore } from "./stores/common";
 
 
 const router = useRouter();
+const route = useRoute()
 const commonStore = useCommonStore()
 
 // # 인터셉터 설정 # //
@@ -62,6 +63,10 @@ API.api.interceptors.response.use(
     return Promise.reject(error);
 });
 
+watch(()=>route.name,()=>{
+
+})
+
 const mainSubVisible= computed(()=>commonStore.mainSubVisible)
 
 
@@ -87,13 +92,15 @@ onMounted(()=>{
   min-width: 300px;
   max-width: 720px;
   display: flex; 
+  overflow: hidden;
   flex-direction: column;
   padding: 0 0 1.2rem 0;
+  position: relative;
 
   .head{
-    height: 3rem;
+    height: 4.5rem;
     width: 100%;
-    padding: 0 1.2rem 0 1.2rem;
+    // padding: 0 1.2rem 0 1.2rem;
   }
 
   .body{
@@ -103,6 +110,7 @@ onMounted(()=>{
     display:flex;
     flex-direction: column;
     overflow: hidden;
+    transition: all ease 1.5s 0s;
   }
 }
 .main-sub{
