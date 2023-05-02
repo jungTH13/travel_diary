@@ -59,7 +59,7 @@ export const useScheduleStore = defineStore("schedule", () => {
 
       startDate.setDate(startDate.getDate()+1)
       if(dailyList[now]) return dailyList[now]
-      else []
+      else return []
     })
   }
 

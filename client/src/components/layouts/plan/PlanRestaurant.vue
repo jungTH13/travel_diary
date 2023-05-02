@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="plan">
+    <div class="plan pr">
         <div class="plan-head">
             <div id="name">
                 <font-awesome-icon icon="fa-solid fa-utensils" id="restaurant-icon"/>

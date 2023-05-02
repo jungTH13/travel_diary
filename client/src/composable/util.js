@@ -42,14 +42,23 @@ export const DateToStringFormat1 = (date)=>{
  */
 export const toAMPMString = (date)=>{
   if(!date || date === '')return ''
-  
-  let str = ''
-  const time = date.split('T')[1]
-  const hour = parseInt(time.split(':')[0])
-  const min = parseInt(time.split(':')[1])
+  try{
+    let str = ''
+    const time = date.split('T')[1]
+    let hour = parseInt(time.split(':')[0])
+    const min = parseInt(time.split(':')[1])
 
-  if(hour>=12) return `PM ${hour<10?`0${hour}`:hour} : ${min<10?`0${min}`:min}`
-  else return `AM ${hour<10?`0${hour}`:hour} : ${min<10?`0${min}`:min}`
+    if(hour>=12) {
+      if(hour>12) hour-=12
+      return `PM ${hour<10?`0${hour}`:hour} : ${min<10?`0${min}`:min}`
+    }
+    else return `AM ${hour<10?`0${hour}`:hour} : ${min<10?`0${min}`:min}`
+  }
+  catch(error){
+    console.log(date)
+    console.log(error)
+    return ''
+  }
 }
 
 /**

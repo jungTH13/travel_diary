@@ -7,11 +7,16 @@
 <style lang="scss"></style>
 
 <script setup>
-import { RouterView } from 'vue-router';
+import { RouterView, useRoute } from 'vue-router';
 import { useTravelStore } from '../../stores/travel';
-import { onBeforeUnmount } from 'vue';
+import { onBeforeMount, onBeforeUnmount } from 'vue';
 
 const travelStore = useTravelStore()
+const route = useRoute()
+
+onBeforeMount(()=>{
+    if(route.params.id)travelStore.getTravel(route.params.id)
+})
 
 onBeforeUnmount(()=>{
     travelStore.resetTravel();

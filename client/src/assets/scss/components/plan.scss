@@ -1,13 +1,33 @@
 .plan{
     width:100%;
-    background-color: $gray;
-    border-radius: 10px;
+    // background-color: $gray;
+    border-radius: 5px;
     min-height:8rem;
     padding:1.5rem;
 
+    &.etc{
+        box-shadow: 0.05rem 0.05rem 0.5rem 0rem gray;
+    }
+
+    &.ph{
+        box-shadow: 0.05rem 0.05rem 0.5rem 0rem rgba(93, 0, 129, 0.486);
+    }
+
+    &.pa{
+        box-shadow: 0.05rem 0.05rem 0.5rem 0rem rgba(4, 0, 255, 0.267);
+    }
+
+    &.pr{
+        box-shadow: 0.05rem 0.05rem 0.5rem 0rem rgba(1, 128, 8, 0.247);
+    }
+
+    &.pt{
+        box-shadow: 0.05rem 0.05rem 0.5rem 0rem rgba(2, 0, 143, 0.315);
+    }
+
     .plan-head{
 
-        border-bottom: 0.2rem solid gray;
+        border-bottom: 0.2rem solid $gray;
         padding-bottom: 1vh;
         display: flex;
         flex-direction: row;
@@ -81,6 +101,3 @@
     }
 }
 
-.etc{
-    background-color: rgb(253, 224, 204);
-}

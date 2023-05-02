@@ -5,34 +5,40 @@
       <div id="flag-img"></div>
       <div id="item-detail">
         <p id="item-title">{{ planItem.title }}</p>
-        <p id="item-date" class="text-sm">
+        <p id="item-date">
           {{ planItem.fromDate.split('T')[0] }} - {{ planItem.endDate.split('T')[0] }}
         </p>
       </div>
     </div>
 
-    <div>
-      <div id="edit-item" @click="editTravel">
-        <font-awesome-icon icon="fa-solid fa-pen" id="edit-item-img" />
+    <div class="edit">
+      <div v-if="!planSettingState" id="edit-item" @click="planSettingState= true">
+        <font-awesome-icon icon="fa-solid fa-ellipsis" id="edit-item-img" class="icon" />
+      </div>
+      <div v-else id="edit-item">
+        <font-awesome-icon icon="fa-solid fa-trash-can" id="edit-item-img" class="icon" />
+        <font-awesome-icon icon="fa-solid fa-pen" id="edit-item-img" @click="editTravel" class="icon"/>
       </div>
     </div>
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #travel-plan-item {
   cursor: pointer;
-  box-shadow: 0px 0px 5px #444;
-  border-radius: 8px;
+  // box-shadow: 0px 0px 5px #444;
+  // border-radius: 8px;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 15px 10px 10px;
-  margin: 1rem 0;
+  // padding: 10px 15px 10px 10px;
+  // margin: 1rem 0;
+  margin-bottom: 1rem;
+  padding:1rem;
 
   &:hover{
-    border: 1px solid $green;
+    background-color: $gray;
   }
 
   #item-info {
@@ -50,28 +56,42 @@
     }
 
     #item-title {
-      font-size:1.3rem;
+      font-size:1.7rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
     }
 
-  }
-  #edit-item {
-    width: 3.5rem;
-    height: 3rem;
-    padding:0.8rem;
+    #item-date{
+      font-size:1.4rem;
+    }
 
-    #edit-item-img {
-      vertical-align:1em;
-      width: 100%;
+  }
+  .edit{
+    transition: all ease 1.5s 0s;
+    #edit-item {
+      // width: 3.5rem;
+      margin-right:1rem;
       height: 100%;
+      display: flex;
+
+      #edit-item-img {
+        margin:auto;
+        margin-left: 2rem;
+        vertical-align:1em;
+        .icon{
+          height: 2rem;
+          width: 2rem;
+          cursor: pointer;
+        }
+      }
     }
   }
+  
 }
 </style>
 
 <script setup>
-import { defineProps } from "vue";
+import { defineProps, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useTravelStore } from "../stores/travel";
 
@@ -81,6 +101,8 @@ const props = defineProps({
 
 const router = useRouter()
 const travelStore = useTravelStore()
+
+const planSettingState = ref(false)
 
 const editPlan = ()=>{
   router.push({

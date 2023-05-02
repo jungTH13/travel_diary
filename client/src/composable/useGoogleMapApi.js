@@ -138,16 +138,31 @@ export const useGoogleMapApi = ()=>{
      * 
      * @param {Object} marker 
      * @param {Object} info
+     * @param {'click'|'mousehover'} type 
      * 
      * 마커 클릭시 인포 정보 시각화 설정 
      */
-    const setMarkerInfo = (marker,info)=>{
-        marker.addListener("click",()=>{
-            info.open({
-                anchor:marker,
-                map:mapObj
+    const setMarkerInfo = (marker,info,type='click')=>{
+        if(type=='click'){
+            marker.addListener(type,()=>{
+                info.open({
+                    anchor:marker,
+                    map:mapObj
+                })
             })
-        })
+        }
+        if(type='mousehover'){
+            marker.addListener('mouseover',()=>{
+                info.open({
+                    anchor:marker,
+                    map:mapObj
+                })
+            })
+            marker.addListener('mouseout',()=>{
+                info.close()
+            })
+        }
+        
     }
 
 
@@ -159,20 +174,26 @@ export const useGoogleMapApi = ()=>{
      * 
      * 입력된 좌표를 맵에 표시하고 화면을 전환합니다.
      */
-    const setSvgMarker = (x,y,isTrace,svgPath)=>{
+    const setSvgMarker = (x,y,isTrace,svgPath,label=null)=>{
         if(mapObj === null) throw new Error("지도가 생성되어 있지 않습니다!")
 
         const options = {
             position: {lat:x,lng:y},
             map: mapObj,
+            // label:{
+            //     text:label,
+            //     fontWeight:'600',
+                
+            // },
             icon:{
                 path: svgPath,
                 fillColor: 'blue',
                 fillOpacity: 0.6,
                 scale: 0.05,
                 strokeColor: 'blue',
-                strokeWeight: 0.8
-            }
+                strokeWeight: 0.8,                
+                anchor: new google.maps.Point(200, 500),
+            },
         }
         
         const marker = new window.google.maps.Marker(options)
@@ -241,6 +262,33 @@ export const useGoogleMapApi = ()=>{
         mapObj.setCenter({lat:x,lng:y})
         mapObj.setZoom(16)
     }
+    /**
+     * 
+     * @param {Array} poligonCoordinateList [{lat: x, lng: y},...]
+     */
+    const setPoligonLine = ( poligonCoordinateList)=>{
+        const lineSymbol = {
+            path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+            strokeOpacity: 0.8,
+            scale: 1.5,
+        };
+        
+        const flightPath = new google.maps.Polyline({
+            path: poligonCoordinateList,
+            // geodesic: true,
+            strokeColor: "green",
+            strokeOpacity: 0,
+            // strokeWeight: 2,
+            icons:[{
+                icon: lineSymbol,
+                offset: "0",
+                repeat: "10px",
+            }]
+        })
+        flightPath.setMap(mapObj)
+
+        return flightPath
+    }
 
     return{
         init,
@@ -251,6 +299,7 @@ export const useGoogleMapApi = ()=>{
         setMarker,
         setMarkerInfo,
         setSvgMarker,
+        setPoligonLine,
         moveMarker,
         searchPlace,
         createInfoWindow,

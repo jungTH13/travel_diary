@@ -1,6 +1,6 @@
 .plan-container {
   margin: 0px 0px 0;
-  padding-top:6rem;
+
   position: relative;
   display: flex;
   flex-direction: column;
@@ -8,6 +8,12 @@
 
   section{
     overflow: auto;
+
+    #travel-country{
+      margin-top:2rem;
+      font-size: 2rem;
+      font-weight: 600;
+    }
   }
 
   .icon{
@@ -65,26 +71,26 @@
     }
   }
 
-  .plan-footer {
-    bottom: 0%;
-    width: 100%;
-    overflow: hidden;
-    display: flex;
-    justify-content: space-between;
+  // .plan-footer {
+  //   bottom: 0%;
+  //   width: 100%;
+  //   overflow: hidden;
+  //   display: flex;
+  //   justify-content: space-between;
 
-    button {
-      padding: 1rem 1rem;
-      margin: 0px 5px 0px 5px;
-      border: 1px solid $green;
-      background-color: $green;
-      border-radius: 5px;
-      width: 100%;
-      font-size:1.2rem;
+  //   button {
+  //     padding: 1rem 1rem;
+  //     margin: 0px 5px 0px 5px;
+  //     border: 1px solid $green;
+  //     background-color: $green;
+  //     border-radius: 5px;
+  //     width: 100%;
+  //     font-size:1.2rem;
 
-      &:hover {
-        background-color: white;
-        border: 1px solid $green;
-      }
-    }
-  }
+  //     &:hover {
+  //       background-color: white;
+  //       border: 1px solid $green;
+  //     }
+  //   }
+  // }
 }

@@ -7,10 +7,13 @@
         <div class="book-contents full-hidden">
             <table>
                 <tbody>
+                    <th>
+                        <font-awesome-icon icon="fa-solid fa-book-bookmark" class="icon"/>
+                        타이틀
+                    </th>
                     <tr>
                         <td>
                             <div>
-                                <font-awesome-icon icon="fa-solid fa-book-bookmark" class="icon"/>
                                 <input type="text" placeholder="타이틀" v-model="book.title">
                             </div>
                         </td>
@@ -20,11 +23,15 @@
 
             <table>
                 <tbody>
+                    <th>
+                        <font-awesome-icon icon="fa-solid fa-location-dot" class="icon"/>
+                        음식점 찾기
+                    </th>
                     <tr>
                         <td>
                             <div>
-                                <font-awesome-icon icon="fa-solid fa-hotel" class="icon"/>
-                                <input type="text" placeholder="음식점 이름" v-model="book.name">
+                                
+                                <input type="text" placeholder="이름을 입력해주세요" v-model="book.name">
                             </div>
                         </td>
                     </tr>
@@ -33,8 +40,7 @@
                     <tr>
                         <td>
                             <div>
-                                <font-awesome-icon icon="fa-solid fa-location-dot" class="icon"/>
-                                <input type="text" placeholder="주소" v-model="book.address">
+                                <input type="text" placeholder="주소 작성하고 검색할 수 있어요" v-model="book.address">
                                 <MapLocationIcon :search-text="searchText" v-model="mapResult" :width="iconWidth" :height="iconheight" />
                             </div>
                         </td>
@@ -45,12 +51,16 @@
 
             <table>
                 <tbody>
+                    <th>
+                        <font-awesome-icon icon="fa-solid fa-calendar-check" class="icon" />
+                        날짜
+                    </th>
                     <tr>
                         <td>
                             <div>
-                                <font-awesome-icon icon="fa-solid fa-calendar-check" class="icon" />
+                                
                                 <div class="date-picker">
-                                    <DateTime v-model="book.date" />
+                                    <DateTime v-model="book.date" placeholder="예약날짜를 설정해주세요" />
                                 </div>
                             </div>
                         </td>
@@ -60,6 +70,10 @@
 
             <table>
                 <tbody>
+                    <th>
+                        <font-awesome-icon icon="fa-solid fa-book-open-reader" class="icon" />
+                        예약 번호
+                    </th>
                     <tr>
                         <td><input type="text" placeholder="예약 번호" v-model="book.reservationNumber"></td>
                     </tr>
@@ -67,6 +81,10 @@
             </table>
 
             <table>
+                <th>
+                    <font-awesome-icon icon="fa-solid fa-phone" class="icon" />
+                    전화번호
+                </th>
                 <tbody>
                     <tr>
                         <td><input type="text" placeholder="전화번호" v-model="book.phone"></td>
@@ -76,6 +94,9 @@
 
             <table>
                 <tbody>
+                    <th>
+                        메모
+                    </th>
                     <tr>
                         <td><textarea placeholder="메모" v-model="book.memo" style="border:0px;"></textarea></td>
                     </tr>
@@ -104,8 +125,8 @@ const bookStore = useBookStore()
 const book = computed(()=>bookStore.book)
 const searchText = computed(()=> `${book.value.address?book.value.address:''} ${book.value.name?book.value.name:''}`)
 const mapResult = ref({})
-const iconWidth = '1.8rem'
-const iconheight = '1.8rem'
+const iconWidth = '3rem'
+const iconheight = '3rem'
 
 const init = ()=>{
     if(book.value.x && book.value.y){

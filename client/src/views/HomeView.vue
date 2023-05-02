@@ -1,6 +1,9 @@
 <template>
   <div style="height:100%">
     <div id="main-page">
+      <div id="ongoing-trip-contrainer">
+
+      </div>
       <router-link to="/travel/country" id="add-plan-button">
         <span class="plus-button orange"
           ><font-awesome-icon icon="fa-solid fa-plus" id="plus-button-img"
@@ -35,12 +38,22 @@
   display:flex;
   flex-direction: column;
 
+  #ongoing-trip-contrainer{
+    height:5rem;
+  }
+
   #add-plan-button {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0 auto;
+    margin-top:2rem;
     padding: 2rem 0;
+    width:100%;
+    background-color: rgba(204, 204, 204, 0.116);
+    box-shadow: 0 0 10px 5px white;
+    z-index: 100000;
+    position: inherit;
 
     > span:last-of-type {
       margin-left:1rem;
@@ -96,15 +109,6 @@ import { useTravelStore } from "../stores/travel";
 const router = useRouter();
 const store = useTravelStore();
 const travelList = store.travelList;
-
-const editTravel = (travelId)=>{
-  router.push({
-    name:"schedule",
-    params:{
-      id:travelId
-    }
-  })
-}
 
 onBeforeMount(() => {
   console.log("Before Mount!");
