@@ -6,7 +6,6 @@ import com.travelProject.travelDiary.service.CommonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,15 +36,4 @@ public class CommonController {
         result.put("countryList", selectListCountry);
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }
-
-    @PostMapping("/common/countryLike")
-    public ResponseBody selectCountryLike(@RequestBody Country country) {
-        Map<String, Object> result = new HashMap<>();
-
-        String name = country.getName();
-        List<Map<String, Object>> selectListCountry = commonService.selectCountryLike(name);
-        result.put("countryList", selectListCountry);
-        return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
-    }
-
 }

@@ -1,7 +1,5 @@
 package com.travelProject.travelDiary.service;
 
-import com.travelProject.travelDiary.entity.Country;
-
 import com.travelProject.travelDiary.repository.CommonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,10 +18,5 @@ public class CommonService {
 
     public List<Map<String, Object>> selectCountry(String code) {
         return commonRepository.selectCountry(code);
-    }
-
-    public List<Map<String, Object>> selectCountryLike(String name) {
-        String name2 = "%" + name + "%";
-        return commonRepository.selectCountryLike(name2);
     }
 }
