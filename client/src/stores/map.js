@@ -7,9 +7,11 @@ import { useGoogleMapApi } from "../composable/useGoogleMapApi";
 
 
 export const useMapStore = defineStore("map", () => {
-    let dailyMarkerList = [];
-    let markerList = [];
+    let dailyMarkerList = []; //여행 일자 길이를 가지dalayPlan과 매칭되어 보관되는 2dArray
+    let markerList = []; //등록된 모든 마커를 보관 1dArray
+    const markerListMappingPlanList = ref([]) //등록된 모든 마커와 매칭되는 플랜 리스트트
     let poligonline = null
+    const lastClickMarkerIndex = ref(0) 
     const markerListChange = ref(false)
     const svgicons = {
         'pt':"M416 0C400 0 288 32 288 176V288c0 35.3 28.7 64 64 64h32V480c0 17.7 14.3 32 32 32s32-14.3 32-32V352 240 32c0-17.7-14.3-32-32-32zM64 16C64 7.8 57.9 1 49.7 .1S34.2 4.6 32.4 12.5L2.1 148.8C.7 155.1 0 161.5 0 167.9c0 45.9 35.1 83.6 80 87.7V480c0 17.7 14.3 32 32 32s32-14.3 32-32V255.6c44.9-4.1 80-41.8 80-87.7c0-6.4-.7-12.8-2.1-19.1L191.6 12.5c-1.8-8-9.3-13.3-17.4-12.4S160 7.8 160 16V150.2c0 5.4-4.4 9.8-9.8 9.8c-5.1 0-9.3-3.9-9.8-9L127.9 14.6C127.2 6.3 120.3 0 112 0s-15.2 6.3-15.9 14.6L83.7 151c-.5 5.1-4.7 9-9.8 9c-5.4 0-9.8-4.4-9.8-9.8V16zm48.3 152l-.3 0-.3 0 .3-.7 .3 .7z",
@@ -76,17 +78,32 @@ export const useMapStore = defineStore("map", () => {
         }
     }
 
+    function reset (){
+        dailyMarkerList = []
+        markerList.forEach(marker=>googleMapApi.removeMarker(marker))
+        markerList = []
+        markerListMappingPlanList.value = []
+        if(poligonline) poligonline.setMap(null)
+    }
+
+    function getSetLastClickMarkerIndexFunc(index){
+
+        return ()=>{
+            console.log('markerclick',index)
+            lastClickMarkerIndex.value = index
+        }
+
+    }
+
     /**
      * 
      * @param {Array} dailyScheduleList 스케쥴의 날자별 정렬된 리스트
      * @param {Array} dailyScheduleVisibleList 날자별 시각화 여부를 담은 리스트 [bool,]
      * @param {String} planTypeVisible 시각화할 여행 타입 입력
+     * @param {boolean} isTrace 생성된 마커로 화면을 이동할지 여부
      */
-    async function setDailyMarkerList(dailyScheduleList,dailyScheduleVisibleList,planTypeVisible=false) {
-        dailyMarkerList = []
-        markerList.forEach(marker=>googleMapApi.removeMarker(marker))
-        markerList = []
-        if(poligonline) poligonline.setMap(null)
+    async function setDailyMarkerList(dailyScheduleList,dailyScheduleVisibleList,planTypeVisible=false,isTrace=true) {
+        reset()
         
         const poligonCoordinateList = []
         const markerBuf = new MakerBuf()
@@ -125,7 +142,12 @@ export const useMapStore = defineStore("map", () => {
                     googleMapApi.setMarkerInfo(marker1,info1,'mousehover')
                     googleMapApi.setMarkerInfo(marker2,info2,'mousehover')
                     
+                    // 마커 리스트를 데일리 2dArray 타입과 1dArray로 plan 정보 저장 및 마커 클릭인덱스 설정
                     dayMarkerList.push([marker1,marker2])
+                    markerListMappingPlanList.value.push(plan)
+                    googleMapApi.setMarkerEvent(marker1,getSetLastClickMarkerIndexFunc(markerListMappingPlanList.value.length-1),'click')
+                    markerListMappingPlanList.value.push(plan)
+                    googleMapApi.setMarkerEvent(marker2,getSetLastClickMarkerIndexFunc(markerListMappingPlanList.value.length-1),'click')
                 }
                 else{
                     const marker = markerBuf.getMarker()
@@ -133,8 +155,10 @@ export const useMapStore = defineStore("map", () => {
                     googleMapApi.moveMarker(marker,plan.x,plan.y,false)
                     googleMapApi.setMarkerInfo(marker,info,'mousehover')
                     
-                    
+                    // 마커 리스트를 데일리 2dArray 타입과 1dArray로 plan 정보 저장 및 마커 클릭인덱스 설정
                     dayMarkerList.push(marker)
+                    markerListMappingPlanList.value.push(plan)
+                    googleMapApi.setMarkerEvent(marker,getSetLastClickMarkerIndexFunc(markerListMappingPlanList.value.length-1),'click')
                 }
             }
             dailyMarkerList.push(dayMarkerList)
@@ -149,9 +173,9 @@ export const useMapStore = defineStore("map", () => {
         console.log("markerListChange:",markerListChange.value)
         
         //변경 및 마커가 존재할 경우 맵 이동
-        if(!bounds.getCount()) return
+        if(!bounds.getCount()||!isTrace) return
         const {minX,minY,maxX,maxY} = bounds.resolve()
-        googleMapApi.setMapLatLngBounds(minX,minY,maxX,maxY)
+        googleMapApi.setMapLatLngBounds(minX*0.996,minY,maxX,maxY)
     }
 
     function _createInfoForm (name,cid){
@@ -161,7 +185,6 @@ export const useMapStore = defineStore("map", () => {
             </div>
             <h1 id="firstHeading" class="firstHeading" style="font-size: larger; font-weight: 600;">${name}</h1>
             <div id="bodyContent">
-                    
             </div>
         </div>
         `
@@ -180,6 +203,8 @@ export const useMapStore = defineStore("map", () => {
     return {
         dailyMarkerList,
         markerList,
+        markerListMappingPlanList,
+        lastClickMarkerIndex,
         setDailyMarkerList,
         removeMarkerAll,
         getdailyMarkerListObj,

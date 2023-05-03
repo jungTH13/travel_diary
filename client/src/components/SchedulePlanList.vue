@@ -4,26 +4,43 @@
     <v-carousel v-model="nowShowPlan" class="plan-list-box" show-arrows="hover" hide-delimiter-background>
     
 
-        <v-carousel-item v-for="mappingData in mappingScheduleList" style="height:100%;">
-                <div class="d-flex fill-height align-center plan-info-box col" >
-
+        <v-carousel-item v-for="mappingData,index in mappingScheduleList" style="height:100%;">
+                <div class="d-flex fill-height align-center plan-info-box col" v-if="index===0 || mappingScheduleList[index-1] !== mappingData">
                     <div class="contents-name row">
-                        <div style="white-space:nowrap;">{{  mappingData[0].name || mappingData[0].departLocation }}</div> 
+                        <div style="white-space:nowrap;">{{  mappingData.name || `${mappingData.departLocation}` }}</div> 
                         <div style="width:100%;"></div>
-                        <div style="white-space:nowrap;"> {{ toAMPMString(mappingData[0].departDate || mappingData[0].reservationDate || mappingData[0].orderDate) }}</div>
+                        <div style="white-space:nowrap;"> {{ toAMPMString(mappingData.departDate || mappingData.reservationDate || mappingData.orderDate) }} {{ mappingData.departDate?'출발':'' }}</div>
                     </div>
 
                     <div class="plan-box-contents" @click="isBoxContentsClick = !isBoxContentsClick">
                         <div :class="{mainDeactive:isBoxContentsClick}" class="plan-box-contents-main" >
-                            <div class="contents-title">{{ mappingData[0].title }}</div>
-                            <div class="contents-text"><div v-html="mappingData[0].memo?.replaceAll('\n','<br/>')"></div></div>
+                            <div class="contents-title">{{ mappingData.title }}</div>
+                            <div class="contents-text"><div v-html="mappingData.memo?.replaceAll('\n','<br/>')"></div></div>
                         </div>
                     
                         <div class="plan-box-contents-options" :class="{optionsActive: isBoxContentsClick}">
                             test
                         </div>
                     </div>
+                </div>
+
+                <div v-else class="d-flex fill-height align-center plan-info-box col">
+                    <div class="contents-name row">
+                        <div style="white-space:nowrap;">{{ mappingData.arriveLocation }}</div> 
+                        <div style="width:100%;"></div>
+                        <div style="white-space:nowrap;"> {{ toAMPMString(mappingData.arriveDate) }} 도착</div>
+                    </div>
+
+                    <div class="plan-box-contents" @click="isBoxContentsClick = !isBoxContentsClick">
+                        <div :class="{mainDeactive:isBoxContentsClick}" class="plan-box-contents-main" >
+                            <div class="contents-title">{{ mappingData.title }}</div>
+                            <div class="contents-text"><div v-html="mappingData.memo?.replaceAll('\n','<br/>')"></div></div>
+                        </div>
                     
+                        <div class="plan-box-contents-options" :class="{optionsActive: isBoxContentsClick}">
+                            test
+                        </div>
+                    </div>
                 </div>
         </v-carousel-item>
 
@@ -35,6 +52,8 @@
 <style lang="scss">
 .schedule-plan-container{
     height:100%;
+    max-width: 700px;
+    margin:auto;
 
 
     .plan-list-box{
@@ -42,7 +61,7 @@
 
         .plan-info-box{
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.103);
+            // background-color: rgba(0, 0, 0, 0.103);
             padding-top: 1rem;
 
             .contents-name{
@@ -128,45 +147,41 @@ const googlMapApi = useGoogleMapApi()
 const markerList = ref([])
 const dailyScheduleList = computed(()=>scheduleStore.dailyScheduleList)
 const showDailyScheduleMarkerList = ref([])
-const mappingScheduleList = ref([])
+const mappingScheduleList = computed(()=>mapStore.markerListMappingPlanList)
 const nowShowPlan = ref(0)
 const isBoxContentsClick = ref(false)
 const optionsHeight = ref("0vh")
+const lastClickMarkerIndex = computed(()=>mapStore.lastClickMarkerIndex)
 
 watch(()=>isBoxContentsClick.value,()=>{
     if(isBoxContentsClick.value===true) optionsHeight.value = "30vh"
     else optionsHeight.value = "0vh"
 })
 
-watch(()=>mapStore.markerListChange,()=>{
-    const dailyMarkerList = mapStore.getdailyMarkerListObj()
-    console.log("watch:",dailyMarkerList,dailyScheduleList.value)
-    const newShowDailyScheduleList = [] 
-    mappingScheduleList.value = []
-
-    for(let i=0;i<dailyMarkerList.length;i++){
-        newShowDailyScheduleList.push([])
-        for(let k=0;k<dailyMarkerList[i]?.length;k++){
-            if(dailyMarkerList[i][k]===null){
-                newShowDailyScheduleList[i].push(null)
-            }
-            else{
-                mappingScheduleList.value.push([dailyScheduleList.value[i][k],dailyMarkerList[i][k]])
-                newShowDailyScheduleList[i].push(dailyScheduleList.value[i][k])
-            }
-            
-        }
-    }
-    showDailyScheduleMarkerList.value = newShowDailyScheduleList
+watch(()=>mappingScheduleList.value,()=>{
+    if(mappingScheduleList.value.length<=nowShowPlan.value)
+        nowShowPlan.value = 0
 })
 
-watch(()=>nowShowPlan.value,()=>{
-    isBoxContentsClick.value = false
+watch(()=>lastClickMarkerIndex.value,()=>{
+    nowShowPlan.value = lastClickMarkerIndex.value
+})
 
+watch(()=>nowShowPlan.value,(newValue,oldValue)=>{
     if(mappingScheduleList.value.length === 0 )return
-    const plan = mappingScheduleList.value[nowShowPlan.value][0]
-    console.log(plan)
-    googlMapApi.moveMap(plan.x,plan.y)
+    if(mappingScheduleList.value.length<=oldValue) return nowShowPlan.value = 0
+
+    isBoxContentsClick.value = false
+    const showIndex = nowShowPlan.value
+
+    
+    const plan = mappingScheduleList.value[showIndex]
+
+    if(showIndex>0 && mappingScheduleList.value[showIndex]===mappingScheduleList.value[showIndex-1])
+        googlMapApi.moveMap(plan.x2,plan.y2)
+    else 
+        googlMapApi.moveMap(plan.x,plan.y)
+    
 })
 
 </script>

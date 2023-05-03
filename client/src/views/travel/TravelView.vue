@@ -15,7 +15,7 @@ const travelStore = useTravelStore()
 const route = useRoute()
 
 onBeforeMount(()=>{
-    if(route.params.id)travelStore.getTravel(route.params.id)
+    // if(route.params.id)travelStore.getTravel(route.params.id)
 })
 
 onBeforeUnmount(()=>{

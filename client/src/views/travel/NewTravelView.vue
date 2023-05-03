@@ -18,16 +18,16 @@
           <span >{{ planDate[0] }} ~ {{ planDate[1] }}</span>
         </div>
         <div class="plan-date-picker">
-          <VueDatePicker v-model="planDate" model-type="yyyy-MM-dd" :disabled-dates="disabledDates" range inline class="datePicker" />
           <p v-if="travel.id" class="description"> ※ 여행일정이 존재하는 기간을 제외할 수 없습니다.</p>
           <p v-else class="description"> ※ 기간을 설정 후 Select를 클릭하여 확정 해 주세요</p>
+          <VueDatePicker v-model="planDate" model-type="yyyy-MM-dd" :disabled-dates="disabledDates" range inline class="datePicker" />
         </div>
       </div>
       
     </section>
     <div class="summit-footer">
-      <button v-if="travel.id"  class="font-weight-600 " @click="putPlan">수정</button>
       <button v-if="travel.id" class="font-weight-600 " @click="delPlan">삭제</button>
+      <button v-if="travel.id"  class="font-weight-600 " @click="putPlan">수정</button>
       <button v-else class="font-weight-600 " @click="postPlan">등록</button>
     </div>
   </div>
@@ -60,19 +60,22 @@ const minDate = computed(()=>travel.value.minDate?new Date(travel.value.minDate)
 const maxDate = computed(()=>travel.value.maxDate?new Date(travel.value.maxDate):null)
 const disabledDates = computed(()=>{
   if(!travel.value.id || !minDate.value || !maxDate.value) return []
-  const disabledList = []
+  let disabledList = []
   const date = new Date(minDate.value)
 
-  date.setDate(date.getDate()+1)
+  date.setDate(date.getDate())
 
-  
-  while(date.toJSON().split('T')[0]<maxDate.value.toJSON().split('T')[0]){
+  console.log(date.toJSON().split('T')[0],maxDate.value.toJSON().split('T')[0])
+  while(date.toJSON().split('T')[0]<=maxDate.value.toJSON().split('T')[0]){
     disabledList.push(new Date(date))
 
     date.setDate(date.getDate()+1)
   }
 
-  return disabledList.slice(0,-1)
+  console.log(disabledList[0] , travel.value.startDate.split('T')[0])
+  if(disabledList.length && disabledList[0]?.toJSON().split('T')[0] === travel.value.startDate.split('T')[0] ) disabledList = disabledList.slice(1)
+  if(disabledList.length && disabledList[disabledList.length-1].toJSON().split('T')[0] === travel.value.endDate.split('T')[0]) disabledList = disabledList.slice(0,-1)
+  return disabledList
 })
 
 // watch(()=>planDate.value,()=>{
@@ -87,10 +90,23 @@ watch(()=>travel.value.countryList,()=>{
   }
 })
 
-async function postPlan() {
-  if (planDate.value[0]==='' || planDate.value[1]==='') {
-    return alert("날짜를 선택해주세요");
+const validation = ()=>{
+  if (!planDate.value[0] || planDate.value[0]==='' || !planDate.value[1] ||planDate.value[1]==='') {
+    alert("날짜를 선택해주세요");
+    return false
   }
+  if(minDate.value && maxDate.value){
+    if(planDate.value[0].split('T')[0] > minDate.value.toJSON().split('T')[0] || planDate.value[1].split('T')[0] < maxDate.value.toJSON().split('T')[0]){
+      alert("등록된 일정의 기간이 포함되야 합니다!")
+      return false
+    }
+  }
+  return true
+}
+
+async function postPlan() {
+  if(!validation()) return
+  
   travel.value.startDate = planDate.value[0];
   travel.value.endDate = planDate.value[1]+`T23:59:59`;
 
@@ -103,6 +119,8 @@ async function postPlan() {
 }
 
 async function putPlan(){
+  if(!validation()) return
+
   travel.value.startDate = planDate.value[0];
   travel.value.endDate = planDate.value[1]+`T23:59:59`;
   
@@ -115,6 +133,9 @@ async function putPlan(){
 }
 
 async function delPlan(){
+  if(minDate.value || maxDate.value) {
+    if(!confirm("일정이 존재합니다!\n그래도 삭제할까요?")) return
+  }
   const response = await travelStore.delTravel()
   if(response.code !== 200 ) alert("여행 삭제에 실패했습니다.") 
   

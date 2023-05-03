@@ -16,7 +16,7 @@ export const useGoogleMapApi = ()=>{
                 const script = document.createElement("script")
                 /* global google */
                 script.async = true
-                script.src =`https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAP_KEY}&callback=initMap`
+                script.src =`https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAP_KEY}&v=beta&libraries=marker&callback=initMap`
                 document.head.appendChild(script);
             }
 
@@ -73,6 +73,7 @@ export const useGoogleMapApi = ()=>{
 			mapTypeControl: false,
 			fullscreenControl: false,
 			zoomControl: false,
+            mapId:"50e7475cbacb137e",
 		}
 
         if(config) mapConfig = config
@@ -124,7 +125,7 @@ export const useGoogleMapApi = ()=>{
             position: {lat:x,lng:y},
             map: mapObj,
         }
-        
+
         const marker = new window.google.maps.Marker(options)
         if(isTrace === true) {
             mapObj.setCenter({lat:x,lng:y})
@@ -134,16 +135,37 @@ export const useGoogleMapApi = ()=>{
         return marker
     }
 
+    const setImageMarker = (x,y,imageUrl='https://developers.google.com/maps/documentation/javascript/examples/full/images/parking_lot_maps.png')=>{
+        const content = document.createElement("div");
+        const style = `
+        border-radius: 10px;
+        border: 2px solid white;
+        width:35px; 
+        height:35px;
+        `
+        content.innerHTML = `
+        <img style="${style}" src=${imageUrl}>
+        `
+
+        const markerView = new google.maps.marker.AdvancedMarkerView({
+            map: mapObj,
+            position: { lat: x, lng: y },
+            content: content,
+        });
+        
+        return markerView
+    }
+
     /**
      * 
      * @param {Object} marker 
      * @param {Object} info
      * @param {'click'|'mousehover'} type 
      * 
-     * 마커 클릭시 인포 정보 시각화 설정 
+     * 마커 클릭,hover시 인포 정보 시각화 설정 
      */
     const setMarkerInfo = (marker,info,type='click')=>{
-        if(type=='click'){
+        if(type==='click'){
             marker.addListener(type,()=>{
                 info.open({
                     anchor:marker,
@@ -151,7 +173,7 @@ export const useGoogleMapApi = ()=>{
                 })
             })
         }
-        if(type='mousehover'){
+        if(type==='mousehover'){
             marker.addListener('mouseover',()=>{
                 info.open({
                     anchor:marker,
@@ -163,6 +185,23 @@ export const useGoogleMapApi = ()=>{
             })
         }
         
+    }
+
+    /**
+     * 
+     * @param {Object} marker 
+     * @param {Function} func
+     * @param {'click'|'mousehover'} type 
+     * 
+     * 마커 클릭,hover시 실행 이벤트 설정 
+     */
+    const setMarkerEvent = (marker,func,type='click')=>{
+        if(type==='click'){
+            marker.addListener(type,func)
+        }
+        if(type==='mousehover'){
+            marker.addListener('mouseover',func)
+        }
     }
 
 
@@ -298,6 +337,7 @@ export const useGoogleMapApi = ()=>{
         getMap,
         setMarker,
         setMarkerInfo,
+        setMarkerEvent,
         setSvgMarker,
         setPoligonLine,
         moveMarker,

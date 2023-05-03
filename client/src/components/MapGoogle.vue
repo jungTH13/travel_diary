@@ -51,8 +51,8 @@
     button{
         position:absolute;
         z-index: 1000;
-        right:1vw;
-        top:1vw;
+        right:1.5rem;
+        top:1.5rem;
         background-color: gray;
         color:white;
         height:3rem;
@@ -66,14 +66,17 @@
 
 .marker-controll{
     position:relative;
+    top:6rem;
     width:100%;
     .marker-date-controll{
-        top:15vh;
+        // top:6rem;
         right:0;
+        width:100%;
+        height:0;
         position: absolute;
         z-index: 100000;
-        max-height: 75vh;
-        overflow: auto;
+        // max-height: 75vh;
+        // overflow: hidden;
     }
 }
 
@@ -123,7 +126,7 @@ const searchMarker = ref(null)
 const searchInfo = ref(props.modelValue || {})
 const infowindow = ref(null)
 const isOverlay = computed(()=>props.isOverlay||false)
-const isRegistration = computed(()=>props.isRegistration||false)
+const isRegistration = computed(()=>props.isRegistration)
 
 const complete = ()=>{
     console.log('complete')
@@ -167,12 +170,14 @@ const setInfowindow = ()=>{
         <h1 id="firstHeading" class="firstHeading" style="font-size: larger; font-weight: 600;">${name?name:''}</h1>
         <div id="bodyContent">
             <p>${address?address:''}</p>
+            
             ${!isRegistration.value ?'':`<button onclick="searchComplete()" style="background-color:green; color:white !important; margin:2px; padding:1rem; border-radius: 5px; font-size:1rem;">등록하기</botton>`}
-                ${!cid ?'':`<button style="background-color:green; color:white; margin:2px; padding:1rem; border-radius: 5px; ">
-                    <a style="color:white !important; font-size:1rem;" href="https://maps.google.com/maps?ll=${geometry[0]},${geometry[1]}&z=16&t=m&hl=ko-KR&gl=US&mapclient=embed&cid=${cid?cid:''}">
-                    구글 지도
-                </a>
-                </botton>`}
+                
+                
+            ${!cid ?'':`<a style="color:white !important; font-size:1rem;" href="https://maps.google.com/maps?ll=${geometry[0]},${geometry[1]}&z=16&t=m&hl=ko-KR&gl=US&mapclient=embed&cid=${cid?cid:''}">
+            <button style="background-color:green; color:white !important; margin:2px; padding:1rem; border-radius: 5px; font-size:1rem;">
+                구글 지도
+            </botton></a>`}
         </div>
     </div>
     `

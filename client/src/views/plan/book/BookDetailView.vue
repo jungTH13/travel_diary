@@ -28,7 +28,7 @@
 </style>
 
 <script setup>
-import { ref, reactive, watch, onMounted } from "vue";
+import { ref, reactive, watch, onMounted, onUnmounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { computed } from "@vue/reactivity";
 import BookItem from "../../../components/BookItem.vue";
@@ -77,6 +77,9 @@ const delPlan =async ()=>{
     else goBook()
 }
 
+onUnmounted(()=>{
+    bookStore.resetBook()
+})
 
 onMounted(() => {
     console.log("Mounted!");

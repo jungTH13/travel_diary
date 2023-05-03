@@ -22,7 +22,7 @@ input{
     position: absolute;
     top:0;
     left:0;
-    z-index: 1000;
+    z-index: 20000;
     height: 100%;
     width: 100%;
     background-color: rgba(255, 255, 255, 0.50);
@@ -31,6 +31,7 @@ input{
         z-index: 10000;
         left:50%;
         top:50%;
+        max-height: 90%;
         transform: translate(-50%, -50%);
     }
 }

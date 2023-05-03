@@ -43,7 +43,7 @@
                             <div>
                                 
                                 <input type="text" placeholder="주소" v-model="book.address">
-                                <MapLocationIcon :search-text="searchText" v-model="mapResult" :width="iconWidth" :height="iconheight" />
+                                <MapLocationIcon :search-text="searchText" :is-registration="true" v-model="mapResult" :width="iconWidth" :height="iconheight" />
                                 
                             </div>
                         </td>
@@ -136,8 +136,8 @@ const bookStore = useBookStore()
 const book = computed(()=>bookStore.book)
 const searchText = computed(()=> `${book.value.address?book.value.address:''} ${book.value.name?book.value.name:''}`)
 const mapResult = ref({})
-const iconWidth = '1.8rem'
-const iconheight = '1.8rem'
+const iconWidth = '3rem'
+const iconheight = '3rem'
 
 const init = ()=>{
     if(book.value.x && book.value.y){

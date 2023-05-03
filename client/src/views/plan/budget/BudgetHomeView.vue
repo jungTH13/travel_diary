@@ -29,7 +29,7 @@
         <div class="text">
         <span class="payment">{{ `${ toComaNumberString(amountOfPaymentState.payment*-1)}원 지출` }}</span>
           <span>
-            <div class="plus-gray"><font-awesome-icon icon="fa-solid fa-plus" id="plus-button-img" @click="createPlan(nowTap.type)" /></div>
+            <div class="plus-gray"><font-awesome-icon icon="fa-solid fa-plus" id="plus-button-img" /></div>
           </span>
         </div>
       </div>
@@ -47,6 +47,7 @@
     position:absolute;
     padding-right:1rem;
     padding-left: 1rem;
+    z-index:1000;
     top:1rem;
     right:1rem;
     border-radius: 25px;

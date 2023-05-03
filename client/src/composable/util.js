@@ -92,3 +92,34 @@ export const convertTimeFormat = (obj)=>{
       }
   }
 }
+
+/**
+ * 
+ * @param {String} string url을 포함한 문자열
+ * @returns 
+ * <a href='url'>url</a> 로 치환 하여 반환
+ */
+export const urlParse = (string)=>{
+  if( typeof string !== 'string') return string
+  const regURL = new RegExp("(http|https)://([-/.a-zA-Z0-9_~#%$?&=:200-377()]+)","gi")
+
+  return string.replace(regURL,"<a style='color:blue !important; text-decoration:underline;' href='$1://$2' target='_blank'>$1://$2</a>")
+}
+
+/**
+ * 
+ * @param {Object} plan type,id 값을 가지는 객체
+ * @returns {{geometry:[Number,Number],name:String,cid:String,address:undefined}}
+ * Mapgoogle 컴포넌트에서 props로 받게되는 마커관련 정보 객체를 반환
+ */
+export const getMapSearchInfo = (plan)=>{
+  const searchInfo = {}
+  if(!plan.x || !plan.y) return null
+
+  searchInfo.geometry = [plan.x, plan.y]
+  searchInfo.cid = plan.cid
+  if(!plan.name) searchInfo.name = plan.departLocation
+  else searchInfo.name = plan.name
+
+  return searchInfo
+}

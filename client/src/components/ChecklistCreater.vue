@@ -140,25 +140,25 @@ div{
         display: flex;
         flex-direction: column;
         // background-color: $gray;
-        overflow: hidden;
+        // overflow: hidden;
         max-height: 0px;
         position: absolute;
         left:50%;
         top:50%;
         transform: translate(-50%, -50%);
         background-color: white;
-        height:70rem;
+        height:50rem;
         width:40rem;
         padding:1rem;
         
 
         .icon{
-        width: 1.5rem;
-        height: 1.5rem;
+            width: 1.5rem;
+            height: 1.5rem;
         }
 
         &.active{
-            max-height: 50vh;
+            max-height: 100vh;
         }
 
         #checklist-title {
@@ -291,7 +291,7 @@ const validate = ()=>{
 const pretreatment = ()=>{
     if(selectPlan.value.id && selectPlan.value.type){
         checklist.value['planType'] = selectPlan.value.type
-        checklist.value['planId'] = selectPlan.value.id
+        checklist.value['planTypeId'] = selectPlan.value.id
     }
     checklist.value.planCheckListDetail = []
 }
@@ -306,6 +306,7 @@ const postChecklist = async ()=>{
             checklistStore.resetChecklist()
             checklistStore.getChecklistList(travelId.value)
             panel.value = false
+            disabled.value = true
         }
     }
 }
