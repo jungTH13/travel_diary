@@ -4,6 +4,8 @@ import com.travelProject.travelDiary.config.exceptionCode;
 import com.travelProject.travelDiary.dto.ErrorCode;
 import com.travelProject.travelDiary.dto.PlanCheckListDetailDto;
 import com.travelProject.travelDiary.dto.PlanCheckListTitleDto;
+import com.travelProject.travelDiary.entity.User;
+import com.travelProject.travelDiary.entity.plan.PlanAirPlane;
 import com.travelProject.travelDiary.entity.plan.PlanCheckListDetail;
 import com.travelProject.travelDiary.entity.plan.PlanCheckListTitle;
 import com.travelProject.travelDiary.repository.plan.PlanCheckListDetailRepository;
@@ -176,5 +178,13 @@ public class PlanCheckListService {
         }
 
         planCheckListTitleRepository.delete(planCheckListTitle);
+    }
+
+    public void planCheckListAllDelete(Long travelId, User user) {
+        List<PlanCheckListTitle> planCheckListTitle = planCheckListTitleRepository.findAllByTravel_IdAndUser_Id(travelId, user.getId());
+        for(PlanCheckListTitle deleteTitleParam : planCheckListTitle) {
+            PlanCheckListTitleDto planCheckListTitleDto = modelMapper.map(deleteTitleParam, PlanCheckListTitleDto.class);
+            this.planCheckListTitleDelete(planCheckListTitleDto);
+        }
     }
 }

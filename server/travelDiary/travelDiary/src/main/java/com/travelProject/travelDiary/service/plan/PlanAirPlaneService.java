@@ -3,9 +3,8 @@ package com.travelProject.travelDiary.service.plan;
 import com.travelProject.travelDiary.config.exceptionCode;
 import com.travelProject.travelDiary.dto.ErrorCode;
 import com.travelProject.travelDiary.dto.PlanAirPlaneDto;
-import com.travelProject.travelDiary.dto.PlanHotelDto;
+import com.travelProject.travelDiary.entity.User;
 import com.travelProject.travelDiary.entity.plan.PlanAirPlane;
-import com.travelProject.travelDiary.entity.plan.PlanHotel;
 import com.travelProject.travelDiary.repository.plan.PlanAirPlaneRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,5 +97,12 @@ public class PlanAirPlaneService {
         }
 
         planAirPlaneRepository.delete(planAirPlane);
+    }
+
+    public void planAirPlaneDeleteList(Long travelId, User user) {
+        List<PlanAirPlane> planAirPlaneList = planAirPlaneRepository.findAllByTravel_IdAndUser_Id(travelId, user.getId());
+        for(PlanAirPlane deleteParam : planAirPlaneList) {
+            planAirPlaneRepository.deleteById(deleteParam.getId());
+        }
     }
 }

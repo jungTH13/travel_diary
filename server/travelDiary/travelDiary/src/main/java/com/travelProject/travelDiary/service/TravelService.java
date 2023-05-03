@@ -3,8 +3,8 @@ package com.travelProject.travelDiary.service;
 import com.travelProject.travelDiary.config.exceptionCode;
 import com.travelProject.travelDiary.dto.ErrorCode;
 import com.travelProject.travelDiary.entity.Travel;
-import com.travelProject.travelDiary.entity.TravelCountry;
 import com.travelProject.travelDiary.repository.TravelRepository;
+import com.travelProject.travelDiary.service.plan.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +19,27 @@ public class TravelService {
 
     @Autowired
     private TravelCountryService travelCountryService;
+
+    @Autowired
+    private PlanAirPlaneService planAirPlaneService;
+
+    @Autowired
+    private PlanCheckListService planCheckListService;
+
+    @Autowired
+    private PlanEtcService planEtcService;
+
+    @Autowired
+    private PlanHotelService planHotelService;
+
+    @Autowired
+    private PlanRestaurantService planRestaurantService;
+
+    @Autowired
+    private PlanTransPortService planTransPortService;
+
+    @Autowired
+    private PlanAccountBookService planAccountBookService;
 
     public Travel selectPlanTravelOne(String userId, Long travelId) {
         if(userId.equals("") || userId == null) {
@@ -98,6 +119,13 @@ public class TravelService {
         }
 
         travelCountryService.travelCountryDelete(travel.getId());
+        planAirPlaneService.planAirPlaneDeleteList(travel.getId(), travel.getUser());
+        planCheckListService.planCheckListAllDelete(travel.getId(), travel.getUser());
+        planEtcService.planEtcDeleteList(travel.getId(), travel.getUser());
+        planHotelService.planHotelDeleteList(travel.getId(), travel.getUser());
+        planRestaurantService.planRestaurantDeleteList(travel.getId(), travel.getUser());
+        planTransPortService.planTransPortDeleteList(travel.getId(), travel.getUser());
+        planAccountBookService.planAccountBookDeleteList(travel.getId(), travel.getUser());
         travelRepository.delete(travel);
     }
 }
