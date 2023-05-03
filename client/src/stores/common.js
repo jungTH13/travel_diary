@@ -11,6 +11,12 @@ const initWindowEventListener = (eventName,targetFunc)=>{
 export const useCommonStore = defineStore('common', () => {
     // 메인화면 sub-map 활성화 상태 변수
     const mainSubVisible = ref(false)
+    // 글로벌 맵에 대한 데이터 공유
+    const mapInfo = ref({
+        searchText:'',
+        searchInfo: {},
+        type:''
+    })
 
 
     const _checkMainSub = ()=>{
@@ -27,7 +33,8 @@ export const useCommonStore = defineStore('common', () => {
 
     return { 
         mainSubVisible,
-        initMainSubLisner 
+        initMainSubLisner,
+        mapInfo 
     }
 
 })

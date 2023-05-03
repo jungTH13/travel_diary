@@ -30,10 +30,10 @@
                     </th>
                     <tr>
                         <td style="width:45%">
-                            <div>
+                            <div :class="{require:!book.departLocation}">
                                 
                                 <input type="text" placeholder="출발지" v-model="book.departLocation">
-                                <MapLocationIcon :search-text="book.departLocation" v-model="departMapResult" :width="iconWidth" :height="iconheight" />
+                                <MapLocationIcon :search-text="book.departLocation" :is-registration="true" v-model="departMapResult" :width="iconWidth" :height="iconheight" />
                             </div>
                         </td>
                     </tr>
@@ -60,7 +60,7 @@
                         <td>
                             <div>
                                 <input type="text" placeholder="도착지" v-model="book.arriveLocation">
-                                <MapLocationIcon :search-text="book.arriveLocation" v-model="arriveMapResult" :width="iconWidth" :height="iconheight" />
+                                <MapLocationIcon :search-text="book.arriveLocation" :is-registration="true" v-model="arriveMapResult" :width="iconWidth" :height="iconheight" />
                             </div>
                         </td>
                     </tr>
@@ -172,8 +172,8 @@ const bookStore = useBookStore()
 const book = computed(()=>bookStore.book)
 const departMapResult = ref({})
 const arriveMapResult =ref({})
-const iconWidth = '1.8rem'
-const iconheight = '1.8rem'
+const iconWidth = '3rem'
+const iconheight = '3rem'
 
 const init = ()=>{
     if(book.value.x && book.value.y){

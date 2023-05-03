@@ -16,7 +16,7 @@
         <font-awesome-icon icon="fa-solid fa-ellipsis" id="edit-item-img" class="icon" />
       </div>
       <div v-else id="edit-item">
-        <font-awesome-icon icon="fa-solid fa-trash-can" id="edit-item-img" class="icon" />
+        <font-awesome-icon icon="fa-solid fa-trash-can" id="edit-item-img" @click="delTravel" class="icon" />
         <font-awesome-icon icon="fa-solid fa-pen" id="edit-item-img" @click="editTravel" class="icon"/>
       </div>
     </div>
@@ -117,10 +117,23 @@ const editTravel = async()=>{
   await travelStore.getTravel(props.planItem.id)
   router.push({
     name:'new-country',
-    params:{
-      id:props.planItem.id
-    }
+    // params:{
+    //   id:props.planItem.id
+    // }
   })
+}
+
+const delTravel = async()=>{
+  await travelStore.getTravel(props.planItem.id)
+  const travel = travelStore.travel
+
+  if(travel.minDate || travel.maxDate) {
+    if(!confirm("일정이 존재합니다!\n그래도 삭제할까요?")) return
+  }
+  const response = await travelStore.delTravel()
+  if(response.code !== 200 ) alert("여행 삭제에 실패했습니다.") 
+  travelStore.resetTravel()
+  travelStore.getTravelList()
 }
 
 </script>

@@ -4,7 +4,7 @@
 
 <div v-if="mapVisible" class="overlay">
     <div class="full" >
-        <MapGoogle :search-text="searchText" v-model="searchMapResult" :is-overlay="isOverlay" :is-registration="true" @cancle="cancle" />
+        <MapGoogle :search-text="searchText" :is-registration="isRegistration" v-model="searchMapResult" :is-overlay="isOverlay" @cancle="cancle" />
     </div>
 </div>
 
@@ -21,7 +21,7 @@
 }
 .overlay{
     position:fixed;
-    z-index: 100000;
+    z-index: 110000;
     left:0px;
     top:0px;
     width: 100%;
@@ -42,7 +42,13 @@ import { computed, defineProps, onBeforeMount, onMounted, ref, watch } from "vue
 import MapGoogle from "../MapGoogle.vue";
 import { useCommonStore } from "../../stores/common";
 
-const props = defineProps({modelValue: Object, searchText: String, width:String,height:String})
+const props = defineProps({
+    modelValue: Object, 
+    searchText: String, 
+    width:String,
+    height:String,
+    isRegistration:Boolean
+})
 const emit = defineEmits(["update:modelValue"])
 
 
@@ -57,6 +63,7 @@ const searchText = computed(()=>props.searchText)
 const searchMapResult =  ref(props.modelValue||{})
 const width = computed(()=>props.width||'auto')
 const height = computed(()=>props.height||'auto')
+const isRegistration = computed(()=>props.isRegistration)
 const isOverlay = ref(false)
 const subMapVisible = computed(()=>commonStore.mainSubVisible)
 const mapLeft = ref('0px')
@@ -98,13 +105,13 @@ watch(()=>searchMapResult.value,()=>{
 })
 
 onBeforeMount(()=>{
-    resizeMap()
-    window.removeEventListener('resize',resizeMap)
-    window.addEventListener('resize',resizeMap)
+    
 })
 
 onMounted(async()=>{
-    
+    resizeMap()
+    window.removeEventListener('resize',resizeMap)
+    window.addEventListener('resize',resizeMap)
 })
 
 </script>

@@ -15,13 +15,14 @@
                     <div class="plan-memo">
                         <div class="title">{{ plan['title'] }}</div>
                         <div class="memo" v-html="plan['memo']?.replaceAll('\n','<br/>')"></div> 
+                        <div class="checklist" v-if="plan.checkList?.length">
+                            <p v-for="checklist in plan.checkList" :class="{completed:checklist.isCompleted===true}">
+                                <font-awesome-icon icon="fa-solid fa-list-check" class="icon"/>
+                                {{ checklist.title }}
+                            </p>
+                        </div>
                     </div>
-                    <div class="checklist" v-if="plan.checkList?.length">
-                        <p v-for="checklist in plan.checkList" :class="{completed:checklist.isCompleted===true}">
-                            <font-awesome-icon icon="fa-solid fa-list-check" class="icon"/>
-                            {{ checklist.title }}
-                        </p>
-                    </div>
+                    
                 </div>
             </div>
             <div class="plan" v-if="secondType.includes(plan['type'])">
@@ -45,9 +46,10 @@
         
         <div id="plan-options" :class="{active:optionsVisible}">
             <div style="padding:2rem;">
-                <div class="select-plan" >
-                    <div class="title">{{ selectPlan?.title }}</div>
+                <div class="select-plan" v-if="selectPlan" >
+                    <div class="title">{{ selectPlan?.title }} <MapLocationIcon v-if="selectPlanSearchInfo" :is-registration="false" width="3rem" height="3rem" v-model="selectPlanSearchInfo" /></div>
                     <div class="type">{{ bookNavCodes[selectPlan?.type] }}</div>
+                    <div class="memo" v-html="urlParse(selectPlan['memo']?.replaceAll('\n','<br/>'))"></div>
                 </div>
 
                 <div class="summit-footer">
@@ -124,7 +126,7 @@
                     // background-color: $gray;
                     // border-radius: 10px;
                     box-shadow: 0.05rem 0.05rem 0.5rem 0rem gray;
-                    min-height:12rem;
+                    min-height:4rem;
                     padding:8px;
                     overflow: hidden;
 
@@ -182,7 +184,7 @@
                 }
 
                 .checklist{
-                    border-top: 0.2rem dashed $gray;
+                    border-top: 0.3rem dashed $gray;
                     p{
                         font-size:1.2rem;
                         display: inline;
@@ -219,7 +221,7 @@
 
 #overlay{
     position: absolute;
-    z-index: 10000;
+    z-index: 110000;
     background-color: rgba(0, 0, 0, 0.164);
     width: 100%;
     height: 0;
@@ -253,9 +255,12 @@
                 font-size:1.5rem;
                 color: gray;
             }
+            .memo{
+                font-size:1.3rem;
+            }
         }
         &.active{
-            max-height: 50vh;
+            max-height: 70vh;
         }
     }
 
@@ -263,16 +268,18 @@
         position:absolute;
         background-color: white;
         height:0%;
-        max-height: 600px;
-        width: 70%;
-        top:15%;
-        left:15%;
+        max-height: 400px;
+        max-width: 350px;
+        width: 90%;
+        left:50%;
+        top:50%;
+        transform: translate(-50%, -50%);
         overflow: hidden;
         display: flex;
         transition: all ease 0s 0.3s;
 
         &.active{
-            height:60%;
+            height:90%;
         }
 
         .title{
@@ -295,11 +302,12 @@
 <script setup>
 
 import { computed, defineProps, ref, watch } from "vue";
-import {DateToStringFormat1, toAMPMString, toComaNumberString} from "../composable/util"
+import {DateToStringFormat1, toAMPMString, toComaNumberString, urlParse, getMapSearchInfo} from "../composable/util"
 import {useScheduleStore} from "../stores/plan/schedule"
 import { useRoute } from "vue-router";
 import ExpantionComponent from "./layouts/ExpantionComponent.vue";
 import { useBookStore } from "../stores/plan/book";
+import MapLocationIcon from "./layouts/MapLocationIcon.vue";
 
 const props = defineProps({
 modelValue: Array,
@@ -315,19 +323,28 @@ const travelId = computed(()=>route.params.id||null)
 const bookNavCodes = computed(()=>bookStore.nav.reduce((codes,nav)=>{codes[nav.type]=nav.name;return codes},{}))
 const memoState = ref({})
 const selectPlan = ref(null)
+const selectPlanSearchInfo = ref(null)
 const optionsVisible = ref(false)
 const memoModifyVisible = ref(false)
 
 const showPlanOptions = (plan)=>{
     selectPlan.value =plan
+    setSelectPlanSearchInfo(plan)
     optionsVisible.value=true
     memoModifyVisible.value = false
 }
 const closePlanOptions = ()=>{
     scheduleStore.getscheduleList(travelId.value)
     selectPlan.value =null
+    selectPlanSearchInfo.value = null
     optionsVisible.value=false
     memoModifyVisible.value = false
+}
+
+const setSelectPlanSearchInfo = async(plan)=>{
+    await bookStore.getBook(travelId.value,plan.id,plan.type)
+    selectPlanSearchInfo.value = getMapSearchInfo(bookStore.book)
+    bookStore.resetBook()
 }
 
 const getDescription = (plan,type)=>{

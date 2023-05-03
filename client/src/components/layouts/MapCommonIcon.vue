@@ -4,7 +4,7 @@
 
 <div v-if="mapVisible" class="overlay">
     <div class="full" >
-        <MapGoogle :search-text="searchText" v-model="searchMapResult" :is-overlay="isOverlay" @cancle="cancle" />
+        <MapGoogle :search-text="searchText" v-model="searchMapResult" :is-overlay="isOverlay" :is-registration="false" @cancle="cancle" />
     </div>
 </div>
 
@@ -21,7 +21,7 @@
 }
 .overlay{
     position:fixed;
-    z-index: 100000;
+    z-index: 110000;
     left:0px;
     top:0px;
     width: 100%;
@@ -40,12 +40,15 @@
 <script setup>
 import { computed, defineProps, onBeforeMount, onMounted, ref, watch } from "vue";
 import MapGoogle from "../MapGoogle.vue";
+import { useRoute, useRouter } from "vue-router";
 
 const props = defineProps({modelValue: Object, searchText: String, width:String,height:String})
 const emit = defineEmits(["update:modelValue"])
 
 //utils
 
+const router = useRouter()
+const route = useRoute()
 
 //contents
 const mapVisible = ref(false)
@@ -75,6 +78,10 @@ watch(()=>searchMapResult.value,()=>{
     if(searchMapResult.value === props.modelValue) return;
     cancle()
     emit("update:modelValue",searchMapResult.value)
+})
+
+watch(()=>route.name,()=>{
+    cancle()
 })
 
 onBeforeMount(()=>{

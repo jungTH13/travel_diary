@@ -41,7 +41,7 @@
                         <td>
                             <div>
                                 <input type="text" placeholder="주소 작성하고 검색할 수 있어요" v-model="book.address">
-                                <MapLocationIcon :search-text="searchText" v-model="mapResult" :width="iconWidth" :height="iconheight" />
+                                <MapLocationIcon :search-text="searchText" :is-registration="true" v-model="mapResult" :width="iconWidth" :height="iconheight" />
                             </div>
                         </td>
                     </tr>

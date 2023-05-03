@@ -182,6 +182,7 @@
   flex-direction: column;
 
   #budget-contents-container{
+    padding:0rem 1rem 0 1rem;
     overflow-y: auto;
     overflow-x: hidden;
   }
