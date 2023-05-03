@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -40,4 +39,10 @@ public class PlanAccountBookDto {
     private Long planTypeId;
 
     private String categoryType;
+
+    private Double x;
+
+    private Double y;
+
+    private String cId;
 }

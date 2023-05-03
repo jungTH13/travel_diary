@@ -64,6 +64,16 @@ public class PlanAccountBook {
     @Column(name = "pab_category_type")
     private String categoryType;
 
+    @Column(name = "pab_x")
+    private Double x;
+
+    @Column(name = "pab_y")
+    private Double y;
+
+    @Column(name = "pab_c_id")
+    private String cId;
+
+
     @Column(nullable = false)
     @ColumnDefault("false")
     protected boolean deleted;
