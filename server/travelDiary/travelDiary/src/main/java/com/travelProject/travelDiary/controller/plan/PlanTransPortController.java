@@ -28,7 +28,7 @@ public class PlanTransPortController {
     private TravelService travelService;
 
     @PostMapping("/travel/{travelId}/plan/transPort/transPortOne")
-    public ResponseBody  getHotelOne(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto, @PathVariable Long travelId) {
+    public ResponseBody  getPlanTransPortOne(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
         Map<String, Object> result = new HashMap<>();
@@ -40,7 +40,7 @@ public class PlanTransPortController {
     }
 
     @PostMapping("/travel/{travelId}/plan/transPort/transPortList")
-    public ResponseBody  getHotelList(HttpServletRequest request, @RequestBody(required = false) PlanTransPortDto planTransPortDto, @PathVariable Long travelId) {
+    public ResponseBody  getPlanTransPortList(HttpServletRequest request, @RequestBody(required = false) PlanTransPortDto planTransPortDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
         Map<String, Object> result = new HashMap<>();
@@ -52,7 +52,7 @@ public class PlanTransPortController {
     }
 
     @PostMapping("/travel/{travelId}/plan/transPort/transPortInsert")
-    public ResponseBody setHotelInsert(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto, @PathVariable Long travelId) {
+    public ResponseBody setPlanTransPortInsert(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
         Map<String, Object> result = new HashMap<>();
@@ -63,7 +63,7 @@ public class PlanTransPortController {
     }
 
     @PutMapping("/travel/{travelId}/plan/transPort/transPortUpdate")
-    public ResponseBody setPlanHotelUpdate(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto, @PathVariable Long travelId) {
+    public ResponseBody setPlanTransPortUpdate(HttpServletRequest request, @RequestBody PlanTransPortDto planTransPortDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
         Map<String, Object> result = new HashMap<>();
@@ -74,7 +74,7 @@ public class PlanTransPortController {
     }
 
     @DeleteMapping("/travel/{travelId}/plan/transPort/transPortDelete/{planId}")
-    public ResponseBody setPlanHotelDelete(HttpServletRequest request
+    public ResponseBody setPlanTransPortDelete(HttpServletRequest request
             , @RequestBody PlanTransPortDto planTransPortDto
             , @PathVariable Long travelId
             , @PathVariable Long planId) {

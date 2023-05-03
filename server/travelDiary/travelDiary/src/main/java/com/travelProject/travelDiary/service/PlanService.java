@@ -40,7 +40,8 @@ public class PlanService {
     private ModelMapper modelMapper;
 
     @SuppressWarnings("unchecked")
-    public List<Map<String,Object>> getUserPlan(String userId, Long travelId) {
+    public Map<String,Object> getUserPlan(String userId, Long travelId) {
+        Map<String, Object> result = new HashMap<>();
         if(userId.equals("") || userId == null) {
             throw new exceptionCode(ErrorCode.INVALID_USER_PARAMETER);
         }
@@ -56,39 +57,42 @@ public class PlanService {
         List<Map<String, Object>> planList = new ArrayList<>();
         for (PlanAirPlane planAirPlane : airPlaneList) {
             Map<String, Object> insertMap = planAirPlane.toMap();
-            setPlanAccountBookAndCheckList(insertMap, "pa", planAirPlane.getId(), planAccountBookList, planCheckListTitleList);
+            planAccountBookList = setPlanAccountBookAndCheckList(insertMap, "pa", planAirPlane.getId(), planAccountBookList, planCheckListTitleList);
             planList.add(insertMap);
         }
 
         for (PlanHotel planHotel : hotelList) {
             Map<String, Object> insertMap = planHotel.toMap();
-            setPlanAccountBookAndCheckList(insertMap, "ph", planHotel.getId(), planAccountBookList, planCheckListTitleList);
+            planAccountBookList = setPlanAccountBookAndCheckList(insertMap, "ph", planHotel.getId(), planAccountBookList, planCheckListTitleList);
             planList.add(insertMap);
         }
 
         for (PlanRestaurant planRestaurant : restaurantList) {
             Map<String, Object> insertMap = planRestaurant.toMap();
-            setPlanAccountBookAndCheckList(insertMap, "pr", planRestaurant.getId(), planAccountBookList, planCheckListTitleList);
+            planAccountBookList = setPlanAccountBookAndCheckList(insertMap, "pr", planRestaurant.getId(), planAccountBookList, planCheckListTitleList);
             planList.add(insertMap);
         }
 
         for (PlanTransPort planTransPort : transPortList) {
             Map<String, Object> insertMap = planTransPort.toMap();
-            setPlanAccountBookAndCheckList(insertMap, "pt", planTransPort.getId(), planAccountBookList, planCheckListTitleList);
+            planAccountBookList = setPlanAccountBookAndCheckList(insertMap, "pt", planTransPort.getId(), planAccountBookList, planCheckListTitleList);
             planList.add(insertMap);
         }
 
         for (PlanEtc planEtc : etcList) {
             Map<String, Object> insertMap = planEtc.toMap();
-            setPlanAccountBookAndCheckList(insertMap, "pe", planEtc.getId(), planAccountBookList, planCheckListTitleList);
+            planAccountBookList = setPlanAccountBookAndCheckList(insertMap, "pe", planEtc.getId(), planAccountBookList, planCheckListTitleList);
             planList.add(insertMap);
         }
 
         planList.sort(Comparator.comparing((Map<String, Object> map) -> (Date) map.get("orderDate")));
-        return planList;
+        planAccountBookList.sort(Comparator.comparing((PlanAccountBook accountBook) -> accountBook.getPaymentDate()));
+        result.put("planList", planList);
+        result.put("planAccountBookList", planAccountBookList);
+        return result;
     }
 
-    private void setPlanAccountBookAndCheckList(Map<String, Object> insertMapValue, String planType, Long planTypeId
+    private List<PlanAccountBook> setPlanAccountBookAndCheckList(Map<String, Object> insertMapValue, String planType, Long planTypeId
             , List<PlanAccountBook> bookList
             , List<PlanCheckListTitle> checkList) {
         List<PlanAccountBook> accountBookResult = bookList.stream()
@@ -100,15 +104,15 @@ public class PlanService {
                 .collect(Collectors.toList());
 
         if (accountBookResult.size() > 0) {
-            //모든값을 합치는 용도
-            //BigDecimal sumAmount = accountBookResult.stream()
-            //        .map(PlanAccountBook::getAmountOfPayment)
-            //        .reduce(BigDecimal.ZERO, BigDecimal::add);
             BigDecimal sumAmount = BigDecimal.ZERO;
-            for(PlanAccountBook findAccountBook : accountBookResult) {
-                BigDecimal findSumValue = findAccountBook.getAmountOfPayment();
+            Iterator<PlanAccountBook> accountBookIterator = accountBookResult.iterator();
+            while (accountBookIterator.hasNext()) {
+                PlanAccountBook accountBookRoot = accountBookIterator.next();
+                BigDecimal findSumValue = accountBookRoot.getAmountOfPayment();
+                Long id = accountBookRoot.getId();
                 if(findSumValue.doubleValue() < 0) {
                     sumAmount = sumAmount.add(findSumValue.negate());
+                    bookList.removeIf(bl -> bl.getId() == id);
                 }
             }
             insertMapValue.put("sumAmount", sumAmount);
@@ -124,5 +128,7 @@ public class PlanService {
             }
             insertMapValue.put("checkList", insertCheckList);
         }
+
+        return bookList;
     }
 }

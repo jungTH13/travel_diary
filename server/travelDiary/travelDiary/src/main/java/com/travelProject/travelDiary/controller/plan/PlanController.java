@@ -31,7 +31,7 @@ public class PlanController {
     private PlanCommonService planCommonService;
 
     @GetMapping("/travel/{travelId}/plan/userPlaneList")
-    public ResponseBody getDefaultFormPlanList (HttpServletRequest request, @PathVariable Long travelId){
+    public ResponseBody getUserPlaneList (HttpServletRequest request, @PathVariable Long travelId){
         User user = (User) request.getAttribute("user");
 
         Travel resultTravel = travelService.selectPlanTravelOne(user.getId(), travelId);
@@ -40,14 +40,15 @@ public class PlanController {
         }
 
         Map<String,Object> results = new HashMap<>();
-        List planList = planService.getUserPlan(user.getId(), travelId);
+        Map<String, Object> planList = planService.getUserPlan(user.getId(), travelId);
 
-        results.put("planList", planList);
+        results.put("planList", planList.get("planList"));
+        results.put("planAccountBookList", planList.get("planAccountBookList"));
         return ResponseBody.builder().code(200).msg("success").results(results).build();
     }
 
     @PutMapping("/travel/{travelId}/plan/memoUpdate")
-    public ResponseBody setPlanHotelUpdate(HttpServletRequest request, @RequestBody Map<String, Object> param, @PathVariable Long travelId) {
+    public ResponseBody setPlanMemoUpdate(HttpServletRequest request, @RequestBody Map<String, Object> param, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
         Map<String, Object> result = new HashMap<>();

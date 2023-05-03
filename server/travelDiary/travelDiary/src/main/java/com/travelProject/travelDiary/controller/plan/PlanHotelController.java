@@ -28,7 +28,7 @@ public class PlanHotelController {
     private TravelService travelService;
 
     @PostMapping("/travel/{travelId}/plan/hotel/hotelOne")
-    public ResponseBody  getHotelOne(HttpServletRequest request, @RequestBody PlanHotelDto planHotelDto, @PathVariable Long travelId) {
+    public ResponseBody  getPlanHotelOne(HttpServletRequest request, @RequestBody PlanHotelDto planHotelDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
         Map<String, Object> result = new HashMap<>();
@@ -40,7 +40,7 @@ public class PlanHotelController {
     }
 
     @PostMapping("/travel/{travelId}/plan/hotel/hotelList")
-    public ResponseBody  getHotelList(HttpServletRequest request, @RequestBody(required = false) PlanHotelDto planHotelDto, @PathVariable Long travelId) {
+    public ResponseBody  getPlanHotelList(HttpServletRequest request, @RequestBody(required = false) PlanHotelDto planHotelDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
         Map<String, Object> result = new HashMap<>();
@@ -52,7 +52,7 @@ public class PlanHotelController {
     }
 
     @PostMapping("/travel/{travelId}/plan/hotel/hotelInsert")
-    public ResponseBody setHotelInsert(HttpServletRequest request, @RequestBody PlanHotelDto planHotelDto, @PathVariable Long travelId) {
+    public ResponseBody setPlanHotelInsert(HttpServletRequest request, @RequestBody PlanHotelDto planHotelDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
         Map<String, Object> result = new HashMap<>();
