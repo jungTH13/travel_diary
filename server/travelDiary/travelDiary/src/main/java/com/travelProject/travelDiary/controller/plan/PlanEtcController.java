@@ -28,7 +28,7 @@ public class PlanEtcController {
     private TravelService travelService;
 
     @PostMapping("/travel/{travelId}/plan/etc/etcOne")
-    public ResponseBody  getPlanEtcOne(HttpServletRequest request, @RequestBody PlanEtcDto planEtcDto, @PathVariable Long travelId) {
+    public ResponseBody  getHotelOne(HttpServletRequest request, @RequestBody PlanEtcDto planEtcDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
         Map<String, Object> result = new HashMap<>();
@@ -40,7 +40,7 @@ public class PlanEtcController {
     }
 
     @PostMapping("/travel/{travelId}/plan/etc/etcList")
-    public ResponseBody  getPlanEtcList(HttpServletRequest request, @RequestBody(required = false) PlanEtcDto planEtcDto, @PathVariable Long travelId) {
+    public ResponseBody  getHotelList(HttpServletRequest request, @RequestBody(required = false) PlanEtcDto planEtcDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
         Map<String, Object> result = new HashMap<>();
@@ -52,7 +52,7 @@ public class PlanEtcController {
     }
 
     @PostMapping("/travel/{travelId}/plan/etc/etcInsert")
-    public ResponseBody setPlanEtcInsert(HttpServletRequest request, @RequestBody PlanEtcDto planEtcDto, @PathVariable Long travelId) {
+    public ResponseBody setHotelInsert(HttpServletRequest request, @RequestBody PlanEtcDto planEtcDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
         Map<String, Object> result = new HashMap<>();
@@ -63,7 +63,7 @@ public class PlanEtcController {
     }
 
     @PutMapping("/travel/{travelId}/plan/etc/etcUpdate")
-    public ResponseBody setPlanEtcUpdate(HttpServletRequest request, @RequestBody PlanEtcDto planEtcDto, @PathVariable Long travelId) {
+    public ResponseBody setPlanHotelUpdate(HttpServletRequest request, @RequestBody PlanEtcDto planEtcDto, @PathVariable Long travelId) {
         User user = (User) request.getAttribute("user");
 
         Map<String, Object> result = new HashMap<>();
@@ -74,7 +74,7 @@ public class PlanEtcController {
     }
 
     @DeleteMapping("/travel/{travelId}/plan/etc/etcDelete/{planId}")
-    public ResponseBody setPlanEtcDelete(HttpServletRequest request
+    public ResponseBody setPlanHotelDelete(HttpServletRequest request
             , @RequestBody PlanEtcDto planEtcDto
             , @PathVariable Long travelId
             , @PathVariable Long planId) {

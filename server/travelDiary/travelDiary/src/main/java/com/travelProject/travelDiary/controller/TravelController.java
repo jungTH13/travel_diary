@@ -35,7 +35,6 @@ public class TravelController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @SuppressWarnings("unchecked")
     @PostMapping ("/travel/userTravelOne")
     public ResponseBody  getTravelOne(HttpServletRequest request, @RequestBody TravelDto travelDto){
         User user = (User) request.getAttribute("user");
@@ -43,16 +42,14 @@ public class TravelController {
         Map<String, Object> result = new HashMap<>();
         Travel travelOne = travelService.selectPlanTravelOne(user.getId(), travelDto.getId());
         String[] travelCountryList = travelCountryService.travelCountrySelect(travelDto.getId());
-        Map<String,Object> planList = planService.getUserPlan(user.getId(), travelDto.getId());
+        List<Map<String,Object>> planList = planService.getUserPlan(user.getId(), travelDto.getId());
 
         Date minDate = null;
         Date maxDate = null;
 
-        List<Map<String, Object>> listValue = (List<Map<String, Object>>) planList.get("planList");
-
         if(planList.size() > 0) {
-            minDate = (Date) listValue.get(0).getOrDefault("orderDate", "");
-            maxDate = (Date) listValue.get(listValue.size() - 1).getOrDefault("orderDate", "");
+            minDate = (Date) planList.get(0).getOrDefault("orderDate", "");
+            maxDate = (Date) planList.get(planList.size() - 1).getOrDefault("orderDate", "");
         }
 
         result.put("travelOne", travelOne);
