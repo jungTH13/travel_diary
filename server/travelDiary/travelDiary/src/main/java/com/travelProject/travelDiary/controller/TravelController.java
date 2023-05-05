@@ -50,7 +50,7 @@ public class TravelController {
 
         List<Map<String, Object>> listValue = (List<Map<String, Object>>) planList.get("planList");
 
-        if(planList.size() > 0) {
+        if(listValue.size() > 0) {
             minDate = (Date) listValue.get(0).getOrDefault("orderDate", "");
             maxDate = (Date) listValue.get(listValue.size() - 1).getOrDefault("orderDate", "");
         }

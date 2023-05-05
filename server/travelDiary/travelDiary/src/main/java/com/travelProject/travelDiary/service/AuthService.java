@@ -36,6 +36,7 @@ public class AuthService {
     @Value("${google.OAuth.redirectUri}")
     private String redirectUri;
 
+    @SuppressWarnings("unchecked")
     public User validateJWTUser(HttpServletRequest request){
         User user = (User) request.getAttribute("user");
 
@@ -44,6 +45,7 @@ public class AuthService {
         return user;
     }
 
+    @SuppressWarnings("unchecked")
     public String getGoogleToken(String code)throws  IOException{
         String targetUrl = "https://oauth2.googleapis.com/token";
 
@@ -66,6 +68,7 @@ public class AuthService {
         return response.getBody().get("access_token").toString();
     }
 
+    @SuppressWarnings("unchecked")
     public GoogleUserInfo getGoogleUserInfo(String token) throws IOException {
         String targetUrl = "https://www.googleapis.com/oauth2/v2/userinfo";
 
@@ -84,5 +87,4 @@ public class AuthService {
 
         return googleUserInfo;
     }
-
 }

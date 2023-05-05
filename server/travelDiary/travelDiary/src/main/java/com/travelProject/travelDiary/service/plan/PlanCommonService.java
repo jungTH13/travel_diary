@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -163,7 +164,7 @@ public class PlanCommonService {
             rtbPlanAirplaneThumbNail.setThId(thumbnail);
 
             planAirPlane.setId(planTypeId);
-            rtbPlanAirplaneThumbNail.setPlanAirPlaneId(planAirPlane);
+            rtbPlanAirplaneThumbNail.setPlanAirPlane(planAirPlane);
 
             rtbPlanAirplaneThumbNailRepository.save(rtbPlanAirplaneThumbNail);
         } else if(planType.equals("pe")) {
@@ -210,6 +211,42 @@ public class PlanCommonService {
             rtbPlanTransportThumbNail.setPlanTransPort(planTransPort);
 
             rtbPlanTransportThumbNailRepository.save(rtbPlanTransportThumbNail);
+        }
+    }
+
+    public void rtbThumbNailDelete(String planType, Long planTypeId, Long thumbNailId, String userId) {
+        if((planTypeId <= 0 || planTypeId == null)
+                || !(planType.equals("pa") || planType.equals("pe") || planType.equals("ph") || planType.equals("pr") || planType.equals("pt"))
+        ) {
+            throw new exceptionCode(ErrorCode.INVALID_PARAMETER);
+        }
+        Thumbnail thumbnail = new Thumbnail();
+
+        if(planType.equals("pa")) {
+            List<RtbPlanAirplaneThumbNail> list = rtbPlanAirplaneThumbNailRepository.findAllByThId_IdAndPlanAirPlane_User_Id(thumbNailId, userId);
+            for(RtbPlanAirplaneThumbNail deleteParam :list) {
+                rtbPlanAirplaneThumbNailRepository.deleteById(deleteParam.getId());
+            }
+        } else if(planType.equals("pe")) {
+            List<RtbPlanEtcThumbNail> list = rtbPlanEtcThumbNailRepository.findAllByThId_Id(thumbNailId);
+            for(RtbPlanEtcThumbNail deleteParam :list) {
+                rtbPlanEtcThumbNailRepository.deleteById(deleteParam.getId());
+            }
+        } else if(planType.equals("ph")) {
+            List<RtbPlanHotelThumbNail> list = rtbPlanHotelThumbNailRepository.findAllByThId_Id(thumbNailId);
+            for(RtbPlanHotelThumbNail deleteParam :list) {
+                rtbPlanHotelThumbNailRepository.deleteById(deleteParam.getId());
+            }
+        } else if(planType.equals("pr")) {
+            List<RtbPlanRestaurantThumbNail> list = rtbPlanRestaurantThumbNailRepository.findAllByThId_Id(thumbNailId);
+            for(RtbPlanRestaurantThumbNail deleteParam :list) {
+                rtbPlanRestaurantThumbNailRepository.deleteById(deleteParam.getId());
+            }
+        } else if(planType.equals("pt")) {
+            List<RtbPlanTransportThumbNail> list = rtbPlanTransportThumbNailRepository.findAllByThId_Id(thumbNailId);
+            for(RtbPlanTransportThumbNail deleteParam :list) {
+                rtbPlanTransportThumbNailRepository.deleteById(deleteParam.getId());
+            }
         }
     }
 }

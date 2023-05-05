@@ -9,6 +9,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @AllArgsConstructor
@@ -26,7 +28,7 @@ public class RtbPlanAirplaneThumbNail {
 
     @ManyToOne(targetEntity = PlanAirPlane.class, fetch = FetchType.LAZY)
     @JoinColumn(name="pa_id")
-    private PlanAirPlane planAirPlaneId;
+    private PlanAirPlane planAirPlane;
 
     @ManyToOne(targetEntity = Thumbnail.class, fetch = FetchType.LAZY)
     @JoinColumn(name="th_id")
