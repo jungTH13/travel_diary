@@ -2,11 +2,14 @@ package com.travelProject.travelDiary.service;
 
 import com.travelProject.travelDiary.config.exceptionCode;
 import com.travelProject.travelDiary.dto.ErrorCode;
+import com.travelProject.travelDiary.dto.GoogleUserInfo;
+import com.travelProject.travelDiary.dto.UserInfo;
 import com.travelProject.travelDiary.entity.User;
 import com.travelProject.travelDiary.repository.UserRepository;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
@@ -20,6 +23,7 @@ import java.util.UUID;
 
 
 @Service
+@Slf4j
 public class UserService {
 
     @Autowired
@@ -27,9 +31,22 @@ public class UserService {
     @Value("${spring.secretKey}")
     private String secretKey;
 
+    private final Integer JWTExpiration = 24;
+    private final Integer CookieMaxAge = 60*60*24;
+
     public String getNewUserJWT(){
         User user = createGuestUser();
 
+        return createJWT(user);
+    }
+
+    public String getNewUserJWT(GoogleUserInfo googleUserInfo){
+        User user = createUser(googleUserInfo);
+
+        return createJWT(user);
+    }
+
+    protected String createJWT(User user){
         if(user == null) throw new exceptionCode(ErrorCode.INTERNAL_SERVER_CREATE_ERROR);
 
         Date now = new Date();
@@ -37,7 +54,7 @@ public class UserService {
                 .setHeaderParam(Header.TYPE,Header.JWT_TYPE)
                 .setIssuer("travel")
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + Duration.ofHours(24*365).toMillis()))
+                .setExpiration(new Date(now.getTime() + Duration.ofHours(JWTExpiration).toMillis()))
                 .claim("id",user.getId())
                 .signWith(SignatureAlgorithm.HS256,this.secretKey)
                 .compact();
@@ -53,7 +70,7 @@ public class UserService {
                 .setHeaderParam(Header.TYPE,Header.JWT_TYPE)
                 .setIssuer("travel")
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + Duration.ofHours(24*365).toMillis()))
+                .setExpiration(new Date(now.getTime() + Duration.ofHours(JWTExpiration).toMillis()))
                 .claim("id",userId)
                 .signWith(SignatureAlgorithm.HS256,this.secretKey)
                 .compact();
@@ -67,7 +84,7 @@ public class UserService {
     public ResponseCookie wrapDataAtCookieSecure(String key,String value){
         ResponseCookie cookie = ResponseCookie
                 .from(key,value)
-                .maxAge(60*60*24*365)
+                .maxAge(CookieMaxAge)
                 .httpOnly(true)
                 .path("/")
                 .secure(true)
@@ -80,7 +97,7 @@ public class UserService {
     public Cookie wrapDataAtCookie(String key,String value){
         Cookie cookie = new Cookie(key,value);
         cookie.setPath("/");
-        cookie.setMaxAge(60*60*24*365);
+        cookie.setMaxAge(CookieMaxAge);
 //        cookie.setSecure(true);
         cookie.setHttpOnly(true);
 
@@ -103,4 +120,34 @@ public class UserService {
         throw new exceptionCode(ErrorCode.INTERNAL_SERVER_CREATE_ERROR);
     }
 
+    private User createUser(GoogleUserInfo googleUserInfo){
+
+        User user = userRepository.findByEmail(googleUserInfo.getEmail()).orElse(null);
+
+        if (user != null) {
+            user.addLoginCount();
+            return  userRepository.save(user);
+        }
+
+        String uuid = UUID.randomUUID().toString();
+
+        User newUser = User.builder()
+                .id(uuid)
+                .auth("google")
+                .email(googleUserInfo.getEmail())
+                .picture(googleUserInfo.getPicture())
+                .build();
+
+        newUser = userRepository.save(newUser);
+
+        return newUser;
+
+    }
+
+    public UserInfo getUserInfo (String userId){
+        User user = userRepository.findById(userId).orElse(null);
+
+        if(user==null) return null;
+        return new UserInfo(user);
+    }
 }

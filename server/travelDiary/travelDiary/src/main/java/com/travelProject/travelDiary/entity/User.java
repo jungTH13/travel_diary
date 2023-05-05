@@ -40,6 +40,13 @@ public class User {
     @ColumnDefault("false")
     private boolean deleted;
 
+    @Column
+    private String picture;
+
+    @Column
+    @ColumnDefault("0")
+    private Long loginCount;
+
     public void patch(User user){
         this.deleted = user.deleted;
     }
@@ -53,8 +60,15 @@ public class User {
     private LocalDateTime modifiedDate;
 
     @Builder
-    public User(String id,String auth){
+    public User(String id,String auth,String email,String publisher,String picture){
         this.id = id;
         this.auth = auth;
+        this.email = email;
+        this.publisher = publisher;
+        this.picture = picture;
+    }
+
+    public void addLoginCount(){
+        this.loginCount = this.loginCount+1;
     }
 }
