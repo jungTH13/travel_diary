@@ -156,6 +156,37 @@ export const useGoogleMapApi = ()=>{
         return markerView
     }
 
+    const setPositionMarker = (x,y,isTrace=false)=>{
+        if(mapObj === null) throw new Error("지도가 생성되어 있지 않습니다!")
+
+        const options = {
+            position: {lat:x,lng:y},
+            map: mapObj,
+            // label:{
+            //     text:label,
+            //     fontWeight:'600',
+                
+            // },
+            icon:{
+                path: "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z",
+                fillColor: 'blue',
+                fillOpacity: 1,
+                scale: 0.03,
+                strokeColor: 'white',
+                strokeWeight: 2,                
+                anchor: new google.maps.Point(200, 500),
+            },
+        }
+        
+        const marker = new window.google.maps.Marker(options)
+        if(isTrace === true) {
+            mapObj.setCenter({lat:x,lng:y})
+            mapObj.setZoom(16)
+        }
+
+        return marker
+    }
+
     /**
      * 
      * @param {Object} marker 
@@ -293,7 +324,7 @@ export const useGoogleMapApi = ()=>{
         const sw = new google.maps.LatLng(minX, minY)
         const ne = new google.maps.LatLng(maxX, maxY)
         const bounds = new google.maps.LatLngBounds(sw, ne)
-        console.log(mapObj)
+
         mapObj.fitBounds(bounds)
     }
 
@@ -339,6 +370,7 @@ export const useGoogleMapApi = ()=>{
         setMarkerInfo,
         setMarkerEvent,
         setSvgMarker,
+        setPositionMarker,
         setPoligonLine,
         moveMarker,
         searchPlace,

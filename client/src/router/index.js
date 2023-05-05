@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
+import LoginCallbackView from "../views/LoginCallbackView.vue";
 import TravelView from "../views/travel/TravelView.vue";
 import NewTravelView from "../views/travel/NewTravelView.vue";
 import NewCountryView from "../views/travel/NewCountryView.vue";
@@ -30,6 +31,13 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: LoginView,
+      children:[
+        {
+          path:'callback',
+          name:'login-callback',
+          component: LoginCallbackView
+        }
+      ]
     },
     {
       path: "/travel",

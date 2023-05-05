@@ -94,14 +94,16 @@ div{
 
 div::-webkit-scrollbar {
   width: 0px; /*스크롤바의 너비*/
+  height: 0.5rem;
+  border-radius: 25px;
 }
 
 div::-webkit-scrollbar-thumb {
-  background-color: rgb(255, 255, 255); /*스크롤바의 색상*/
+  background-color: rgba(0, 0, 0, 0.527); /*스크롤바의 색상*/
 }
 
 div::-webkit-scrollbar-track {
-  background-color: rgb(255, 255, 255); /*스크롤바 트랙 색상*/
+  background-color: rgba(255, 255, 255, 0); /*스크롤바 트랙 색상*/
 }
 
 

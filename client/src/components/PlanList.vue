@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class="plan-contents-wrapper">
-        <div class="plan-wrapper" v-for="plan in planList" @click="showPlanOptions(plan)">
+        <div class="plan-wrapper" v-for="plan in planList" @click="selectPlan=plan">
             <div class="plan">
                 <div class="progress-line">
                     <div class="spot"></div>
@@ -40,40 +40,7 @@
         </div>
     </div>
 
-    <!-- TO DO : 작은 컴포넌트로 분리  -->
-    <div :class="{active:(selectPlan)}" id="overlay" class="col"> 
-        <div id="overlay-empty" @click="closePlanOptions"></div>
-        
-        <div id="plan-options" :class="{active:optionsVisible}">
-            <div style="padding:2rem;">
-                <div class="select-plan" v-if="selectPlan" >
-                    <div class="title">{{ selectPlan?.title }} <MapLocationIcon v-if="selectPlanSearchInfo" :is-registration="false" width="3rem" height="3rem" v-model="selectPlanSearchInfo" /></div>
-                    <div class="type">{{ bookNavCodes[selectPlan?.type] }}</div>
-                    <div class="memo" v-html="urlParse(selectPlan['memo']?.replaceAll('\n','<br/>'))"></div>
-                </div>
-
-                <div class="summit-footer">
-                    <button   class="font-weight-600 " @click="memoModifyVisible= true;optionsVisible=false;">메모 작성</button>
-                    <button class="font-weight-600 " >사진 추가</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="memo-modify" :class="{active:memoModifyVisible}">
-            <div class="full-hidden col" style="padding:2rem;">
-                <div class="title">{{ selectPlan?.title }}</div>
-                <textarea v-if="selectPlan" class="memo-modify-box" v-model="selectPlan.memo">
-                </textarea>
-                <div class="summit-footer white-style">
-                    <button class="font-weight-600 " @click="closePlanOptions">취소</button>
-                    <button class="font-weight-600 " @click="putPlanMemo(selectPlan)" >저장</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    
-
+    <PlanListOverlay v-model="selectPlan" />
 </div>
 </template>
 
@@ -127,8 +94,9 @@
                     // border-radius: 10px;
                     box-shadow: 0.05rem 0.05rem 0.5rem 0rem gray;
                     min-height:4rem;
+                    max-height: 40rem;
                     padding:8px;
-                    overflow: hidden;
+                    overflow: auto;
 
                     .title{
                         font-size:1.4rem;
@@ -219,133 +187,21 @@
     border-radius: 50%;
 }
 
-#overlay{
-    position: absolute;
-    z-index: 110000;
-    background-color: rgba(0, 0, 0, 0.164);
-    width: 100%;
-    height: 0;
-    bottom:0;
-    left:0;
-    overflow: hidden;
-
-    &.active{
-        height: 100vh;
-    }
-
-    #overlay-empty{
-        height: 100%;
-    }
-
-    #plan-options{
-        background-color: white;
-        bottom: 0px;
-        border-radius: 15px 15px 0 0;
-        width: 100%;
-        max-height: 0px;
-        transition: all ease 0.5s 0s;
-
-        .select-plan{
-            margin-bottom: 2.5rem;
-            .title{
-                font-size: 2rem;
-                font-weight: 600;
-            }
-            .type{
-                font-size:1.5rem;
-                color: gray;
-            }
-            .memo{
-                font-size:1.3rem;
-            }
-        }
-        &.active{
-            max-height: 70vh;
-        }
-    }
-
-    #memo-modify{
-        position:absolute;
-        background-color: white;
-        height:0%;
-        max-height: 400px;
-        max-width: 350px;
-        width: 90%;
-        left:50%;
-        top:50%;
-        transform: translate(-50%, -50%);
-        overflow: hidden;
-        display: flex;
-        transition: all ease 0s 0.3s;
-
-        &.active{
-            height:90%;
-        }
-
-        .title{
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .memo-modify-box{
-            width: 100%;
-            height:100%;
-            resize:none;
-            border:none;
-            border-bottom: 1px solid $gray;
-        }
-    }
-}
 </style>
 
 <script setup>
 
 import { computed, defineProps, ref, watch } from "vue";
 import {DateToStringFormat1, toAMPMString, toComaNumberString, urlParse, getMapSearchInfo} from "../composable/util"
-import {useScheduleStore} from "../stores/plan/schedule"
-import { useRoute } from "vue-router";
-import ExpantionComponent from "./layouts/ExpantionComponent.vue";
-import { useBookStore } from "../stores/plan/book";
-import MapLocationIcon from "./layouts/MapLocationIcon.vue";
+import PlanListOverlay from "./layouts/PlanListOverlay.vue";
 
 const props = defineProps({
 modelValue: Array,
 });
 const emit = defineEmits(['update:modelValue'])
 
-const scheduleStore = useScheduleStore()
-const bookStore = useBookStore()
-const route = useRoute()
-
 const planList = computed(()=>props.modelValue||[])
-const travelId = computed(()=>route.params.id||null)
-const bookNavCodes = computed(()=>bookStore.nav.reduce((codes,nav)=>{codes[nav.type]=nav.name;return codes},{}))
-const memoState = ref({})
 const selectPlan = ref(null)
-const selectPlanSearchInfo = ref(null)
-const optionsVisible = ref(false)
-const memoModifyVisible = ref(false)
-
-const showPlanOptions = (plan)=>{
-    selectPlan.value =plan
-    setSelectPlanSearchInfo(plan)
-    optionsVisible.value=true
-    memoModifyVisible.value = false
-}
-const closePlanOptions = ()=>{
-    scheduleStore.getscheduleList(travelId.value)
-    selectPlan.value =null
-    selectPlanSearchInfo.value = null
-    optionsVisible.value=false
-    memoModifyVisible.value = false
-}
-
-const setSelectPlanSearchInfo = async(plan)=>{
-    await bookStore.getBook(travelId.value,plan.id,plan.type)
-    selectPlanSearchInfo.value = getMapSearchInfo(bookStore.book)
-    bookStore.resetBook()
-}
 
 const getDescription = (plan,type)=>{
     if(type === 'first'){
@@ -381,16 +237,5 @@ const getSecondDateString = (plan)=>{
         if(target.includes(key))return plan[key]
     }
 }
-
-const putPlanMemo = async(plan)=>{
-    const response = await scheduleStore.putPlanMemoOnly(travelId.value,plan)
-
-    if(response.code !== 200) alert('수정에 실패 했습니다.')
-    memoState.value={}
-    closePlanOptions()
-    scheduleStore.getscheduleList(travelId.value)
-}
-
-
 </script>
   

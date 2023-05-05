@@ -47,12 +47,18 @@ API.api.interceptors.response.use(
     // 응답 데이터를 가공
     const requestNumber = parseInt(response.config.headers['Request-Number']);
     if(response.data.code === 401 && loginIgnore < requestNumber){
+      if(response.request.responseURL.includes('user/userInfo')) return
       
       loginIgnore = reqeustNumber;
       
       alert('로그인 페이지로 이동합니다.')
 
-      router.push({name:'login'})
+      router.push({
+        name:'login',
+        params:{
+          code: 401
+        }
+      })
     }
     if(response.data.code !== 200) console.log(response)
 

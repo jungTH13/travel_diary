@@ -4,6 +4,7 @@ import * as API from "../../composable/api";
 
 export const useBookStore = defineStore("book", () => {
   const book = ref({});
+  const uploadImageList = ref([]) // [{url:base64Url,file:File}]
 
   const nav = ref([
     { type:'', name: "전체" },
@@ -69,6 +70,7 @@ export const useBookStore = defineStore("book", () => {
 
   const resetBook = ()=>{
     book.value= {}
+    uploadImageList.value = []
   }
 
   const _getBookAirPlan = async (travelId,planId) => {
@@ -127,6 +129,7 @@ export const useBookStore = defineStore("book", () => {
 
   return { 
     book,
+    uploadImageList,
     nav,
     getBook,
     resetBook,

@@ -113,7 +113,7 @@
                     </tr>
                 </tbody>
             </table>
-
+            <BookImageController />
         </div>
     </div>
 </div>
@@ -130,6 +130,7 @@ import { toAMPMString } from "../../../composable/util";
 import { useBookStore } from "../../../stores/plan/book";
 import DateTime from "../DateTime.vue";
 import MapLocationIcon from "../MapLocationIcon.vue";
+import BookImageController from "./BookImageController.vue";
 
 const bookStore = useBookStore()
 
