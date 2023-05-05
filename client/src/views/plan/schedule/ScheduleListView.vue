@@ -5,6 +5,16 @@
       <div class="schedule-date" :class="{active: dailyScheduleVisibleList[index]}"  v-for="date,index in dayList" @click="setDailyVisible(index)">{{ date }}</div>
     </div>
     <div class="schdule-contents-container">
+      <!-- <div class="extra-feature-box-position">
+        <div class="extra-feature-box">
+          <div class="create-image-marker">
+            <font-awesome-icon icon="fa-regular fa-images" />
+            이미지 마커 추가하기
+          </div>
+        </div>
+        
+      </div> -->
+
       <div class="contents" v-for="day,index in dayList" v-show="dailyScheduleVisibleList.length===0 || dailyScheduleVisibleList[index]">
         <h1 class="date">DAY {{ index+1 }} </h1> <p class="description"> {{ DateToStringFormat1(setDate(startDate,index)) }}</p>
         <PlanList v-model="dailyScheduleList[index]" />
@@ -63,6 +73,25 @@
     height: 100%;
     overflow: auto;
     margin:0rem;
+
+    .extra-feature-box-position{
+      position: relative;
+      .extra-feature-box{
+        position:absolute;
+        top:0;
+        right:0;
+        margin-right: 1rem;
+        
+        .create-image-marker{
+          // background-color: $gray;
+          border-radius: 3px;
+          // border: 1px solid rgba(128, 128, 128, 0.445);
+          padding:0.5rem;
+          font-size:1.5rem;
+          font-weight: 600;
+        }
+      }
+    }
 
     .contents{
       padding:2%;

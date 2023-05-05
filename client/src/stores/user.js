@@ -3,11 +3,39 @@ import { defineStore } from "pinia";
 import * as API from "../composable/api";
 
 export const useUserStore = defineStore("user", () => {
-  async function login() {
-    const exam = await API.get("/user/examCookie");
 
-    console.log("user", exam);
+  const userInfo = ref({})
+
+
+  function resetUserInfo (){
+    userInfo.value = {}
   }
 
-  return { login };
+  async function examUserLogin() {
+    const {data} = await API.get("/user/examCookie");
+
+    return data
+  }
+
+  async function googleOAuthLogin (code){
+    const {data} = await API.post("/user/googleOAuthLogin",{code})
+
+    return data
+  }
+
+  async function getUserInfo(){
+    const {data} = await API.get("/user/userInfo")
+
+    if(data.code===200) userInfo.value = data.results.userInfo
+
+    return data
+  }
+
+  return { 
+    userInfo,
+    examUserLogin, 
+    googleOAuthLogin,
+    getUserInfo,
+    resetUserInfo 
+  };
 });

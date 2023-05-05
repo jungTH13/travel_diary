@@ -93,7 +93,7 @@
                     height: 100%;
                     max-height:100vh;
                     margin-bottom: 1rem;
-                    overflow: hidden;
+                    overflow: auto;
 
                     .contents-title{
                         font-weight: 600;
@@ -183,5 +183,4 @@ watch(()=>nowShowPlan.value,(newValue,oldValue)=>{
         googlMapApi.moveMap(plan.x,plan.y)
     
 })
-
 </script>

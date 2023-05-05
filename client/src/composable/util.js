@@ -1,3 +1,6 @@
+import heic2any from "heic2any";
+import { ref } from "vue";
+
 export const getDateRange = (startDate, endDate) => {
   const start = new Date(startDate);
   const end = new Date(endDate);
@@ -122,4 +125,32 @@ export const getMapSearchInfo = (plan)=>{
   else searchInfo.name = plan.name
 
   return searchInfo
+}
+
+/**
+* 
+* @param {File} file 
+* @returns {File}
+* 
+* 아이폰 전용 이미지 확장자 파일을 jpeg 이미지로 변환
+*/
+export const HeicToJpeg = async (file)=>{
+   try{
+       const JpegBlob = await heic2any({
+           blob:file,
+           toType: 'image/jpeg'
+       })
+
+       const name = file.name.split('.')[0] + '.jpeg'
+       const newFile = new File([JpegBlob],name)
+
+       return newFile
+   }
+   catch(error){
+       if(error.code === 1) {
+           console.log(`${file.name} 파일의 확장자가 올바르지 않습니다!`)
+           return file
+       }
+       throw error
+   }
 }

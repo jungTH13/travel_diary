@@ -30,8 +30,7 @@
                     </th>
                     <tr>
                         <td style="width:45%">
-                            <div :class="{require:!book.departLocation}">
-                                
+                            <div>
                                 <input type="text" placeholder="출발지" v-model="book.departLocation">
                                 <MapLocationIcon :search-text="book.departLocation" :is-registration="true" v-model="departMapResult" :width="iconWidth" :height="iconheight" />
                             </div>
@@ -147,8 +146,9 @@
                     </tr>
                 </tbody>
             </table>
-
+            <BookImageController />
         </div>
+        
     </div>
 </div>
 </template>
@@ -165,6 +165,7 @@ import { useBookStore } from "../../../stores/plan/book";
 import DateTime from "../DateTime.vue";
 import TimeOnly from "../TimeOnly.vue";
 import MapLocationIcon from "../MapLocationIcon.vue";
+import BookImageController from "./BookImageController.vue";
 
 const bookStore = useBookStore()
 

@@ -158,11 +158,7 @@ const checklistTitleId = computed(()=>props.modelValue)
 const travelId = computed(()=>route.params.id)
 const checklist = ref({})
 const editState = computed(()=>props.editState)
-const checklistHeight = ref(0)
 
-const setChecklistHeight = ()=>{
-    checklistHeight = document
-}
 
 const resetChecklist = ()=>{
     checklist.value = {}
