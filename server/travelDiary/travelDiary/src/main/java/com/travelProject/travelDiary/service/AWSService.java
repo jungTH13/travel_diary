@@ -31,7 +31,7 @@ public class AWSService {
 
     public String convertFilename(String filename){
         String uuid = UUID.randomUUID().toString();
-        return uuid +'.'+ filename;
+        return uuid +'_'+ filename;
     }
 
     public String upload(MultipartFile file, String dirName, String fileName) throws IOException {

@@ -2,10 +2,12 @@ package com.travelProject.travelDiary.service.plan;
 
 import com.travelProject.travelDiary.config.exceptionCode;
 import com.travelProject.travelDiary.dto.ErrorCode;
+import com.travelProject.travelDiary.entity.Thumbnail;
 import com.travelProject.travelDiary.entity.plan.*;
+import com.travelProject.travelDiary.entity.plan.rtb.*;
 import com.travelProject.travelDiary.repository.plan.*;
+import com.travelProject.travelDiary.repository.plan.rtb.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,6 +29,21 @@ public class PlanCommonService {
 
     @Autowired
     private PlanTransPortRepository planTransPortRepository;
+
+    @Autowired
+    private RtbPlanAirplaneThumbNailRepository rtbPlanAirplaneThumbNailRepository;
+
+    @Autowired
+    private RtbPlanEtcThumbNailRepository rtbPlanEtcThumbNailRepository;
+
+    @Autowired
+    private RtbPlanHotelThumbNailRepository rtbPlanHotelThumbNailRepository;
+
+    @Autowired
+    private RtbPlanRestaurantThumbNailRepository rtbPlanRestaurantThumbNailRepository;
+
+    @Autowired
+    private RtbPlanTransportThumbNailRepository rtbPlanTransportThumbNailRepository;
 
     public Long planMemoUpdate(Long travelId, String userId, Map<String, Object> param) {
         LocalDateTime time = LocalDateTime.now();
@@ -95,5 +112,104 @@ public class PlanCommonService {
             resultPlanId = planTransPortRepository.save(planTransPort).getId();
         }
         return resultPlanId;
+    }
+
+    public void planIdSelect(String userId, String planType, Long planTypeId) {
+        if(planType.equals("pa")) {
+            PlanAirPlane planAirPlane = planAirPlaneRepository.findByIdAndUser_Id(planTypeId, userId);
+
+            if(planAirPlane == null) {
+                throw new exceptionCode(ErrorCode.INVALID_ID_PARAMETER);
+            }
+        } else if(planType.equals("pe")) {
+            PlanEtc planEtc = planEtcRepository.findByIdAndUser_Id(planTypeId, userId);
+
+            if(planEtc == null) {
+                throw new exceptionCode(ErrorCode.INVALID_ID_PARAMETER);
+            }
+        } else if(planType.equals("ph")) {
+            PlanHotel planHotel = planHotelRepository.findByIdAndUser_Id(planTypeId, userId);
+
+            if(planHotel == null) {
+                throw new exceptionCode(ErrorCode.INVALID_ID_PARAMETER);
+            }
+        } else if(planType.equals("pr")) {
+            PlanRestaurant planRestaurant = planRestaurantRepository.findByIdAndUser_Id(planTypeId, userId);
+
+            if(planRestaurant == null) {
+                throw new exceptionCode(ErrorCode.INVALID_ID_PARAMETER);
+            }
+        } else if(planType.equals("pt")) {
+            PlanTransPort planTransPort = planTransPortRepository.findByIdAndUser_Id(planTypeId, userId);
+
+            if(planTransPort == null) {
+                throw new exceptionCode(ErrorCode.INVALID_ID_PARAMETER);
+            }
+        }
+    }
+    public void rtbThumbNailInsert(String planType, Long planTypeId, Long thumbNailId) {
+        if((planTypeId <= 0 || planTypeId == null)
+                || !(planType.equals("pa") || planType.equals("pe") || planType.equals("ph") || planType.equals("pr") || planType.equals("pt"))
+        ) {
+            throw new exceptionCode(ErrorCode.INVALID_PARAMETER);
+        }
+        Thumbnail thumbnail = new Thumbnail();
+
+        if(planType.equals("pa")) {
+            RtbPlanAirplaneThumbNail rtbPlanAirplaneThumbNail = new RtbPlanAirplaneThumbNail();
+            PlanAirPlane planAirPlane = new PlanAirPlane();
+
+            thumbnail.setId(thumbNailId);
+            rtbPlanAirplaneThumbNail.setThId(thumbnail);
+
+            planAirPlane.setId(planTypeId);
+            rtbPlanAirplaneThumbNail.setPlanAirPlaneId(planAirPlane);
+
+            rtbPlanAirplaneThumbNailRepository.save(rtbPlanAirplaneThumbNail);
+        } else if(planType.equals("pe")) {
+            RtbPlanEtcThumbNail rtbPlanEtcThumbNail = new RtbPlanEtcThumbNail();
+            PlanEtc planEtc = new PlanEtc();
+
+            thumbnail.setId(thumbNailId);
+            rtbPlanEtcThumbNail.setThId(thumbnail);
+
+            planEtc.setId(planTypeId);
+            rtbPlanEtcThumbNail.setPlanEtc(planEtc);
+
+            rtbPlanEtcThumbNailRepository.save(rtbPlanEtcThumbNail);
+        } else if(planType.equals("ph")) {
+            RtbPlanHotelThumbNail rtbPlanHotelThumbNail = new RtbPlanHotelThumbNail();
+            PlanHotel planHotel = new PlanHotel();
+
+            thumbnail.setId(thumbNailId);
+            rtbPlanHotelThumbNail.setThId(thumbnail);
+
+            planHotel.setId(planTypeId);
+            rtbPlanHotelThumbNail.setPlanHotel(planHotel);
+
+            rtbPlanHotelThumbNailRepository.save(rtbPlanHotelThumbNail);
+        } else if(planType.equals("pr")) {
+            RtbPlanRestaurantThumbNail rtbPlanRestaurantThumbNail = new RtbPlanRestaurantThumbNail();
+            PlanRestaurant planRestaurant = new PlanRestaurant();
+
+            thumbnail.setId(thumbNailId);
+            rtbPlanRestaurantThumbNail.setThId(thumbnail);
+
+            planRestaurant.setId(planTypeId);
+            rtbPlanRestaurantThumbNail.setPlanRestaurant(planRestaurant);
+
+            rtbPlanRestaurantThumbNailRepository.save(rtbPlanRestaurantThumbNail);
+        } else if(planType.equals("pt")) {
+            RtbPlanTransportThumbNail rtbPlanTransportThumbNail = new RtbPlanTransportThumbNail();
+            PlanTransPort planTransPort = new PlanTransPort();
+
+            thumbnail.setId(thumbNailId);
+            rtbPlanTransportThumbNail.setThId(thumbnail);
+
+            planTransPort.setId(planTypeId);
+            rtbPlanTransportThumbNail.setPlanTransPort(planTransPort);
+
+            rtbPlanTransportThumbNailRepository.save(rtbPlanTransportThumbNail);
+        }
     }
 }

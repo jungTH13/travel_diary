@@ -16,22 +16,16 @@ public enum ErrorCode {
 
     INVALID_TRAVEL_ID_PARAMETER(400, "여행 ID 값을 알수가 없습니다."),
 
+    INVALID_IMAGE_ID_PARAMETER(400, "이미지 ID 값을 알수가 없습니다."),
+
+
     DIFFERENT_USER_PARAMETER(400, "본인 값만 수정 가능합니다."),
+
     //401 JWT
     INVALID_JWT_ERROR(401,"유저 토큰이 옳바르지 않습니다."),
 
     //404 NOT_FOUND 잘못된 리소스 접근
     DISPLAY_NOT_FOUND(404, "존재하지 않는 전시회 ID 입니다."),
-    FAIR_NOT_FOUND(404, "존재하지 않는 박람회 ID 박람회입니다."),
-    FESTIVAL_NOT_FOUND(404, "존재하지 않는 페스티벌 ID 페스티벌입니다."),
-    SAVED_DISPLAY_NOT_FOUND(404, "저장하지 않은 전시회입니다."),
-    SAVED_FAIR_NOT_FOUND(404, "저장하지 않은 박람회입니다."),
-    SAVED_FESTIVAL_NOT_FOUND(404, "저장하지 않은 페스티벌입니다."),
-
-    //409 CONFLICT 중복된 리소스
-    ALREADY_SAVED_DISPLAY(409, "이미 저장한 전시회입니다."),
-    ALREADY_SAVED_FAIR(409, "이미 저장한 박람회입니다."),
-    ALREADY_SAVED_FESTIVAL(409, "이미 저장한 페스티벌입니다."),
 
     //500 INTERNAL SERVER ERROR
     INTERNAL_SERVER_CREATE_ERROR(500,"데이터 생성 오류"),
