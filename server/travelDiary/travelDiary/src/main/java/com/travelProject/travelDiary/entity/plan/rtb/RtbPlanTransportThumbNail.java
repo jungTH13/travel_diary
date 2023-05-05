@@ -29,5 +29,5 @@ public class RtbPlanTransportThumbNail {
     @ManyToOne(targetEntity = Thumbnail.class, fetch = FetchType.LAZY)
     @JoinColumn(name="th_id")
     @JsonIgnore
-    private Thumbnail travel;
+    private Thumbnail thId;
 }
