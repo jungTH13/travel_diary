@@ -42,32 +42,16 @@ public class UserCotroller {
         if(request.getAttribute("user")!=null) return ResponseBody.builder().code(402).msg("guest-cookie가 이미 존재합니다.").build();
 
         String jwtToken = userService.getNewUserJWT();
-        Cookie cookie = userService.wrapDataAtCookie(this.cookieName,jwtToken);
-        ResponseCookie cookieSecure = userService.wrapDataAtCookieSecure(this.cookieName,jwtToken);
 
-        if(jwtToken == null || jwtToken.equals("")) return ResponseBody.builder().code(500).msg("guest-cookie발행에 실패했습니다.").build();
-        String userAgentName = userAgent.split("/")[0];
-        //postman 요청시 secure 해제 토큰 발송
-        if(userAgentName.equals("PostmanRuntime")) response.addCookie(cookie);
-        else response.addHeader("Set-Cookie",cookieSecure.toString());
-
-        return ResponseBody.builder().code(200).msg("guest-cookie가 발행되었습니다.").build();
+        return cookieCommonProcess(jwtToken,response,userAgent.split("/")[0]);
     }
 
     @GetMapping("/examCookie")
     public ResponseBody getExamCookie(HttpServletRequest request, HttpServletResponse response,@RequestHeader(value="User-Agent", defaultValue="myBrowser") String userAgent){
 
         String jwtToken = userService.getExamUserJWT();
-        Cookie cookie = userService.wrapDataAtCookie(this.cookieName,jwtToken);
-        ResponseCookie cookieSecure = userService.wrapDataAtCookieSecure(this.cookieName,jwtToken);
 
-        if(jwtToken == null || jwtToken.equals("")) return ResponseBody.builder().code(500).msg("guest-cookie발행에 실패했습니다.").build();
-        String userAgentName = userAgent.split("/")[0];
-        //postman 요청시 secure 해제 토큰 발송
-        if(userAgentName.equals("PostmanRuntime")) response.addCookie(cookie);
-        else response.addHeader("Set-Cookie",cookieSecure.toString());
-
-        return ResponseBody.builder().code(200).msg("guest-cookie가 발행되었습니다.").build();
+        return cookieCommonProcess(jwtToken,response,userAgent.split("/")[0]);
     }
 
     @PostMapping("/googleOAuthLogin")
@@ -87,16 +71,45 @@ public class UserCotroller {
 
         // 유저 생성 및 JTW -> cookie 생성
         String jwtToken = userService.getNewUserJWT(googleUserInfo);
-        Cookie cookie = userService.wrapDataAtCookie(this.cookieName,jwtToken);
-        ResponseCookie cookieSecure = userService.wrapDataAtCookieSecure(this.cookieName,jwtToken);
 
-        if(jwtToken == null || jwtToken.equals("")) return ResponseBody.builder().code(500).msg("user-cookie발행에 실패했습니다.").build();
-        String userAgentName = userAgent.split("/")[0];
+        return cookieCommonProcess(jwtToken,response,userAgent.split("/")[0]);
+    }
+
+    @GetMapping("/logout")
+    public ResponseBody logout(HttpServletRequest request, HttpServletResponse response){
+        if(request.getAttribute("user")==null) return ResponseBody.builder().code(401).msg("로그인 하지 않은 유저입니다.").build();
+
+        ResponseCookie cookie = ResponseCookie
+                .from(this.cookieName, null)
+                .maxAge(0)
+                .httpOnly(true)
+                .path("/")
+                .secure(true)
+                .sameSite("None")
+                .build();
+
+        response.addHeader("Set-Cookie",cookie.toString());
+
+        return ResponseBody.builder().code(200).msg("정상 로그아웃 되었습니다.").build();
+    }
+
+    private ResponseBody cookieCommonProcess(String jwtToken,HttpServletResponse response){
+        return cookieCommonProcess(jwtToken,response,"");
+    }
+    private ResponseBody cookieCommonProcess(String jwtToken,HttpServletResponse response,String userAgentName){
+        if(jwtToken == null) return ResponseBody.builder().code(500).msg("cookie발행에 실패했습니다.").build();
+
         //postman 요청시 secure 해제 토큰 발송
-        if(userAgentName.equals("PostmanRuntime")) response.addCookie(cookie);
-        else response.addHeader("Set-Cookie",cookieSecure.toString());
+        if(userAgentName.equals("PostmanRuntime")){
+            Cookie cookie = userService.wrapDataAtCookie(this.cookieName,jwtToken);
+            response.addCookie(cookie);
+        }
+        else{
+            ResponseCookie cookieSecure = userService.wrapDataAtCookieSecure(this.cookieName,jwtToken);
+            response.addHeader("Set-Cookie",cookieSecure.toString());
+        }
 
-        return ResponseBody.builder().code(200).msg("user-cookie가 발행되었습니다.").build();
+        return ResponseBody.builder().code(200).msg("cookie가 발행되었습니다.").build();
     }
 
     @GetMapping("userInfo")
