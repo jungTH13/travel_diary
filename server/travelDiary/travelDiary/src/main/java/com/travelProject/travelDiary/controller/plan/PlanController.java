@@ -5,7 +5,6 @@ import com.travelProject.travelDiary.dto.ErrorCode;
 import com.travelProject.travelDiary.dto.ResponseBody;
 import com.travelProject.travelDiary.entity.Travel;
 import com.travelProject.travelDiary.entity.User;
-import com.travelProject.travelDiary.service.PlanService;
 import com.travelProject.travelDiary.service.TravelService;
 import com.travelProject.travelDiary.service.plan.PlanCommonService;
 import lombok.extern.slf4j.Slf4j;
@@ -14,15 +13,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @RestController
 public class PlanController {
-
-    @Autowired
-    private PlanService planService;
 
     @Autowired
     private TravelService travelService;
@@ -40,7 +35,7 @@ public class PlanController {
         }
 
         Map<String,Object> results = new HashMap<>();
-        Map<String, Object> planList = planService.getUserPlan(user.getId(), travelId);
+        Map<String, Object> planList = planCommonService.getUserPlan(user.getId(), travelId);
 
         results.put("planList", planList.get("planList"));
         results.put("planAccountBookList", planList.get("planAccountBookList"));

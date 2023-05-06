@@ -46,6 +46,7 @@ public class ThumbnailService {
                 Optional<Thumbnail> thumbnail = thumbnailRepository.findById(param.getThId().getId());
                 insertParam.put("id", thumbnail.get().getId());
                 insertParam.put("url", thumbnail.get().getUrl());
+                insertParam.put("originalUrl", thumbnail.get().getOriginalUrl());
                 resultList.add(insertParam);
             }
         } else if(planType.equals("pe")) {
@@ -55,6 +56,7 @@ public class ThumbnailService {
                 Optional<Thumbnail> thumbnail = thumbnailRepository.findById(param.getThId().getId());
                 insertParam.put("id", thumbnail.get().getId());
                 insertParam.put("url", thumbnail.get().getUrl());
+                insertParam.put("originalUrl", thumbnail.get().getOriginalUrl());
                 resultList.add(insertParam);
             }
         } else if(planType.equals("ph")) {
@@ -64,6 +66,7 @@ public class ThumbnailService {
                 Optional<Thumbnail> thumbnail = thumbnailRepository.findById(param.getThId().getId());
                 insertParam.put("id", thumbnail.get().getId());
                 insertParam.put("url", thumbnail.get().getUrl());
+                insertParam.put("originalUrl", thumbnail.get().getOriginalUrl());
                 resultList.add(insertParam);
             }
         } else if(planType.equals("pr")) {
@@ -73,6 +76,7 @@ public class ThumbnailService {
                 Optional<Thumbnail> thumbnail = thumbnailRepository.findById(param.getThId().getId());
                 insertParam.put("id", thumbnail.get().getId());
                 insertParam.put("url", thumbnail.get().getUrl());
+                insertParam.put("originalUrl", thumbnail.get().getOriginalUrl());
                 resultList.add(insertParam);
             }
         } else if(planType.equals("pt")) {
@@ -82,6 +86,7 @@ public class ThumbnailService {
                 Optional<Thumbnail> thumbnail = thumbnailRepository.findById(param.getThId().getId());
                 insertParam.put("id", thumbnail.get().getId());
                 insertParam.put("url", thumbnail.get().getUrl());
+                insertParam.put("originalUrl", thumbnail.get().getOriginalUrl());
                 resultList.add(insertParam);
             }
         }

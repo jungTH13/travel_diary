@@ -1,5 +1,6 @@
 package com.travelProject.travelDiary.controller;
 
+import com.travelProject.travelDiary.common.ByteArrayMultipartFile;
 import com.travelProject.travelDiary.config.exceptionCode;
 import com.travelProject.travelDiary.dto.ErrorCode;
 import com.travelProject.travelDiary.entity.Thumbnail;
@@ -15,7 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import com.travelProject.travelDiary.dto.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,19 +69,39 @@ public class FileUploadController {
         List<Map<String, Object>> imagePathList = new ArrayList<Map<String, Object>>();
 
         if(multipartFileList != null) {
-            for(MultipartFile multipartFile :multipartFileList) {
-                if(!multipartFile.isEmpty()) {
+            for(MultipartFile originalFile :multipartFileList) {
+                if(!originalFile.isEmpty()) {
                     Map<String, Object> insertParam = new HashMap<String, Object>();
-                    String uploadFileUrl = awsService.upload(multipartFile,dirName);
+
+                    InputStream in = new ByteArrayInputStream(originalFile.getBytes());
+                    BufferedImage originalImage = ImageIO.read(in);
+
+                    int size = 240;
+                    BufferedImage resizedImage = new BufferedImage(size, size, originalImage.getType());
+                    Graphics2D g = resizedImage.createGraphics();
+                    g.drawImage(originalImage, 0, 0, size, size, null);
+                    g.dispose();
+
+                    ByteArrayOutputStream os = new ByteArrayOutputStream();
+                    String formatName = originalFile.getOriginalFilename().substring(originalFile.getOriginalFilename().lastIndexOf(".") + 1);
+                    ImageIO.write(resizedImage, formatName, os);
+
+                    byte[] bytes = os.toByteArray();
+                    MultipartFile thumbNailImage = new ByteArrayMultipartFile(bytes, originalFile.getOriginalFilename());
+
+                    String thumbNailUrl = awsService.upload(thumbNailImage,dirName);
+                    String originalUrl = awsService.upload(originalFile,dirName);
 
                     Thumbnail thumbnail = new Thumbnail();
-                    thumbnail.setUrl(uploadFileUrl);
+                    thumbnail.setUrl(thumbNailUrl);
+                    thumbnail.setOriginalUrl(originalUrl);
                     Long thumbnailId = thumbnailService.thumbnailInsert(thumbnail);
 
                     planCommonService.rtbThumbNailInsert(planType, planTypeId, thumbnailId);
 
                     insertParam.put("thumbnailId", thumbnailId);
-                    insertParam.put("url", uploadFileUrl);
+                    insertParam.put("url", thumbNailUrl);
+                    insertParam.put("originalUrl", originalUrl);
                     imagePathList.add(insertParam);
                 }
             }
@@ -93,6 +120,7 @@ public class FileUploadController {
                 //thumbnailService.thumbnailDelete(thumbnail, userId);
             }
         }
+
         return ResponseBody.builder().code(200).msg("이미지 업로드가 완료되었습니다.").results(imagePathList).build();
     }
 }

@@ -26,6 +26,9 @@ public class Thumbnail {
     @Column(name = "th_url")
     private String url;
 
+    @Column(name = "th_original_url")
+    private String originalUrl;
+
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdDate;
