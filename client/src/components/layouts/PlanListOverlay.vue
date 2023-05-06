@@ -164,13 +164,13 @@ const uploadImageList = computed(()=>bookStore.uploadImageList)
 const delBookImageList = computed(()=>bookStore.delImageList)
 
 watch(()=>selectPlan.value,()=>{
-    if(!selectPlan.value) return
+    if(!selectPlan.value) return 
 
     showPlanOptions(selectPlan.value)
 })
 
-const showPlanOptions = (plan)=>{
-    setSelectPlanSearchInfo(plan)
+const showPlanOptions = async(plan)=>{
+    await setSelectPlanSearchInfo(plan)
     optionsVisible.value=true
     memoModifyVisible.value = false
     memo.value = plan.memo
@@ -192,6 +192,7 @@ const setSelectPlanSearchInfo = async(plan)=>{
 }
 
 const postBookImages = async()=>{
+    if(!uploadImageList.length && !delBookImageList.length) return
     const response = await bookStore.postBookImages(travelId.value,selectPlan.value.id,selectPlan.value.type,"")
     if(response.code === 200){
         closePlanOptions()

@@ -211,7 +211,7 @@
 </style>
 
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useMapStore } from '../../stores/map';
 import { useScheduleStore } from '../../stores/plan/schedule';
 import { useTravelStore } from '../../stores/travel';
@@ -234,7 +234,10 @@ const isTrace = ref(true)
 const isCurrentPositionTrace = ref(false)
 
 let currentPositionMarker = null
-const currentPositionInfo = ref({})
+const currentPositionInfo = ref({
+    croods : {latitude:0,longitude:0},
+    timestamp : null
+})
 
 const moveMarker = ({coords,timestamp})=>{
     currentPositionInfo.value = {coords,timestamp}
@@ -309,12 +312,17 @@ onMounted(async()=>{
     await googleAPi.getMap()
     setDailyMarkerList()
 
+    //디바이스의 위치정보를 수신
     if(navigator.geolocation){
 
         currentPositionMarker = googleAPi.setPositionMarker(0,0)
         window.currentPositionMarker = currentPositionMarker
         navigator.geolocation.getCurrentPosition(moveMarker)
     }
+})
+
+onUnmounted(()=>{
+    currentPositionMarker.setMap(null)
 })
 
 </script>

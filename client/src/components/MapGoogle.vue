@@ -127,6 +127,7 @@ const searchInfo = ref(props.modelValue || {})
 const infowindow = ref(null)
 const isOverlay = computed(()=>props.isOverlay||false)
 const isRegistration = computed(()=>props.isRegistration)
+let mapClickEventListener = null;
 
 const complete = ()=>{
     console.log('complete')
@@ -137,16 +138,16 @@ const cancle = ()=>{
     emit('cancle')
 }
 
-const setMarker = (x,y)=>{
+const setMarker = (x,y,istrace=true)=>{
     const lat = x || searchInfo.value.geometry[0]
     const lng = y || searchInfo.value.geometry[1]
 
     if(searchMarker.value !==null) {
-        googleMap.moveMarker(searchMarker.value,lat,lng,true)
+        googleMap.moveMarker(searchMarker.value,lat,lng,istrace)
 
     }
     else{
-        searchMarker.value = googleMap.setMarker(lat,lng,true)
+        searchMarker.value = googleMap.setMarker(lat,lng,istrace)
     }
 
 }
@@ -210,6 +211,16 @@ const search = async()=>{
     setInfowindow()
 }
 
+const MapClickEvent = (mapsMouseEvent)=>{
+    const location = mapsMouseEvent.latLng.toJSON()
+
+    searchInfo.value = {
+        geometry: [location.lat,location.lng]
+    }
+    setMarker(null,null,false)
+    setInfowindow()
+}
+
 const init = ()=>{
     if(searchInfo.value.geometry && searchInfo.value.geometry[0] && searchInfo.value.geometry[1]){
         if(infowindow.value !==null) infowindow.value.close()
@@ -233,12 +244,16 @@ onMounted(async()=>{
     console.log(map.value)
     window.marker = searchMarker
 
-    init()
+    setTimeout(init,50)
+    // 등록상태의 컴포넌트 요청시 클릭 이벤트 등록
+    if(isRegistration.value)mapClickEventListener = googleMap.addMapEventListener('click',MapClickEvent)
 })
 
 onUnmounted(()=>{
     removeMarker()
     if(document.getElementById('googl-map-component'))document.getElementById('googl-map-component').appendChild(map.value.getDiv())
+
+    if(mapClickEventListener) googleMap.removeMapEventListener(mapClickEventListener)
 })
 
 </script>

@@ -14,7 +14,7 @@
     width: 100%;
 
     #image-show{
-        max-height:8rem;
+        // max-height:8rem;
     }
 }
 

@@ -16,6 +16,8 @@ export const useBookStore = defineStore("book", () => {
     { type:'pe', name: "기타" },
   ]);
 
+  const navImage = {type:'pig',name:'이미지그룹'}
+
   const postBookImages = async(travelId,planId,type)=>{
     console.log(travelId,planId,type)
     const formData = new FormData()
@@ -43,6 +45,7 @@ export const useBookStore = defineStore("book", () => {
     if(type === 'pr') return _getBookRestaurant(travelId,planId)
     if(type === 'pt') return _getBookTransPort(travelId,planId)
     if(type === 'pe') return _getBookEtc(travelId,planId)
+    if(type === 'pig') return _getImageGroup(travelId,planId)
   }
 
   const putBook = async (travelId,type)=>{
@@ -59,6 +62,7 @@ export const useBookStore = defineStore("book", () => {
     if(type === 'pr') response = await API.put(`/travel/${travelId}/plan/restaurant/restaurantUpdate`, form)
     if(type === 'pt') response = await API.put(`/travel/${travelId}/plan/transPort/transPortUpdate`, form)
     if(type === 'pe') response = await API.put(`/travel/${travelId}/plan/etc/etcUpdate`, form)
+    if(type === 'pig') response = await API.put(`/travel/${travelId}/plan/imageGroup/imageGroupUpdate`, form)
 
     return response.data
   }
@@ -74,6 +78,7 @@ export const useBookStore = defineStore("book", () => {
     if(type === 'pr') response = await API.post(`/travel/${travelId}/plan/restaurant/restaurantInsert`, form)
     if(type === 'pt') response = await API.post(`/travel/${travelId}/plan/transPort/transPortInsert`, form)
     if(type === 'pe') response = await API.post(`/travel/${travelId}/plan/etc/etcInsert`, form)
+    if(type === 'pig') response = await API.post(`/travel/${travelId}/plan/imageGroup/imageGroupInsert`, form)
 
     return response.data
   }
@@ -86,6 +91,7 @@ export const useBookStore = defineStore("book", () => {
     if(type === 'pr') response = await API.delete(`/travel/${travelId}/plan/restaurant/restaurantDelete/${book.value.id}`)
     if(type === 'pt') response = await API.delete(`/travel/${travelId}/plan/transPort/transPortDelete/${book.value.id}`)
     if(type === 'pe') response = await API.delete(`/travel/${travelId}/plan/etc/etcDelete/${book.value.id}`)
+    if(type === 'pig') response = await API.delete(`/travel/${travelId}/plan/imageGroup/imageGroupDelete/${book.value.id}`)
 
     return response.data
   }
@@ -141,6 +147,15 @@ export const useBookStore = defineStore("book", () => {
     return data
   };
 
+  const _getImageGroup = async (travelId,planId) => {
+    const {data} = await API.post(`/travel/${travelId}/plan/imageGroup/imageGroupOne`, {id:planId});
+    
+    convertTime(data.results.planImageGroupOne)
+    book.value = data.results.planImageGroupOne
+    book.value.thumbNailList = data.results.thumbNailList || []
+    return data
+  };
+
   const convertTime = (obj)=>{
     //시간 정보 전처리
     for(const key of Object.keys(obj)){
@@ -160,6 +175,7 @@ export const useBookStore = defineStore("book", () => {
     uploadImageList,
     delImageList,
     nav,
+    navImage,
     getBook,
     resetBook,
     putBook,

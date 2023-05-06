@@ -8,7 +8,7 @@
         <font-awesome-icon icon="fa-solid fa-plus" class="icon" />
     </div>
     <input type="file" multiple id="fileUpload" @change="addImages" :disabled="isUploading">
-    <span v-if="!useSlot">이미지 추가하기</span>
+    <span v-if="!useSlot">{{title}}</span>
 </label>
 
 </template>
@@ -61,13 +61,13 @@ import { computed, onMounted, ref } from 'vue';
 import {HeicToJpeg} from '../../composable/util'
 
 
-const props = defineProps({modelValue:Array,useSlot:Boolean}) // [{url:String,file:File}]
+const props = defineProps({modelValue:Array,useSlot:Boolean,title:String}) // [{url:String,file:File}]
 const emit = defineEmits(["update:modelValue"])
 
 const useSlot = computed(()=>props.useSlot)
 const isUploading = ref(false)
 const imageBase64List = computed(()=>props.modelValue)
-
+const title = computed(()=>props.title||"이미지 추가하기")
 
 const addImages = async(common)=>{
     try{

@@ -96,6 +96,7 @@ const validation = ()=>{
     return false
   }
   if(minDate.value && maxDate.value){
+    console.log(planDate.value[0].split('T')[0] > minDate.value.toJSON().split('T')[0] || planDate.value[1].split('T')[0] < maxDate.value.toJSON().split('T')[0])
     if(planDate.value[0].split('T')[0] > minDate.value.toJSON().split('T')[0] || planDate.value[1].split('T')[0] < maxDate.value.toJSON().split('T')[0]){
       alert("등록된 일정의 기간이 포함되야 합니다!")
       return false
