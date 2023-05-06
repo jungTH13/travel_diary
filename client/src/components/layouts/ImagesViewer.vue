@@ -9,6 +9,10 @@
         <font-awesome-icon v-if="!disabled" icon="fa-solid fa-xmark" class="del-icon" @click="delUrl(url)" />
         <img class="photo-scroll-image" :src="url" @click="activeOverlay(fileBase64List.length+index)">
     </span>
+    <span v-for="obj,index in thumbNailList">
+        <font-awesome-icon v-if="!disabled" icon="fa-solid fa-xmark" class="del-icon" @click="delThumbNail(obj)" />
+        <img class="photo-scroll-image" :src="obj.url" @click="activeOverlay(fileBase64List.length+urlList.length+index)">
+    </span>
 </div>
 
 <div id="overlay" :class="{active:overlayState}" class="col">
@@ -99,19 +103,22 @@
 import { computed, onMounted, ref } from 'vue';
 
 
-const props = defineProps({urlList:Array, fileBase64List:Array, imageSize:String, disabled:Boolean})
-const emit = defineEmits(["delUrl","delFileBase64"])
+const props = defineProps({urlList:Array, thumbNailList:Array,  fileBase64List:Array, imageSize:String, disabled:Boolean, noDetail:Boolean})
+const emit = defineEmits(["delUrl","delFileBase64","delThumbNail"])
 
 const urlList = computed(()=>props.urlList || [])
 const fileBase64List = computed(()=>props.fileBase64List || [])
+const thumbNailList = computed(()=>props.thumbNailList || [])
 const disabled = computed(()=>props.disabled)
 const imageSize = computed(()=>props.imageSize||"auto")
+const noDetail = computed(()=>props.noDetail)
 
-const allUrlList = computed(()=>[...(fileBase64List.value.map((obj)=>obj.url)),...urlList.value])
+const allUrlList = computed(()=>[...(fileBase64List.value.map((obj)=>obj.url)),...urlList.value,...thumbNailList.value.map((obj)=>obj.originalUrl || obj.url)])
 
 const overlayState = ref(false)
 const overlayCarouselState = ref(0)
 const activeOverlay = (index)=>{
+    if(noDetail.value === true) return
     overlayState.value = true
     overlayCarouselState.value = index 
 }
@@ -126,6 +133,10 @@ const delUrl = (url)=>{
 
 const delFileBase64 = (fileBase64)=>{
     emit('delFileBase64',fileBase64)
+}
+
+const delThumbNail = (thumbNail)=>{
+    emit('delThumbNail',thumbNail)
 }
 
 onMounted(()=>{
