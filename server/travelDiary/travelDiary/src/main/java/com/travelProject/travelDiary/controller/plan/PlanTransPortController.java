@@ -7,6 +7,7 @@ import com.travelProject.travelDiary.dto.ResponseBody;
 import com.travelProject.travelDiary.entity.Travel;
 import com.travelProject.travelDiary.entity.User;
 import com.travelProject.travelDiary.entity.plan.PlanTransPort;
+import com.travelProject.travelDiary.service.ThumbnailService;
 import com.travelProject.travelDiary.service.TravelService;
 import com.travelProject.travelDiary.service.plan.PlanTransPortService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,9 @@ public class PlanTransPortController {
     private PlanTransPortService planTransPortService;
 
     @Autowired
+    private ThumbnailService thumbnailService;
+
+    @Autowired
     private TravelService travelService;
 
     @PostMapping("/travel/{travelId}/plan/transPort/transPortOne")
@@ -34,8 +38,10 @@ public class PlanTransPortController {
         Map<String, Object> result = new HashMap<>();
         setTravelId(travelId, user, planTransPortDto);
         PlanTransPort planTransPortOne= planTransPortService.selectPlanTransPortOne(planTransPortDto, user.getId());
+        List<Map<String, Object>> thumbNailList = thumbnailService.rtbPlanThumbNailSelect("pt", planTransPortOne.getId());
 
         result.put("planTransPortOne", planTransPortOne);
+        result.put("thumbNailList", thumbNailList);
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }
 
