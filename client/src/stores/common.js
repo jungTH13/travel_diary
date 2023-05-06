@@ -19,14 +19,14 @@ export const useCommonStore = defineStore('common', () => {
     })
 
 
-    const _checkMainSub = ()=>{
-        if(document.getElementById('main-sub')?.clientHeight>0){
+    const checkMainSub = ()=>{
+        if(document.getElementById('main-sub')?.clientWidth>0){
             mainSubVisible.value = true
             console.log('main-sub 시각화')
         }
         else mainSubVisible.value = false
     }
-    const initMainSubLisner=()=> initWindowEventListener('resize',_checkMainSub)
+    const initMainSubLisner=()=> initWindowEventListener('resize',checkMainSub)
 
 
     
@@ -34,6 +34,7 @@ export const useCommonStore = defineStore('common', () => {
     return { 
         mainSubVisible,
         initMainSubLisner,
+        checkMainSub,
         mapInfo 
     }
 

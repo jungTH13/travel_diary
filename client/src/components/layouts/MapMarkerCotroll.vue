@@ -299,7 +299,6 @@ watch(()=>isCurrentPositionTrace.value,(newValue,oldValue)=>{
         moveMarker(currentPositionInfo.value)
     }
     else {
-        console.log('active')
         googleAPi.moveMarker(currentPositionMarker,0,0 )
     }
 })
