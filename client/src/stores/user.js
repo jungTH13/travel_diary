@@ -31,11 +31,18 @@ export const useUserStore = defineStore("user", () => {
     return data
   }
 
+  async function logout(){
+    const {data} = await API.get("/user/logout")
+    console.log(data)
+    return data
+  }
+
   return { 
     userInfo,
     examUserLogin, 
     googleOAuthLogin,
     getUserInfo,
-    resetUserInfo 
+    resetUserInfo,
+    logout
   };
 });

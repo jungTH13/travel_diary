@@ -226,6 +226,7 @@ watch(()=>props.modelValue,()=>{
 })
 
 onMounted(async()=>{
+    console.log("MapGoogle Mounted")
     await googleMap.init()
     map.value = await googleMap.getMap(127,36)
     window.map = map.value

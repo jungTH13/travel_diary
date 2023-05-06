@@ -52,7 +52,7 @@
     width:100%;
     background-color: rgba(204, 204, 204, 0.116);
     box-shadow: 0 0 10px 5px white;
-    z-index: 100000;
+    z-index: 10000;
     position: inherit;
 
     > span:last-of-type {

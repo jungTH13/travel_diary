@@ -1,28 +1,27 @@
 <template>
-<div>
-    <div style="position:fixed; height:100%; width:100%; left:0px;;top:0px; z-index:500000;">
-    <div class="spinner-border m-1" role="status" style="left:50%; top:50%;">
-      <span class="visually-hidden">Loading...</span>
+<div class="login-progress-page">
+
+    <div class="spinner-box">
+        <span class="visually-hidden">로그인 중...</span>
     </div>
-  </div>
+
 </div>
 </template>
 
-<style lang="scss">
-#login-page {
-    width: 100%;
+<style lang="scss" scoped>
+.login-progress-page{
+    position:absolute; 
+    height:100%; 
+    width:100%; 
+    left:0px;
+    top:0px; 
+    z-index:500000;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    h1 {
-    margin-top: 80px;
-    }
-    #login-button {
-    margin-top: 40px;
-    button {
-        cursor: pointer;
-    }
+    background-color: rgba(255, 255, 255, 0.76);
+    .spinner-box{
+        margin:auto;
+        font-size: 3rem;
+        font-weight: 600;
     }
 }
 </style>

@@ -39,6 +39,7 @@
       padding:0.5rem;
       padding-left: 2rem;
       padding-right:2rem;
+      margin-bottom: 4rem;
       button {
         font-size:2.5rem;
         cursor: pointer;

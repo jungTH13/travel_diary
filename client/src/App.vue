@@ -8,7 +8,7 @@
     </div>
   </div>
 
-  <div class="main-sub" id="main-sub">
+  <div v-if="visible" class="main-sub" id="main-sub" >
     <MapGoogle v-if="mainSubVisible" />
   </div>
 </template>
@@ -25,6 +25,8 @@ import { useCommonStore } from "./stores/common";
 const router = useRouter();
 const route = useRoute()
 const commonStore = useCommonStore()
+
+const visible = ref(false)
 
 // # 인터셉터 설정 # //
 let reqeustNumber = 0;
@@ -47,7 +49,7 @@ API.api.interceptors.response.use(
     // 응답 데이터를 가공
     const requestNumber = parseInt(response.config.headers['Request-Number']);
     if(response.data.code === 401 && loginIgnore < requestNumber){
-      if(response.request.responseURL.includes('user/userInfo')) return
+      if(response.request.responseURL.includes('user/userInfo')) return response
       
       loginIgnore = reqeustNumber;
       
@@ -70,7 +72,13 @@ API.api.interceptors.response.use(
 });
 
 watch(()=>route.name,()=>{
-
+  if(route.name && !route.name.includes('login')){
+    visible.value = true
+    setTimeout(commonStore.checkMainSub,0) 
+  }
+  else{
+    visible.value = false
+  }
 })
 
 const mainSubVisible= computed(()=>commonStore.mainSubVisible)
@@ -122,7 +130,10 @@ onMounted(()=>{
 .main-sub{
   display: none;
 }
-
+.disable{
+  width:0% !important;
+  transition: all ease 1s 1s;
+}
 
 
 </style>
