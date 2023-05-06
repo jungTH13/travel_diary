@@ -61,20 +61,22 @@ public class FileUploadController {
         String dirName = userId + "_" + travelId;
         List<Map<String, Object>> imagePathList = new ArrayList<Map<String, Object>>();
 
-        for(MultipartFile multipartFile :multipartFileList) {
-            if(!multipartFile.isEmpty()) {
-                Map<String, Object> insertParam = new HashMap<String, Object>();
-                String uploadFileUrl = awsService.upload(multipartFile,dirName);
+        if(multipartFileList != null) {
+            for(MultipartFile multipartFile :multipartFileList) {
+                if(!multipartFile.isEmpty()) {
+                    Map<String, Object> insertParam = new HashMap<String, Object>();
+                    String uploadFileUrl = awsService.upload(multipartFile,dirName);
 
-                Thumbnail thumbnail = new Thumbnail();
-                thumbnail.setUrl(uploadFileUrl);
-                Long thumbnailId = thumbnailService.thumbnailInsert(thumbnail);
+                    Thumbnail thumbnail = new Thumbnail();
+                    thumbnail.setUrl(uploadFileUrl);
+                    Long thumbnailId = thumbnailService.thumbnailInsert(thumbnail);
 
-                planCommonService.rtbThumbNailInsert(planType, planTypeId, thumbnailId);
+                    planCommonService.rtbThumbNailInsert(planType, planTypeId, thumbnailId);
 
-                insertParam.put("thumbnailId", thumbnailId);
-                insertParam.put("url", uploadFileUrl);
-                imagePathList.add(insertParam);
+                    insertParam.put("thumbnailId", thumbnailId);
+                    insertParam.put("url", uploadFileUrl);
+                    imagePathList.add(insertParam);
+                }
             }
         }
 
