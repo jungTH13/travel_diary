@@ -27,22 +27,22 @@ public class PlanHotelService {
     @Autowired
     private ModelMapper modelMapper;
 
-        public PlanHotel selectPlanHotelOne(PlanHotelDto planHotelDto, String userId) {
-            if(userId.equals("") || userId == null) {
-                throw new exceptionCode(ErrorCode.INVALID_USER_PARAMETER);
-            }
-
-            Long hotelId = planHotelDto.getId();
-            PlanHotel planHotelOne = planHotelRepository.findByIdAndUser_Id(hotelId, userId);
-            return planHotelOne;
-        }
-
-    public List<PlanHotel> selectPlanHotelList(PlanHotelDto PlanHotelDto, String userId) {
+    public PlanHotel selectPlanHotelOne(PlanHotelDto planHotelDto, String userId) {
         if(userId.equals("") || userId == null) {
             throw new exceptionCode(ErrorCode.INVALID_USER_PARAMETER);
         }
 
-        Long travelId = PlanHotelDto.getTravel().getId();
+        Long hotelId = planHotelDto.getId();
+        PlanHotel planHotelOne = planHotelRepository.findByIdAndUser_Id(hotelId, userId);
+        return planHotelOne;
+    }
+
+    public List<PlanHotel> selectPlanHotelList(PlanHotelDto planHotelDto, String userId) {
+        if(userId.equals("") || userId == null) {
+            throw new exceptionCode(ErrorCode.INVALID_USER_PARAMETER);
+        }
+
+        Long travelId = planHotelDto.getTravel().getId();
         List<PlanHotel> planHotelList = planHotelRepository.findAllByTravel_IdAndUser_IdOrderByCheckinDateAsc(travelId, userId);
         return planHotelList;
     }

@@ -9,5 +9,9 @@ public interface PlanImageGroupRepository extends JpaRepository<PlanImageGroup, 
 
     PlanImageGroup findByIdAndUser_Id(Long t_id,String id);
 
-    //PlanImageGroup findByIdAndRtbPlanImageGroupThumbNail_IdAndThumbnail_Id(Long imageGroupId, String rptId, String thumbnailId);
+    List<PlanImageGroup> findAllByTravel_IdAndUser_Id(Long travelId, String id);
+
+    List<PlanImageGroup> findAllByTravel_IdAndUser_IdOrderByDateAsc(Long travelId, String userId);
+
+
 }

@@ -27,6 +27,11 @@ public class PlanImageGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(targetEntity = Travel.class, fetch = FetchType.LAZY)
+    @JoinColumn(name="t_id")
+    @JsonIgnore
+    private Travel travel;
+
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name="id")
     @JsonIgnore
