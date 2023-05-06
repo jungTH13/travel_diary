@@ -3,6 +3,7 @@ package com.travelProject.travelDiary.service.plan;
 import com.travelProject.travelDiary.config.exceptionCode;
 import com.travelProject.travelDiary.dto.ErrorCode;
 import com.travelProject.travelDiary.dto.PlanAccountBookDto;
+import com.travelProject.travelDiary.entity.User;
 import com.travelProject.travelDiary.entity.plan.PlanAccountBook;
 import com.travelProject.travelDiary.repository.plan.PlanAccountBookRepository;
 import org.modelmapper.ModelMapper;
@@ -95,5 +96,12 @@ public class PlanAccountBookService {
         }
 
         planAccountBookRepository.delete(planAccountBook);
+    }
+
+    public void planAccountBookDeleteList(Long travelId, User user) {
+        List<PlanAccountBook> planAccountBookList = planAccountBookRepository.findAllByTravel_IdAndUser_Id(travelId, user.getId());
+        for(PlanAccountBook deleteParam : planAccountBookList) {
+            planAccountBookRepository.deleteById(deleteParam.getId());
+        }
     }
 }

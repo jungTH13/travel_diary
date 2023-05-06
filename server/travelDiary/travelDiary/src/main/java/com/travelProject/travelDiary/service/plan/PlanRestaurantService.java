@@ -3,6 +3,7 @@ package com.travelProject.travelDiary.service.plan;
 import com.travelProject.travelDiary.config.exceptionCode;
 import com.travelProject.travelDiary.dto.ErrorCode;
 import com.travelProject.travelDiary.dto.PlanRestaurantDto;
+import com.travelProject.travelDiary.entity.User;
 import com.travelProject.travelDiary.entity.plan.PlanRestaurant;
 import com.travelProject.travelDiary.entity.plan.rtb.RtbPlanRestaurantThumbNail;
 import com.travelProject.travelDiary.repository.plan.PlanRestaurantRepository;
@@ -106,5 +107,17 @@ public class PlanRestaurantService {
         }
 
         planRestaurantRepository.delete(planRestaurant);
+    }
+
+    public void planRestaurantDeleteList(Long travelId, User user) {
+        List<PlanRestaurant> planRestaurantList = planRestaurantRepository.findAllByTravel_IdAndUser_Id(travelId, user.getId());
+        for(PlanRestaurant deleteParam : planRestaurantList) {
+            List<RtbPlanRestaurantThumbNail> rtbPlanRestaurantThumbNailList = rtbPlanRestaurantThumbNailRepository.findAllByPlanRestaurant_Id(deleteParam.getId());
+            for(RtbPlanRestaurantThumbNail deleteRtbParam :rtbPlanRestaurantThumbNailList) {
+                rtbPlanRestaurantThumbNailRepository.deleteById(deleteRtbParam.getId());
+            }
+
+            planRestaurantRepository.deleteById(deleteParam.getId());
+        }
     }
 }
