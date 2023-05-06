@@ -17,7 +17,7 @@
 
             <div class="summit-footer">
                 <button class="font-weight-600 " @click="memoModifyVisible= true;optionsVisible=false;">메모 작성</button>
-                <button class="font-weight-600 " :class="{deactive:!uploadImageList.length}" >사진 등록 </button>
+                <button class="font-weight-600 " :class="{deactive:(!uploadImageList.length && !delBookImageList.length)}" @click="postBookImages" >사진 수정 </button>
             </div>
         </div>
     </div>
@@ -161,6 +161,7 @@ const optionsVisible = ref(false)
 const memoModifyVisible = ref(false)
 const memo = ref('')
 const uploadImageList = computed(()=>bookStore.uploadImageList)
+const delBookImageList = computed(()=>bookStore.delImageList)
 
 watch(()=>selectPlan.value,()=>{
     if(!selectPlan.value) return
@@ -188,6 +189,16 @@ const closePlanOptions = ()=>{
 const setSelectPlanSearchInfo = async(plan)=>{
     await bookStore.getBook(travelId.value,plan.id,plan.type)
     selectPlanSearchInfo.value = getMapSearchInfo(bookStore.book)
+}
+
+const postBookImages = async()=>{
+    const response = await bookStore.postBookImages(travelId.value,selectPlan.value.id,selectPlan.value.type,"")
+    if(response.code === 200){
+        closePlanOptions()
+    }
+    else{
+        alert("이미지 추가에 실패했습니다.")
+    }
 }
 
 const putPlanMemo = async(plan)=>{

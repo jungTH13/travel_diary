@@ -5,6 +5,7 @@ import * as API from "../../composable/api";
 export const useBookStore = defineStore("book", () => {
   const book = ref({});
   const uploadImageList = ref([]) // [{url:base64Url,file:File}]
+  const delImageList = ref([]) // [{url:string,id:number}]
 
   const nav = ref([
     { type:'', name: "전체" },
@@ -14,6 +15,27 @@ export const useBookStore = defineStore("book", () => {
     { type:'pt', name: "교통" },
     { type:'pe', name: "기타" },
   ]);
+
+  const postBookImages = async(travelId,planId,type)=>{
+    console.log(travelId,planId,type)
+    const formData = new FormData()
+
+    let idArr = ""
+    if(delImageList.value) idArr += delImageList.value.map((imageUrl)=>imageUrl.id).join(',')
+
+    uploadImageList.value.forEach((obj)=>{
+      formData.append("multipartFileList",obj.file)
+    })
+    formData.append("planType",type)
+    formData.append("planTypeId",planId)
+    formData.append("idArr",idArr)
+
+    console.log(formData)
+
+    const {data} = await API.postFormData(`/upload/${travelId}`, formData);
+
+    return data
+  }
 
   const getBook = (travelId,planId,type) => {
     if(type === 'pa') return _getBookAirPlan(travelId,planId)
@@ -71,6 +93,7 @@ export const useBookStore = defineStore("book", () => {
   const resetBook = ()=>{
     book.value= {}
     uploadImageList.value = []
+    delImageList.value = []
   }
 
   const _getBookAirPlan = async (travelId,planId) => {
@@ -78,6 +101,7 @@ export const useBookStore = defineStore("book", () => {
     
     convertTime(data.results.planAirPlaneOne)
     book.value = data.results.planAirPlaneOne
+    book.value.thumbNailList = data.results.thumbNailList || []
     return data
   };
 
@@ -86,6 +110,7 @@ export const useBookStore = defineStore("book", () => {
 
     convertTime(data.results.planHotelOne)
     book.value = data.results.planHotelOne
+    book.value.thumbNailList = data.results.thumbNailList ||[]
     return data
   };
 
@@ -94,6 +119,7 @@ export const useBookStore = defineStore("book", () => {
 
     convertTime(data.results.planRestaurantOne)
     book.value = data.results.planRestaurantOne
+    book.value.thumbNailList = data.results.thumbNailList || []
     return data
   }
 
@@ -102,6 +128,7 @@ export const useBookStore = defineStore("book", () => {
 
     convertTime(data.results.planTransPortOne)
     book.value = data.results.planTransPortOne
+    book.value.thumbNailList = data.results.thumbNailList || []
     return data
   };
 
@@ -110,6 +137,7 @@ export const useBookStore = defineStore("book", () => {
     
     convertTime(data.results.planEtcOne)
     book.value = data.results.planEtcOne
+    book.value.thumbNailList = data.results.thumbNailList || []
     return data
   };
 
@@ -130,11 +158,13 @@ export const useBookStore = defineStore("book", () => {
   return { 
     book,
     uploadImageList,
+    delImageList,
     nav,
     getBook,
     resetBook,
     putBook,
     postBook,
-    delBook
+    delBook,
+    postBookImages
   };
 });
