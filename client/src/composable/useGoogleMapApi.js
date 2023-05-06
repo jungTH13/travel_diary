@@ -2,6 +2,7 @@ import axios from "axios"
 
 let mapObj = null
 let planMarkers = []
+let mapEventListenerList = []
 
 export const useGoogleMapApi = ()=>{
     const init = async()=>{
@@ -109,6 +110,23 @@ export const useGoogleMapApi = ()=>{
 
         return mapObj
     }
+    /**
+     * 
+     * @param {String} eventName 
+     * @param {Function} func 
+     * @returns 등록된 리스너 객체를 반환
+     * 
+     * 맵에서 일어나는 이벤트에 리스너를 생성
+     */
+    const addMapEventListener = (eventName="click",func)=>{
+        const mapEventListener = google.maps.event.addListener(mapObj,eventName,func)
+
+        return mapEventListener
+    }
+
+    const removeMapEventListener = (mapEventListener)=>{
+        google.maps.event.removeListener(mapEventListener)
+    }
 
     /**
      * 
@@ -125,11 +143,11 @@ export const useGoogleMapApi = ()=>{
             position: {lat:x,lng:y},
             map: mapObj,
         }
-
+        console.log('test')
         const marker = new window.google.maps.Marker(options)
         if(isTrace === true) {
             mapObj.setCenter({lat:x,lng:y})
-            mapObj.setZoom(16)
+            mapObj.setZoom(14)
         }
 
         return marker
@@ -181,7 +199,7 @@ export const useGoogleMapApi = ()=>{
         const marker = new window.google.maps.Marker(options)
         if(isTrace === true) {
             mapObj.setCenter({lat:x,lng:y})
-            mapObj.setZoom(16)
+            mapObj.setZoom(15)
         }
 
         return marker
@@ -269,13 +287,19 @@ export const useGoogleMapApi = ()=>{
         const marker = new window.google.maps.Marker(options)
         if(isTrace === true) {
             mapObj.setCenter({lat:x,lng:y})
-            mapObj.setZoom(16)
+            mapObj.setZoom(15)
         }
 
         return marker
     }
 
-
+    /**
+     * 
+     * @param {Object} marker 
+     * @param {String} eventName
+     * 
+     * 마커의 특정 이벤트의 리스너를 제거 
+     */
     const removeListeners = (marker,eventName)=>{
         window.google.maps.event.clearListeners(marker,eventName)
     }
@@ -314,7 +338,7 @@ export const useGoogleMapApi = ()=>{
 
         if(isTrace === true) {
             mapObj.setCenter({lat:x,lng:y})
-            mapObj.setZoom(18)
+            mapObj.setZoom(15)
         }
     }
 
@@ -330,7 +354,7 @@ export const useGoogleMapApi = ()=>{
 
     const moveMap = (x,y)=>{
         mapObj.setCenter({lat:x,lng:y})
-        mapObj.setZoom(16)
+        mapObj.setZoom(15)
     }
     /**
      * 
@@ -376,6 +400,8 @@ export const useGoogleMapApi = ()=>{
         searchPlace,
         createInfoWindow,
         removeListeners,
-        removeMarker
+        removeMarker,
+        addMapEventListener,
+        removeMapEventListener
     }
 }

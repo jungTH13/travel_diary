@@ -61,8 +61,10 @@ const postPlan = async ()=>{
     
     if(response.code !== 200) alert('등록에 실패 했습니다.')
     else {
-        const response = await bookStore.postBookImages(travelId.value,book.value.id,planType.value)
-        if(response.code !== 200) alert('이미지 등록에 실패했습니다.')
+        const newPlanId = response.results[Object.keys(response.results)[0]]
+        
+        const response2 = await bookStore.postBookImages(travelId.value,newPlanId,planType.value)
+        if(response2.code !== 200) alert('이미지 등록에 실패했습니다.')
         goBook()
     }
 }

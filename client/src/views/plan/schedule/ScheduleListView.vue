@@ -1,29 +1,39 @@
 <template>
-  <div class="schedule-container">
-    <div class="schedule-day-container">
-      <h1 :class="{active: !dailyScheduleVisibleList.length || !dailyScheduleVisibleList.includes(false)}" @click="setAllDailyVisible">전체</h1>
-      <div class="schedule-date" :class="{active: dailyScheduleVisibleList[index]}"  v-for="date,index in dayList" @click="setDailyVisible(index)">{{ date }}</div>
-    </div>
-    <div class="schdule-contents-container">
-      <!-- <div class="extra-feature-box-position">
-        <div class="extra-feature-box">
-          <div class="create-image-marker">
-            <font-awesome-icon icon="fa-regular fa-images" />
-            이미지 마커 추가하기
+  <div class="col full-hidden">
+    <div class="schedule-container">
+      <div class="schedule-day-container">
+        <h1 :class="{active: !dailyScheduleVisibleList.length || !dailyScheduleVisibleList.includes(false)}" @click="setAllDailyVisible">전체</h1>
+        <div class="schedule-date" :class="{active: dailyScheduleVisibleList[index]}"  v-for="date,index in dayList" @click="setDailyVisible(index)">{{ date }}</div>
+      </div>
+      <div class="schdule-contents-container">
+        <!-- <div class="extra-feature-box-position">
+          <div class="extra-feature-box">
+            <div class="create-image-marker">
+              <font-awesome-icon icon="fa-regular fa-images" />
+              이미지 마커 추가하기
+            </div>
           </div>
-        </div>
-        
-      </div> -->
+          
+        </div> -->
 
-      <div class="contents" v-for="day,index in dayList" v-show="dailyScheduleVisibleList.length===0 || dailyScheduleVisibleList[index]">
-        <h1 class="date">DAY {{ index+1 }} </h1> <p class="description"> {{ DateToStringFormat1(setDate(startDate,index)) }}</p>
-        <PlanList v-model="dailyScheduleList[index]" />
+        <div class="contents" v-for="day,index in dayList" v-show="dailyScheduleVisibleList.length===0 || dailyScheduleVisibleList[index]">
+          <h1 class="date">DAY {{ index+1 }} </h1> <p class="description"> {{ DateToStringFormat1(setDate(startDate,index)) }}</p>
+          <PlanList v-model="dailyScheduleList[index]" />
+        </div>
       </div>
     </div>
+    <div class="image-group-creater-box row" @click="goCreateImageGroup">
+      <div id="image-input-icon">
+        <font-awesome-icon icon="fa-solid fa-plus" class="icon" />
+      </div>
+      <span >이미지 그룹 만들기</span>
+    </div>
   </div>
+ 
 </template>
 
 <style lang="scss" scoped>
+
 
 .schedule-container{
   padding: 1rem 0vh 0vh 0vh;
@@ -118,6 +128,43 @@
 .description{
   color:gray;
 }
+.image-group-creater-box{
+  margin-right:auto;
+  margin-left:auto;
+  white-space: nowrap;
+  margin-top: 0.5rem;
+  cursor: pointer;
+
+  #image-input-icon{
+        // margin:auto;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background-color: $green;
+        margin-right: 1rem;
+        text-align: center;
+        margin:auto;
+        margin-left: 0;
+        margin-right: 1rem;
+        
+
+        
+        .icon{
+            width: 2rem;
+            height: 2rem;
+            text-align: center;
+            margin-top:0.2rem;
+            color:white;
+        }
+
+        
+    }
+
+    span{
+        font-size: 2rem;
+        font-weight: 600;
+    }
+}
 
 </style>
 
@@ -130,6 +177,7 @@ import { useMapStore } from "../../../stores/map";
 import { useTravelStore } from "../../../stores/travel";
 import { DateToStringFormat1 } from "../../../composable/util";
 import PlanList from "../../../components/PlanList.vue";
+// import ImageGroupCreater from "../../../components/ImageGroupCreater.vue";
 
 const route = useRoute()
 const router = useRouter();
@@ -147,6 +195,12 @@ const dayList = computed(()=>travelStore.dayList)
 
 const setDailyMarkerList = ()=>{
   // mapStore.setDailyMarkerList(dailyScheduleList.value,dailyScheduleVisibleList.value)
+}
+
+const goCreateImageGroup = ()=>{
+  router.push({
+    name:'imageGroup'
+  })
 }
 
 const setDailyVisible = (dailyScheduleIndex)=>{

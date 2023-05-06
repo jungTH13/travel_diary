@@ -9,6 +9,7 @@ import NewBudgetView from "../views/plan/budget/NewBudgetView.vue";
 import BudgetHomeView from "../views/plan/budget/BudgetHomeView.vue";
 import PlanHomeView from "../views/plan/PlanHomeView.vue";
 import ScheduleListView from "../views/plan/schedule/ScheduleListView.vue";
+import ImageGroupView from "../views/plan/schedule/ImageGroupView.vue";
 import ChecklistView from "../views/plan/checklist/ChecklistView.vue";
 import BookHomeView from "../views/plan/book/BookHomeView.vue";
 import BookDetailView from "../views/plan/book/BookDetailView.vue";
@@ -64,6 +65,11 @@ const router = createRouter({
               path: "",
               name: "schedule",
               component: ScheduleListView,
+            },
+            {
+              path:"imageGroup",
+              name:"imageGroup",
+              component: ImageGroupView,
             },
             {
               path: "book",
