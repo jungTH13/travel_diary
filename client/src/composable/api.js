@@ -51,7 +51,21 @@ async function del(endpoint) {
   });
 }
 
+async function postFormData(endpoint,formData){
+  console.log(`%cPOST 요청 : ${endpoint}`, "color: red");
+  console.log(`%cPOST 요청 데이터 :`, "color: blue");
+  console.log(formData);
+
+  return api.post(endpoint, formData, {
+    withCredentials: true,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+}
+
 // 아래처럼 export 한 후,
 // import * as API 방식으로 가져오면
 // API.get, API.delete 이런 식으로 쓸 수 있음
-export { get, post, put, del as delete, api };
+export { get, post, put, del as delete, postFormData, api };

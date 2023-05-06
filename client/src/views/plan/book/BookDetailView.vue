@@ -60,14 +60,22 @@ const postPlan = async ()=>{
     const response = await bookStore.postBook(travelId.value,planType.value)
     
     if(response.code !== 200) alert('등록에 실패 했습니다.')
-    else goBook()
+    else {
+        const response = await bookStore.postBookImages(travelId.value,book.value.id,planType.value)
+        if(response.code !== 200) alert('이미지 등록에 실패했습니다.')
+        goBook()
+    }
 }
 
 const putPlan =async ()=>{
     const response = await bookStore.putBook(travelId.value,planType.value)
     
     if(response.code !== 200) alert('수정에 실패 했습니다.')
-    else goBook()
+    else {
+        const response = await bookStore.postBookImages(travelId.value,book.value.id,planType.value)
+        if(response.code !== 200) alert('이미지 수정에 실패했습니다.')
+        goBook()
+    }
 }
 
 const delPlan =async ()=>{
