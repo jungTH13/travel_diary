@@ -15,6 +15,7 @@
                     <div class="plan-memo">
                         <div class="title">{{ plan['title'] }}</div>
                         <div class="memo" v-html="plan['memo']?.replaceAll('\n','<br/>')"></div> 
+                        <div class="image-view"><ImagesViewer :thumb-nail-list="plan.thumbNailList" image-size="5rem" :disabled="true" :no-detail="true" /></div>
                         <div class="checklist" v-if="plan.checkList?.length">
                             <p v-for="checklist in plan.checkList" :class="{completed:checklist.isCompleted===true}">
                                 <font-awesome-icon icon="fa-solid fa-list-check" class="icon"/>
@@ -114,39 +115,9 @@
                         
                     }
 
-                    .modify-box{
-                        position: relative;
-            
-                        .icon{
-                            cursor: pointer;
-                            position:absolute;
-                            bottom:1rem;
-                            right:0;
-                            width:1.5rem;
-                            height: 1.5rem;
-                        }
-                    }
-                    
-                    .options{
-                        bottom: 0;
-                        opacity: 1 !important;
-                        position: absolute;
-                        padding: 0.5rem;
-                        height: 100%;
-                        width: 100%;
+                    .image-view{
                         background-color: white;
-                        .button-box{
-                            margin-left: auto;
-                            .button{
-                                font-size: 1rem;
-                                font-weight: 600;
-                                height:3rem;
-                                
-                                margin-left:1rem;
-                                background-color: $green;
-                                color:white;
-                            }
-                        }
+                        z-index: 10000;
                     }
 
                 }
@@ -194,6 +165,7 @@
 import { computed, defineProps, ref, watch } from "vue";
 import {DateToStringFormat1, toAMPMString, toComaNumberString, urlParse, getMapSearchInfo} from "../composable/util"
 import PlanListOverlay from "./layouts/PlanListOverlay.vue";
+import ImagesViewer from "./layouts/ImagesViewer.vue";
 
 const props = defineProps({
 modelValue: Array,

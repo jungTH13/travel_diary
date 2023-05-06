@@ -19,7 +19,7 @@
                         </div>
                     
                         <div class="plan-box-contents-options" :class="{optionsActive: isBoxContentsClick}">
-                            test
+                            <ImagesViewer :thumb-nail-list="mappingData.thumbNailList" :disabled="true" image-size="7.5rem" :no-detail="true" />
                         </div>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                         </div>
                     
                         <div class="plan-box-contents-options" :class="{optionsActive: isBoxContentsClick}">
-                            test
+                            <ImagesViewer :thumb-nail-list="mappingData.thumbNailList" :disabled="true" image-size="7.5rem" :no-detail="true"/>
                         </div>
                     </div>
                 </div>
@@ -137,6 +137,7 @@ import { useMapStore } from '../stores/map';
 import { useScheduleStore } from '../stores/plan/schedule';
 import { useGoogleMapApi } from '../composable/useGoogleMapApi';
 import { toAMPMString } from '../composable/util';
+import ImagesViewer from './layouts/ImagesViewer.vue';
 
 
 const mapStore = useMapStore()

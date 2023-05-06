@@ -192,7 +192,8 @@ const setSelectPlanSearchInfo = async(plan)=>{
 }
 
 const postBookImages = async()=>{
-    if(!uploadImageList.length && !delBookImageList.length) return
+    if(!uploadImageList.value.length && !delBookImageList.value.length) return console.log("변경사항이 없습니다.")
+    
     const response = await bookStore.postBookImages(travelId.value,selectPlan.value.id,selectPlan.value.type,"")
     if(response.code === 200){
         closePlanOptions()
