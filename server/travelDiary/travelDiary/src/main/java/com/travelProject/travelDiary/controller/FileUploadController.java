@@ -87,7 +87,8 @@ public class FileUploadController {
                 thumbnail.setId(deleteId);
 
                 planCommonService.rtbThumbNailDelete(planType, planTypeId, deleteId, userId);
-                thumbnailService.thumbnailDelete(thumbnail);
+                //배치처리로 따로 삭제예정이라서 주석처리
+                //thumbnailService.thumbnailDelete(thumbnail, userId);
             }
         }
         return ResponseBody.builder().code(200).msg("이미지 업로드가 완료되었습니다.").results(imagePathList).build();

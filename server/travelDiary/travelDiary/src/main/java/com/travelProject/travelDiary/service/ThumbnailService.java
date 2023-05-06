@@ -101,7 +101,7 @@ public class ThumbnailService {
         }
     }
 
-    public void thumbnailDelete(Thumbnail thumbnail) {
+    public void thumbnailDelete(Thumbnail thumbnail, String userId) {
         Optional<Thumbnail> deleteParam = thumbnailRepository.findById(thumbnail.getId());
         if(!deleteParam.isEmpty()) {
             Long deleteId = deleteParam.get().getId();

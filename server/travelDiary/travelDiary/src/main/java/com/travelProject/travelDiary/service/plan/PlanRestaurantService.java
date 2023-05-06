@@ -4,7 +4,9 @@ import com.travelProject.travelDiary.config.exceptionCode;
 import com.travelProject.travelDiary.dto.ErrorCode;
 import com.travelProject.travelDiary.dto.PlanRestaurantDto;
 import com.travelProject.travelDiary.entity.plan.PlanRestaurant;
+import com.travelProject.travelDiary.entity.plan.rtb.RtbPlanRestaurantThumbNail;
 import com.travelProject.travelDiary.repository.plan.PlanRestaurantRepository;
+import com.travelProject.travelDiary.repository.plan.rtb.RtbPlanRestaurantThumbNailRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,9 @@ import java.util.List;
 public class PlanRestaurantService {
     @Autowired
     private PlanRestaurantRepository planRestaurantRepository;
+
+    @Autowired
+    private RtbPlanRestaurantThumbNailRepository rtbPlanRestaurantThumbNailRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -93,6 +98,11 @@ public class PlanRestaurantService {
         PlanRestaurant planRestaurant2 = planRestaurantRepository.findByIdAndUser_Id(id, planRestaurant.getUser().getId());
         if(!planRestaurant.getUser().getId().equals(planRestaurant2.getUser().getId())){
             throw new exceptionCode(ErrorCode.DIFFERENT_USER_PARAMETER);
+        }
+
+        List<RtbPlanRestaurantThumbNail> rtbPlanRestaurantThumbNailList = rtbPlanRestaurantThumbNailRepository.findAllByPlanRestaurant_Id(id);
+        for(RtbPlanRestaurantThumbNail deleteParam :rtbPlanRestaurantThumbNailList) {
+            rtbPlanRestaurantThumbNailRepository.deleteById(deleteParam.getId());
         }
 
         planRestaurantRepository.delete(planRestaurant);

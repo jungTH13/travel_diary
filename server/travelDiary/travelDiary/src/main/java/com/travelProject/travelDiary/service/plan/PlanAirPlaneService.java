@@ -4,7 +4,9 @@ import com.travelProject.travelDiary.config.exceptionCode;
 import com.travelProject.travelDiary.dto.ErrorCode;
 import com.travelProject.travelDiary.dto.PlanAirPlaneDto;
 import com.travelProject.travelDiary.entity.plan.PlanAirPlane;
+import com.travelProject.travelDiary.entity.plan.rtb.RtbPlanAirplaneThumbNail;
 import com.travelProject.travelDiary.repository.plan.PlanAirPlaneRepository;
+import com.travelProject.travelDiary.repository.plan.rtb.RtbPlanAirplaneThumbNailRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,9 @@ import java.util.List;
 public class PlanAirPlaneService {
     @Autowired
     private PlanAirPlaneRepository planAirPlaneRepository;
+
+    @Autowired
+    private RtbPlanAirplaneThumbNailRepository rtbPlanAirplaneThumbNailRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -93,6 +98,11 @@ public class PlanAirPlaneService {
         PlanAirPlane planAirPlane2 = planAirPlaneRepository.findByIdAndUser_Id(id, planAirPlane.getUser().getId());
         if(!planAirPlane.getUser().getId().equals(planAirPlane2.getUser().getId())){
             throw new exceptionCode(ErrorCode.DIFFERENT_USER_PARAMETER);
+        }
+
+        List<RtbPlanAirplaneThumbNail> rtbPlanAirplaneThumbNailList = rtbPlanAirplaneThumbNailRepository.findAllByPlanAirPlane_Id(id);
+        for(RtbPlanAirplaneThumbNail deleteParam :rtbPlanAirplaneThumbNailList) {
+            rtbPlanAirplaneThumbNailRepository.deleteById(deleteParam.getId());
         }
 
         planAirPlaneRepository.delete(planAirPlane);

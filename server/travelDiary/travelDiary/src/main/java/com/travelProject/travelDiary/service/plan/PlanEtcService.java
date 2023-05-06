@@ -4,7 +4,9 @@ import com.travelProject.travelDiary.config.exceptionCode;
 import com.travelProject.travelDiary.dto.ErrorCode;
 import com.travelProject.travelDiary.dto.PlanEtcDto;
 import com.travelProject.travelDiary.entity.plan.PlanEtc;
+import com.travelProject.travelDiary.entity.plan.rtb.RtbPlanEtcThumbNail;
 import com.travelProject.travelDiary.repository.plan.PlanEtcRepository;
+import com.travelProject.travelDiary.repository.plan.rtb.RtbPlanEtcThumbNailRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,9 @@ import java.util.List;
 public class PlanEtcService {
     @Autowired
     private PlanEtcRepository planEtcRepository;
+
+    @Autowired
+    private RtbPlanEtcThumbNailRepository rtbPlanEtcThumbNailRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -94,6 +99,11 @@ public class PlanEtcService {
         PlanEtc planEtc2 = planEtcRepository.findByIdAndUser_Id(id, planEtc.getUser().getId());
         if(!planEtc.getUser().getId().equals(planEtc2.getUser().getId())){
             throw new exceptionCode(ErrorCode.DIFFERENT_USER_PARAMETER);
+        }
+
+        List<RtbPlanEtcThumbNail> rtbPlanEtcThumbNailList = rtbPlanEtcThumbNailRepository.findAllByPlanEtc_Id(id);
+        for(RtbPlanEtcThumbNail deleteParam :rtbPlanEtcThumbNailList) {
+            rtbPlanEtcThumbNailRepository.deleteById(deleteParam.getId());
         }
 
         planEtcRepository.delete(planEtc);
