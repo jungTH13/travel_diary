@@ -32,6 +32,9 @@ public class PlanCommonService {
     private PlanTransPortRepository planTransPortRepository;
 
     @Autowired
+    private PlanImageGroupRepository planImageGroupRepository;
+
+    @Autowired
     private RtbPlanAirplaneThumbNailRepository rtbPlanAirplaneThumbNailRepository;
 
     @Autowired
@@ -45,6 +48,9 @@ public class PlanCommonService {
 
     @Autowired
     private RtbPlanTransportThumbNailRepository rtbPlanTransportThumbNailRepository;
+
+    @Autowired
+    private RtbPlanImageGroupThumbNailRepository rtbPlanImageGroupThumbNailRepository;
 
     public Long planMemoUpdate(Long travelId, String userId, Map<String, Object> param) {
         LocalDateTime time = LocalDateTime.now();
@@ -61,7 +67,8 @@ public class PlanCommonService {
         }
 
         if((planId <= 0 || planId == null)
-            || !(planType.equals("pa") || planType.equals("pe") || planType.equals("ph") || planType.equals("pr") || planType.equals("pt"))
+                || !(planType.equals("pa") || planType.equals("pe") || planType.equals("ph")
+                || planType.equals("pr") || planType.equals("pt") || planType.equals("pig"))
         ) {
             throw new exceptionCode(ErrorCode.INVALID_PARAMETER);
         }
@@ -111,6 +118,15 @@ public class PlanCommonService {
             planTransPort.setMemo(memo);
             planTransPort.setModifiedDate(time);
             resultPlanId = planTransPortRepository.save(planTransPort).getId();
+        } else if(planType.equals("pig")) {
+            PlanImageGroup planImageGroup = planImageGroupRepository.findByIdAndUser_Id(planId, userId);
+
+            if(planImageGroup == null) {
+                throw new exceptionCode(ErrorCode.INVALID_ID_PARAMETER);
+            }
+            planImageGroup.setMemo(memo);
+            planImageGroup.setModifiedDate(time);
+            resultPlanId = planImageGroupRepository.save(planImageGroup).getId();
         }
         return resultPlanId;
     }
@@ -150,7 +166,8 @@ public class PlanCommonService {
     }
     public void rtbThumbNailInsert(String planType, Long planTypeId, Long thumbNailId) {
         if((planTypeId <= 0 || planTypeId == null)
-                || !(planType.equals("pa") || planType.equals("pe") || planType.equals("ph") || planType.equals("pr") || planType.equals("pt"))
+                || !(planType.equals("pa") || planType.equals("pe") || planType.equals("ph")
+                || planType.equals("pr") || planType.equals("pt") || planType.equals("pig"))
         ) {
             throw new exceptionCode(ErrorCode.INVALID_PARAMETER);
         }
@@ -211,12 +228,24 @@ public class PlanCommonService {
             rtbPlanTransportThumbNail.setPlanTransPort(planTransPort);
 
             rtbPlanTransportThumbNailRepository.save(rtbPlanTransportThumbNail);
+        } else if(planType.equals("pig")) {
+            RtbPlanImageGroupThumbNail rtbPlanImageGroupThumbNail = new RtbPlanImageGroupThumbNail();
+            PlanImageGroup planImageGroup = new PlanImageGroup();
+
+            thumbnail.setId(thumbNailId);
+            rtbPlanImageGroupThumbNail.setThId(thumbnail);
+
+            planImageGroup.setId(planTypeId);
+            rtbPlanImageGroupThumbNail.setPlanImageGroup(planImageGroup);
+
+            rtbPlanImageGroupThumbNailRepository.save(rtbPlanImageGroupThumbNail);
         }
     }
 
     public void rtbThumbNailDelete(String planType, Long planTypeId, Long thumbNailId, String userId) {
         if((planTypeId <= 0 || planTypeId == null)
-                || !(planType.equals("pa") || planType.equals("pe") || planType.equals("ph") || planType.equals("pr") || planType.equals("pt"))
+                || !(planType.equals("pa") || planType.equals("pe") || planType.equals("ph")
+                || planType.equals("pr") || planType.equals("pt") || planType.equals("pig"))
         ) {
             throw new exceptionCode(ErrorCode.INVALID_PARAMETER);
         }
@@ -246,6 +275,11 @@ public class PlanCommonService {
             List<RtbPlanTransportThumbNail> list = rtbPlanTransportThumbNailRepository.findAllByThId_Id(thumbNailId);
             for(RtbPlanTransportThumbNail deleteParam :list) {
                 rtbPlanTransportThumbNailRepository.deleteById(deleteParam.getId());
+            }
+        } else if(planType.equals("pig")) {
+            List<RtbPlanImageGroupThumbNail> list = rtbPlanImageGroupThumbNailRepository.findAllByThId_Id(thumbNailId);
+            for(RtbPlanImageGroupThumbNail deleteParam :list) {
+                rtbPlanImageGroupThumbNailRepository.deleteById(deleteParam.getId());
             }
         }
     }

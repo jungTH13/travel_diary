@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface RtbPlanImageGroupThumbNailRepository extends JpaRepository<RtbPlanImageGroupThumbNail, Long> {
     List<RtbPlanImageGroupThumbNail> findAllByPlanImageGroup_Id(Long thumbNailId);
+
+    List<RtbPlanImageGroupThumbNail> findAllByThId_Id(Long thumbNailId);
 }
