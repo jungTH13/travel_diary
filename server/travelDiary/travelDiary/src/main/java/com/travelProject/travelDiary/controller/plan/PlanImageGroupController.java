@@ -7,6 +7,7 @@ import com.travelProject.travelDiary.dto.ResponseBody;
 import com.travelProject.travelDiary.entity.Travel;
 import com.travelProject.travelDiary.entity.User;
 import com.travelProject.travelDiary.entity.plan.PlanImageGroup;
+import com.travelProject.travelDiary.service.ThumbnailService;
 import com.travelProject.travelDiary.service.TravelService;
 import com.travelProject.travelDiary.service.plan.PlanImageGroupService;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,9 @@ public class PlanImageGroupController {
     private PlanImageGroupService planImageGroupService;
 
     @Autowired
+    private ThumbnailService thumbnailService;
+
+    @Autowired
     private TravelService travelService;
 
     @PostMapping("/travel/{travelId}/plan/imageGroup/imageGroupOne")
@@ -34,8 +39,10 @@ public class PlanImageGroupController {
         Map<String, Object> result = new HashMap<>();
         setTravelId(travelId, user, planImageGroupDto);
         PlanImageGroup planImageGroupOne = planImageGroupService.selectPlanImageGroupOne(planImageGroupDto, user.getId());
+        List<Map<String, Object>> thumbNailList = thumbnailService.rtbPlanThumbNailSelect("pig", planImageGroupOne.getId());
 
         result.put("planImageGroupOne", planImageGroupOne);
+        result.put("thumbNailList", thumbNailList);
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }
 
@@ -45,9 +52,19 @@ public class PlanImageGroupController {
 
         Map<String, Object> result = new HashMap<>();
         setTravelId(travelId, user, PlanImageGroupDto);
-        List<PlanImageGroup> planImageGroupList = planImageGroupService.selectPlanImageGroupList(PlanImageGroupDto, user.getId());
 
-        result.put("planImageGroupList", planImageGroupList);
+        List<Map<String, Object>> resulList = new ArrayList<Map<String, Object>>();
+        List<PlanImageGroup> planImageGroupList = planImageGroupService.selectPlanImageGroupList(PlanImageGroupDto, user.getId());
+        for(PlanImageGroup param : planImageGroupList) {
+            Map<String, Object> insertParam = new HashMap<String, Object>();
+            List<Map<String, Object>> thumbNailList = thumbnailService.rtbPlanThumbNailSelect("pig", param.getId());
+
+            insertParam = param.toMap();
+            insertParam.put("thumbNailList", thumbNailList);
+            resulList.add(insertParam);
+        }
+
+        result.put("planImageGroupList", resulList);
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }
 

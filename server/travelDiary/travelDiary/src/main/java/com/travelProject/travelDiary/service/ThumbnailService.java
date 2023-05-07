@@ -32,6 +32,9 @@ public class ThumbnailService {
     private RtbPlanRestaurantThumbNailRepository rtbPlanRestaurantThumbNailRepository;
 
     @Autowired
+    private RtbPlanImageGroupThumbNailRepository rtbPlanImageGroupThumbNailRepository;
+
+    @Autowired
     private RtbPlanTransportThumbNailRepository rtbPlanTransportThumbNailRepository;
 
     @Autowired
@@ -82,6 +85,16 @@ public class ThumbnailService {
         } else if(planType.equals("pt")) {
             List<RtbPlanTransportThumbNail> list = rtbPlanTransportThumbNailRepository.findAllByPlanTransPort_Id(planTypeId);
             for(RtbPlanTransportThumbNail param: list) {
+                Map<String, Object> insertParam = new HashMap<String, Object>();
+                Optional<Thumbnail> thumbnail = thumbnailRepository.findById(param.getThId().getId());
+                insertParam.put("id", thumbnail.get().getId());
+                insertParam.put("url", thumbnail.get().getUrl());
+                insertParam.put("originalUrl", thumbnail.get().getOriginalUrl());
+                resultList.add(insertParam);
+            }
+        } else if(planType.equals("pig")) {
+            List<RtbPlanImageGroupThumbNail> list = rtbPlanImageGroupThumbNailRepository.findAllByPlanImageGroup_Id(planTypeId);
+            for(RtbPlanImageGroupThumbNail param: list) {
                 Map<String, Object> insertParam = new HashMap<String, Object>();
                 Optional<Thumbnail> thumbnail = thumbnailRepository.findById(param.getThId().getId());
                 insertParam.put("id", thumbnail.get().getId());
