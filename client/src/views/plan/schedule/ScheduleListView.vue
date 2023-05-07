@@ -6,19 +6,9 @@
         <div class="schedule-date" :class="{active: dailyScheduleVisibleList[index]}"  v-for="date,index in dayList" @click="setDailyVisible(index)">{{ date }}</div>
       </div>
       <div class="schdule-contents-container">
-        <!-- <div class="extra-feature-box-position">
-          <div class="extra-feature-box">
-            <div class="create-image-marker">
-              <font-awesome-icon icon="fa-regular fa-images" />
-              이미지 마커 추가하기
-            </div>
-          </div>
-          
-        </div> -->
-
         <div class="contents" v-for="day,index in dayList" v-show="dailyScheduleVisibleList.length===0 || dailyScheduleVisibleList[index]">
           <h1 class="date">DAY {{ index+1 }} </h1> <p class="description"> {{ DateToStringFormat1(setDate(startDate,index)) }}</p>
-          <PlanList v-model="dailyScheduleList[index]" />
+          <ScheduleList v-model="dailyScheduleList[index]" :image-group-list="daliyImageGroupList[index]" />
         </div>
       </div>
     </div>
@@ -176,7 +166,7 @@ import { useScheduleStore } from "../../../stores/plan/schedule";
 import { useMapStore } from "../../../stores/map";
 import { useTravelStore } from "../../../stores/travel";
 import { DateToStringFormat1 } from "../../../composable/util";
-import PlanList from "../../../components/PlanList.vue";
+import ScheduleList from "../../../components/ScheduleList.vue";
 // import ImageGroupCreater from "../../../components/ImageGroupCreater.vue";
 
 const route = useRoute()
@@ -189,6 +179,7 @@ const mapStore = useMapStore()
 const schedulelList = computed(()=>scheduleStore.searchscheduleList);
 const dailyScheduleVisibleList = ref([])
 const dailyScheduleList = computed(()=>scheduleStore.dailyScheduleList)
+const daliyImageGroupList = computed(()=>scheduleStore.dailyImageGroupList||[])
 const startDate  = computed(()=>new Date(travelStore.travel.startDate.split('T')[0]))
 const travelId = computed(()=>route.params.id)
 const dayList = computed(()=>travelStore.dayList)
@@ -199,7 +190,10 @@ const setDailyMarkerList = ()=>{
 
 const goCreateImageGroup = ()=>{
   router.push({
-    name:'imageGroup'
+    name:'imageGroup',
+    params:{
+      planId:'register'
+    }
   })
 }
 
@@ -232,7 +226,7 @@ const setDate = (date,index)=>{
 
 onBeforeMount(async() => {
   console.log("Before Mount!");
-  await scheduleStore.getscheduleList(travelId.value)
+  await scheduleStore.getscheduleList(travelId.value,null,true)
 });
 
 onMounted(() => {

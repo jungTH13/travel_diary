@@ -2,6 +2,7 @@ import { ref, computed, reactive, watch } from "vue";
 import { defineStore } from "pinia";
 import * as API from "../../composable/api";
 import { useTravelStore } from "../travel";
+import { convertTimeFormat } from "../../composable/util";
 
 export const useScheduleStore = defineStore("schedule", () => {
   const travelStore = useTravelStore()
@@ -9,9 +10,12 @@ export const useScheduleStore = defineStore("schedule", () => {
   const scheduleList = ref([]);
   const searchscheduleList = ref([]);
   const dailyScheduleList = ref([]);
+
+  const imageGoupList = ref([])
+  const dailyImageGroupList = ref([])
   
 
-  async function getscheduleList(travelId,searchData) {
+  async function getscheduleList(travelId,searchData,isImageGorupList=false) {
     if(true) {
       const {data} = await API.get(`/travel/${travelId}/plan/userPlaneList`);
       //시간 정보 전처리
@@ -23,6 +27,7 @@ export const useScheduleStore = defineStore("schedule", () => {
             }
         }
       })
+      if(isImageGorupList) await _getImageGroupList(travelId)
       
       scheduleList.value = data.results.planList;
     }
@@ -33,8 +38,21 @@ export const useScheduleStore = defineStore("schedule", () => {
     else{
       searchscheduleList.value = scheduleList.value;
     }
-
+    
     _setDailyScheduleList()
+  }
+
+  async function _getImageGroupList(travelId){
+    const {data} = await API.post(`/travel/${travelId}/plan/imageGroup/imageGroupList`,{});
+
+    data.results.planImageGroupList.forEach((imageGroup)=>{
+      imageGroup.type = 'pig'
+      convertTimeFormat(imageGroup)
+    })
+
+    imageGoupList.value = data.results.planImageGroupList
+    
+    _setDailyImageGroupList()
   }
 
   
@@ -63,11 +81,39 @@ export const useScheduleStore = defineStore("schedule", () => {
     })
   }
 
+  function _setDailyImageGroupList(){
+    const travel = travelStore.travel
+    const startDate = new Date(travel.startDate.split('T')[0])
+    const dayList = travelStore.dayList
+    
+    const dailyList = {}
+    for(const imageGroup of imageGoupList.value||[]){
+        const date = imageGroup['date'].split('T')[0]
+        
+        if(!dailyList[date])dailyList[date] = []
+        dailyList[date].push(imageGroup)
+    }
 
-  function resetScheduleList (){
+    dailyImageGroupList.value = dayList.map((date)=>{
+      const nowDate = startDate.getDate()
+      const now = startDate.toJSON().split('T')[0]
+      if(date !== nowDate) return console.log('일정 정렬에 실패했습니다.')
+
+      startDate.setDate(startDate.getDate()+1)
+      if(dailyList[now]) return dailyList[now]
+      else return []
+    })
+  }
+
+
+  function resetScheduleList (isImageGorupList=false){
     scheduleList.value = []
     searchscheduleList.value = []
     dailyScheduleList.value = []
+    if(isImageGorupList){
+      imageGoupList.value = []
+      dailyImageGroupList.value = []
+    }
   }
 
   function _createForm (plan){
@@ -92,6 +138,8 @@ export const useScheduleStore = defineStore("schedule", () => {
     scheduleList,
     searchscheduleList,
     dailyScheduleList,
+    imageGoupList,
+    dailyImageGroupList,
     getscheduleList,
     resetScheduleList,
     putPlanMemoOnly

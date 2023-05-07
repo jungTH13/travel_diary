@@ -11,10 +11,10 @@
     </div>
     <div class="schedule-plan-list">
         <div class="plan-list">
-            <SchedulePlanList />
+            <MapPlanList />
         </div>
     </div>
-    <div id="map" style="width:100%; height:120vh; overflow: visible !important;">
+    <div id="map" class="map" style="width:100%; height:120vh; overflow: visible !important;">
     </div>
 </div>
 
@@ -104,7 +104,7 @@ import { computed, defineProps, onBeforeMount, onMounted, onUnmounted, ref, watc
 import {useGoogleMapApi} from "../composable/useGoogleMapApi"
 import Search from "./layouts/Search.vue";
 import MapMarkerCotroll from "./layouts/MapMarkerCotroll.vue";
-import SchedulePlanList from "./SchedulePlanList.vue";
+import MapPlanList from "./layouts/MapPlanList.vue";
 
 const props = defineProps({
     modelValue: Object,
@@ -251,7 +251,13 @@ onMounted(async()=>{
 
 onUnmounted(()=>{
     removeMarker()
-    if(document.getElementById('googl-map-component'))document.getElementById('googl-map-component').appendChild(map.value.getDiv())
+    if(document.getElementById('googl-map-component')){
+        const target = document.getElementById('googl-map-component')
+        const duplicateNode = target.getElementsByClassName("map")
+
+        if(duplicateNode.length) target.removeChild(duplicateNode[0])
+        target.appendChild(map.value.getDiv())
+    }
 
     if(mapClickEventListener) googleMap.removeMapEventListener(mapClickEventListener)
 })

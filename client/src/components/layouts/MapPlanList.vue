@@ -1,15 +1,20 @@
 <template>
 
 <div class="schedule-plan-container">
-    <v-carousel v-model="nowShowPlan" class="plan-list-box" show-arrows="hover" hide-delimiter-background>
+    <div class="schedule-image-show-box" :class="{active:isBoxContentsClick}" @click="isBoxContentsClick = !isBoxContentsClick">
+        <div class="image-show">
+            <ImagesViewer v-if="mappingScheduleList[nowShowPlan]?.thumbNailList" :thumb-nail-list="mappingScheduleList[nowShowPlan].thumbNailList" :disabled="true" image-size="18rem" :no-detail="true" />
+        </div>
+    </div>
+    <v-carousel v-model="nowShowPlan" class="plan-list-box" :class="{deactive:isBoxContentsClick}" show-arrows="hover" hide-delimiter-background>
     
 
         <v-carousel-item v-for="mappingData,index in mappingScheduleList" style="height:100%;">
                 <div class="d-flex fill-height align-center plan-info-box col" v-if="index===0 || mappingScheduleList[index-1] !== mappingData">
                     <div class="contents-name row">
-                        <div style="white-space:nowrap;">{{  mappingData.name || `${mappingData.departLocation}` }}</div> 
+                        <div style="white-space:nowrap;">{{  mappingData.name || mappingData.departLocation || mappingData.title }}</div> 
                         <div style="width:100%;"></div>
-                        <div style="white-space:nowrap;"> {{ toAMPMString(mappingData.departDate || mappingData.reservationDate || mappingData.orderDate) }} {{ mappingData.departDate?'출발':'' }}</div>
+                        <div style="white-space:nowrap;"> {{ toAMPMString(findPlanofDate(mappingData)) }} {{ mappingData.departDate?'출발':'' }}</div>
                     </div>
 
                     <div class="plan-box-contents" @click="isBoxContentsClick = !isBoxContentsClick">
@@ -17,13 +22,9 @@
                             <div class="contents-title">{{ mappingData.title }}</div>
                             <div class="contents-text"><div v-html="mappingData.memo?.replaceAll('\n','<br/>')"></div></div>
                         </div>
-                    
-                        <div class="plan-box-contents-options" :class="{optionsActive: isBoxContentsClick}">
-                            <ImagesViewer :thumb-nail-list="mappingData.thumbNailList" :disabled="true" image-size="7.5rem" :no-detail="true" />
-                        </div>
                     </div>
                 </div>
-
+                <!-- 두번째 시간 지역 정보 존재시 추가 카드 생성 -->
                 <div v-else class="d-flex fill-height align-center plan-info-box col">
                     <div class="contents-name row">
                         <div style="white-space:nowrap;">{{ mappingData.arriveLocation }}</div> 
@@ -35,10 +36,6 @@
                         <div :class="{mainDeactive:isBoxContentsClick}" class="plan-box-contents-main" >
                             <div class="contents-title">{{ mappingData.title }}</div>
                             <div class="contents-text"><div v-html="mappingData.memo?.replaceAll('\n','<br/>')"></div></div>
-                        </div>
-                    
-                        <div class="plan-box-contents-options" :class="{optionsActive: isBoxContentsClick}">
-                            <ImagesViewer :thumb-nail-list="mappingData.thumbNailList" :disabled="true" image-size="7.5rem" :no-detail="true"/>
                         </div>
                     </div>
                 </div>
@@ -54,10 +51,31 @@
     height:100%;
     max-width: 700px;
     margin:auto;
+    
+    .schedule-image-show-box{
+        transition:all ease 0.5s 0s;
+        height: 0%;
+        width:100%;
+        background-color: $overlay;
+        overflow: hidden;
+        display: flex;
 
+        .image-show{
+            margin:auto;
+        }
+
+        &.active{
+            height: 100%;
+        }
+    }
 
     .plan-list-box{
+        transition:all ease 0.5s 0s;
         height: 100% !important;
+
+        &.deactive{
+            height: 0% !important;
+        }
 
         .plan-info-box{
             height: 100%;
@@ -133,11 +151,11 @@
 
 <script setup>
 import { computed, ref, watch } from 'vue';
-import { useMapStore } from '../stores/map';
-import { useScheduleStore } from '../stores/plan/schedule';
-import { useGoogleMapApi } from '../composable/useGoogleMapApi';
-import { toAMPMString } from '../composable/util';
-import ImagesViewer from './layouts/ImagesViewer.vue';
+import { useMapStore } from '../../stores/map';
+import { useScheduleStore } from '../../stores/plan/schedule';
+import { useGoogleMapApi } from '../../composable/useGoogleMapApi';
+import { findPlanofDate, toAMPMString } from '../../composable/util';
+import ImagesViewer from './ImagesViewer.vue';
 
 
 const mapStore = useMapStore()

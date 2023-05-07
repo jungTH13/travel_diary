@@ -154,3 +154,12 @@ export const HeicToJpeg = async (file)=>{
        throw error
    }
 }
+
+/**
+ * 
+ * @param {Object} obj 플랜정보에서 시기를 특정하는 date정보를 반환
+ * @returns 
+ */
+export const findPlanofDate = (obj)=>{
+  return obj.date || obj.departDate || obj.orderDate || obj.checkinDate || obj.reservationDate
+}
