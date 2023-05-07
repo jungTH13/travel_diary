@@ -1,7 +1,7 @@
 <template>
 
 <div :class="{active:(selectPlan)}" id="overlay" class="col"> 
-    <div id="overlay-empty" @click="closePlanOptions"></div>
+    <div id="overlay-empty" @click="closePlanOptions(true)"></div>
     
     <div id="plan-options" :class="{active:optionsVisible}">
         <div style="padding:2rem;">
@@ -137,6 +137,7 @@
 <script setup>
 import { computed, onUnmounted, ref, watch } from 'vue';
 import { useBookStore } from '../../stores/plan/book';
+import { useCodeStore } from '../../stores/code';
 import { useScheduleStore } from '../../stores/plan/schedule';
 import MapLocationIcon from './MapLocationIcon.vue';
 import { getMapSearchInfo, urlParse } from '../../composable/util';
@@ -151,11 +152,12 @@ const emits = defineEmits(["update:modelValue"])
 
 const scheduleStore = useScheduleStore()
 const bookStore = useBookStore()
+const codeStore = useCodeStore()
 const route = useRoute()
 
 const travelId = computed(()=>route.params.id||null)
 const selectPlan = computed(()=>props.modelValue)
-const bookNavCodes = computed(()=>bookStore.nav.reduce((codes,nav)=>{codes[nav.type]=nav.name;return codes},{}))
+const bookNavCodes = computed(()=>codeStore.planCodes)
 const selectPlanSearchInfo = ref(null)
 const optionsVisible = ref(false)
 const memoModifyVisible = ref(false)
@@ -176,8 +178,8 @@ const showPlanOptions = async(plan)=>{
     memo.value = plan.memo
 }
 
-const closePlanOptions = ()=>{
-    scheduleStore.getscheduleList(travelId.value)
+const closePlanOptions = (noRefresh)=>{
+    if(!noRefresh)scheduleStore.getscheduleList(travelId.value,null,true)
     emits('update:modelValue',null)
     selectPlanSearchInfo.value = null
     optionsVisible.value=false
@@ -209,7 +211,6 @@ const putPlanMemo = async(plan)=>{
 
     if(response.code !== 200) alert('수정에 실패 했습니다.')
     closePlanOptions()
-    scheduleStore.getscheduleList(travelId.value)
 }
 
 

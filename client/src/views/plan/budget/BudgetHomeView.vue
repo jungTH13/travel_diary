@@ -209,7 +209,6 @@ import { useRoute, useRouter } from "vue-router";
 import { useBudgetStore } from "../../../stores/budget";
 import { useTravelStore } from "../../../stores/travel";
 import { DateToStringFormat1,toComaNumberString } from "../../../composable/util";
-import PlanList from "../../../components/PlanList.vue";
 import BudgetList from "../../../components/BudgetList.vue";
 
 const route = useRoute()

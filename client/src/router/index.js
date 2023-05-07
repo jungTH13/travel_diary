@@ -67,7 +67,7 @@ const router = createRouter({
               component: ScheduleListView,
             },
             {
-              path:"imageGroup",
+              path:"imageGroup/pig/:planId",
               name:"imageGroup",
               component: ImageGroupView,
             },

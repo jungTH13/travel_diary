@@ -217,6 +217,7 @@ import { useScheduleStore } from '../../stores/plan/schedule';
 import { useTravelStore } from '../../stores/travel';
 import { useBookStore } from '../../stores/plan/book';
 import { useGoogleMapApi } from '../../composable/useGoogleMapApi';
+import { findPlanofDate } from '../../composable/util';
 
 const mapStore = useMapStore()
 const scheduleStore = useScheduleStore()
@@ -227,6 +228,7 @@ const googleAPi = useGoogleMapApi()
 
 const dailyScheduleVisibleList = ref([])
 const dailyScheduleList = computed(()=>scheduleStore.dailyScheduleList)
+const dailyImageGroupList = computed(()=>scheduleStore.dailyImageGroupList)
 const dayList = computed(()=>travelStore.dayList)
 const nav = computed(()=>bookStore.nav)
 const nowTap = ref(nav.value[0])
@@ -275,11 +277,28 @@ const setDailyVisible = (dailyScheduleIndex)=>{
 }
 
 const setDailyMarkerList = ()=>{
-  mapStore.setDailyMarkerList(
-    dailyScheduleList.value,
-    dailyScheduleVisibleList.value,
-    nowTap.value.type,
-    isTrace.value
+    const dailyList = []
+
+    
+    for(let index=0;index<dayList.value.length;index++){
+        const scheduleList = dailyScheduleList.value[index] || []
+        const imageList = dailyImageGroupList.value[index] || []
+        const list = [...scheduleList,...imageList]
+        list.sort((a,b)=>{
+            const aDate = findPlanofDate(a)
+            const bDate = findPlanofDate(b)
+            if(aDate > bDate) return 1
+            if(aDate < bDate) return -1
+            return 0
+        })
+        dailyList.push(list)
+    }
+
+    mapStore.setDailyMarkerList(
+        dailyList,
+        dailyScheduleVisibleList.value,
+        nowTap.value.type,
+        isTrace.value
     )
 }
 

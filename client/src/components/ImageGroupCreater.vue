@@ -79,10 +79,13 @@ import BookImageController from "./layouts/book/BookImageController.vue";
 import DateTime from "./layouts/DateTime.vue";
 import MapLocationIcon from "./layouts/MapLocationIcon.vue";
 import { toKoreaTimeString } from "../composable/util";
+import { useTravelStore } from "../stores/travel";
 
+const travelStore = useTravelStore()
 const bookStore = useBookStore()
 
 const book = computed(()=>bookStore.book)
+const travel = computed(()=>travelStore.travel)
 const searchText = computed(()=> `${book.value.address?book.value.address:''} ${book.value.name?book.value.name:''}`)
 const mapResult = ref({})
 const iconWidth = '3rem'
@@ -94,7 +97,10 @@ const init = ()=>{
         mapResult.value.name = book.value.title
         mapResult.value.cid = book.value.cid
     }
-    book.value.date = toKoreaTimeString(new Date()).split('.')[0];
+    let now = toKoreaTimeString(new Date()).split('.')[0]
+    if(now <travel.value.startDate) now = travel.value.startDate
+
+    book.value.date = now
 }
 
 watch(()=>mapResult.value,()=>{
@@ -103,6 +109,8 @@ watch(()=>mapResult.value,()=>{
     book.value.cid = mapResult.value.cid
     book.value.title = mapResult.value.name
 })
+
+watch(()=>book.value,()=>init())
 
 onMounted(()=>{
     init()

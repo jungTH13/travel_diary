@@ -18,6 +18,7 @@ export const useMapStore = defineStore("map", () => {
         'pa':"M416 0C400 0 288 32 288 176V288c0 35.3 28.7 64 64 64h32V480c0 17.7 14.3 32 32 32s32-14.3 32-32V352 240 32c0-17.7-14.3-32-32-32zM64 16C64 7.8 57.9 1 49.7 .1S34.2 4.6 32.4 12.5L2.1 148.8C.7 155.1 0 161.5 0 167.9c0 45.9 35.1 83.6 80 87.7V480c0 17.7 14.3 32 32 32s32-14.3 32-32V255.6c44.9-4.1 80-41.8 80-87.7c0-6.4-.7-12.8-2.1-19.1L191.6 12.5c-1.8-8-9.3-13.3-17.4-12.4S160 7.8 160 16V150.2c0 5.4-4.4 9.8-9.8 9.8c-5.1 0-9.3-3.9-9.8-9L127.9 14.6C127.2 6.3 120.3 0 112 0s-15.2 6.3-15.9 14.6L83.7 151c-.5 5.1-4.7 9-9.8 9c-5.4 0-9.8-4.4-9.8-9.8V16zm48.3 152l-.3 0-.3 0 .3-.7 .3 .7z",
         'pr':"M32 32C32 14.3 46.3 0 64 0H320c17.7 0 32 14.3 32 32s-14.3 32-32 32H290.5l11.4 148.2c36.7 19.9 65.7 53.2 79.5 94.7l1 3c3.3 9.8 1.6 20.5-4.4 28.8s-15.7 13.3-26 13.3H32c-10.3 0-19.9-4.9-26-13.3s-7.7-19.1-4.4-28.8l1-3c13.8-41.5 42.8-74.8 79.5-94.7L93.5 64H64C46.3 64 32 49.7 32 32zM160 384h64v96c0 17.7-14.3 32-32 32s-32-14.3-32-32V384z",
         'ph':"M416 0C400 0 288 32 288 176V288c0 35.3 28.7 64 64 64h32V480c0 17.7 14.3 32 32 32s32-14.3 32-32V352 240 32c0-17.7-14.3-32-32-32zM64 16C64 7.8 57.9 1 49.7 .1S34.2 4.6 32.4 12.5L2.1 148.8C.7 155.1 0 161.5 0 167.9c0 45.9 35.1 83.6 80 87.7V480c0 17.7 14.3 32 32 32s32-14.3 32-32V255.6c44.9-4.1 80-41.8 80-87.7c0-6.4-.7-12.8-2.1-19.1L191.6 12.5c-1.8-8-9.3-13.3-17.4-12.4S160 7.8 160 16V150.2c0 5.4-4.4 9.8-9.8 9.8c-5.1 0-9.3-3.9-9.8-9L127.9 14.6C127.2 6.3 120.3 0 112 0s-15.2 6.3-15.9 14.6L83.7 151c-.5 5.1-4.7 9-9.8 9c-5.4 0-9.8-4.4-9.8-9.8V16zm48.3 152l-.3 0-.3 0 .3-.7 .3 .7z",
+        'de':"M32 32C32 14.3 46.3 0 64 0H320c17.7 0 32 14.3 32 32s-14.3 32-32 32H290.5l11.4 148.2c36.7 19.9 65.7 53.2 79.5 94.7l1 3c3.3 9.8 1.6 20.5-4.4 28.8s-15.7 13.3-26 13.3H32c-10.3 0-19.9-4.9-26-13.3s-7.7-19.1-4.4-28.8l1-3c13.8-41.5 42.8-74.8 79.5-94.7L93.5 64H64C46.3 64 32 49.7 32 32zM160 384h64v96c0 17.7-14.3 32-32 32s-32-14.3-32-32V384z",
     }
 
     const googleMapApi = useGoogleMapApi()
@@ -27,12 +28,31 @@ export const useMapStore = defineStore("map", () => {
         constructor(){
             this.itr = 0
         }
-
-        getMarker(label){
+        /**
+         * 
+         * @param {'de'|'pt'|'pa'|'pr'|'ph'} iconType svg 마커 타입 설정
+         * @returns 
+         * 
+         * 해당 메소드는 svg마커만을 반환함
+         */
+        getMarker(iconType='de'){
             while(this.itr >= markerList.length){
-                markerList.push(googleMapApi.setSvgMarker(0,0,false,svgicons['pr'],label))
+                markerList.push( googleMapApi.setSvgMarker(0,0,false,svgicons[iconType]))
             }
             return markerList[this.itr++]
+        }
+
+        getSetMarker(x,y,path,markerType='svg'|'image'){
+            let newMarker = null
+            if(markerType === 'image') newMarker = googleMapApi.setImageMarker(x,y,false,path)
+            else newMarker = googleMapApi.setSvgMarker(x,y,false,path)
+
+            if(markerList[this.itr])markerList[this.itr] = newMarker
+            else markerList.push(newMarker)
+
+            this.itr++
+            
+            return newMarker
         }
 
         done(start){
@@ -109,6 +129,38 @@ export const useMapStore = defineStore("map", () => {
         const markerBuf = new MakerBuf()
         const bounds = new Bounds()
 
+        _DailyMarkerListProcess({
+            dailyScheduleList,
+            dailyScheduleVisibleList,
+            planTypeVisible,
+            poligonCoordinateList,
+            markerBuf,
+            bounds
+        })
+        window.markerList = markerList
+
+        //폴리곤 라인 생성성
+        poligonline = googleMapApi.setPoligonLine(poligonCoordinateList)
+        
+        //마커 변경 전파
+        markerListChange.value = !markerListChange.value
+        console.log("markerListChange:",markerListChange.value)
+        
+        //변경 및 마커가 존재할 경우 맵 이동
+        if(!bounds.getCount()||!isTrace) return
+        const {minX,minY,maxX,maxY} = bounds.resolve()
+        googleMapApi.setMapLatLngBounds(minX*0.996,minY,maxX,maxY)
+    }
+
+    function _DailyMarkerListProcess({
+        dailyScheduleList,
+        dailyScheduleVisibleList,
+        planTypeVisible,
+        poligonCoordinateList,
+        markerBuf,
+        bounds
+    }){
+
         for(let index =0;index <dailyScheduleList?.length;index++){
             const scheduleList = dailyScheduleList[index]
             
@@ -133,12 +185,11 @@ export const useMapStore = defineStore("map", () => {
                     bounds.add(plan.x2,plan.y2)
                     poligonCoordinateList.push({lat: plan.x2, lng: plan.y2})
                     
-                    const marker1 = markerBuf.getMarker()
-                    const marker2 = markerBuf.getMarker()
                     const info1 = googleMapApi.createInfoWindow(plan.departLocation,_createInfoForm(plan.departLocation,plan.cId))
                     const info2 = googleMapApi.createInfoWindow(plan.arriveLocation,_createInfoForm(plan.arriveLocation,plan.cId2))
-                    googleMapApi.moveMarker(marker1,plan.x,plan.y,false)
-                    googleMapApi.moveMarker(marker2,plan.x2,plan.y2,false)
+                    
+                    const marker1 = markerBuf.getSetMarker(plan.x,plan.y,svgicons['de'],'svg')
+                    const marker2 = markerBuf.getSetMarker(plan.x2,plan.y2,svgicons['de'],'svg')
                     googleMapApi.setMarkerInfo(marker1,info1,'mousehover')
                     googleMapApi.setMarkerInfo(marker2,info2,'mousehover')
                     
@@ -150,32 +201,25 @@ export const useMapStore = defineStore("map", () => {
                     googleMapApi.setMarkerEvent(marker2,getSetLastClickMarkerIndexFunc(markerListMappingPlanList.value.length-1),'click')
                 }
                 else{
-                    const marker = markerBuf.getMarker()
+                    let marker = null
+                    if(plan.type === 'pig')
+                        marker = markerBuf.getSetMarker(plan.x,plan.y,plan.thumbNailList[0].url,'image') 
+                    else
+                        marker = markerBuf.getSetMarker(plan.x,plan.y,svgicons['de'],'svg')
+                    
                     const info = googleMapApi.createInfoWindow(plan.name,_createInfoForm(plan.name,plan.cId))
-                    googleMapApi.moveMarker(marker,plan.x,plan.y,false)
-                    googleMapApi.setMarkerInfo(marker,info,'mousehover')
+                    // googleMapApi.moveMarker(marker,plan.x,plan.y,false)
+                    if(plan.type !=='pig')googleMapApi.setMarkerInfo(marker,info,'mousehover')
                     
                     // 마커 리스트를 데일리 2dArray 타입과 1dArray로 plan 정보 저장 및 마커 클릭인덱스 설정
                     dayMarkerList.push(marker)
                     markerListMappingPlanList.value.push(plan)
-                    googleMapApi.setMarkerEvent(marker,getSetLastClickMarkerIndexFunc(markerListMappingPlanList.value.length-1),'click')
+                    googleMapApi.setMarkerEvent(marker,getSetLastClickMarkerIndexFunc(markerListMappingPlanList.value.length-1),plan.type === 'pig'?'gmp-click':'click')
                 }
             }
             dailyMarkerList.push(dayMarkerList)
         }
-        window.markerList = markerList
 
-        //폴리곤 라인 생성성
-        poligonline = googleMapApi.setPoligonLine(poligonCoordinateList)
-        
-        //마커 변경 전파
-        markerListChange.value = !markerListChange.value
-        console.log("markerListChange:",markerListChange.value)
-        
-        //변경 및 마커가 존재할 경우 맵 이동
-        if(!bounds.getCount()||!isTrace) return
-        const {minX,minY,maxX,maxY} = bounds.resolve()
-        googleMapApi.setMapLatLngBounds(minX*0.996,minY,maxX,maxY)
     }
 
     function _createInfoForm (name,cid){
@@ -183,7 +227,7 @@ export const useMapStore = defineStore("map", () => {
         <div id="content">
             <div id="siteNotice">
             </div>
-            <h1 id="firstHeading" class="firstHeading" style="font-size: larger; font-weight: 600;">${name}</h1>
+            <h1 id="firstHeading" class="firstHeading" style="font-size: larger; font-weight: 600;">${name||''}</h1>
             <div id="bodyContent">
             </div>
         </div>

@@ -153,7 +153,8 @@ export const useGoogleMapApi = ()=>{
         return marker
     }
 
-    const setImageMarker = (x,y,imageUrl='https://developers.google.com/maps/documentation/javascript/examples/full/images/parking_lot_maps.png')=>{
+    const setImageMarker = (x,y,isTrace,imageUrl='https://developers.google.com/maps/documentation/javascript/examples/full/images/parking_lot_maps.png')=>{
+
         const content = document.createElement("div");
         const style = `
         border-radius: 10px;
@@ -170,6 +171,11 @@ export const useGoogleMapApi = ()=>{
             position: { lat: x, lng: y },
             content: content,
         });
+
+        if(isTrace === true) {
+            mapObj.setCenter({lat:x,lng:y})
+            mapObj.setZoom(14)
+        }
         
         return markerView
     }
@@ -245,7 +251,7 @@ export const useGoogleMapApi = ()=>{
      * 마커 클릭,hover시 실행 이벤트 설정 
      */
     const setMarkerEvent = (marker,func,type='click')=>{
-        if(type==='click'){
+        if(type==='click' || type==='gmp-click'){
             marker.addListener(type,func)
         }
         if(type==='mousehover'){
@@ -262,17 +268,12 @@ export const useGoogleMapApi = ()=>{
      * 
      * 입력된 좌표를 맵에 표시하고 화면을 전환합니다.
      */
-    const setSvgMarker = (x,y,isTrace,svgPath,label=null)=>{
+    const setSvgMarker = (x,y,isTrace,svgPath)=>{
         if(mapObj === null) throw new Error("지도가 생성되어 있지 않습니다!")
 
         const options = {
             position: {lat:x,lng:y},
             map: mapObj,
-            // label:{
-            //     text:label,
-            //     fontWeight:'600',
-                
-            // },
             icon:{
                 path: svgPath,
                 fillColor: 'blue',
@@ -334,6 +335,7 @@ export const useGoogleMapApi = ()=>{
             return null
         }
         
+        if(!marker.setPosition) return // AdvancedMarkerView 마커에는 해당 메소드가 없음
         marker.setPosition({lat:x,lng:y})
 
         if(isTrace === true) {
@@ -394,6 +396,7 @@ export const useGoogleMapApi = ()=>{
         setMarkerInfo,
         setMarkerEvent,
         setSvgMarker,
+        setImageMarker,
         setPositionMarker,
         setPoligonLine,
         moveMarker,
