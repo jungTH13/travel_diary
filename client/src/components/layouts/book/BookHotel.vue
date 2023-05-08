@@ -59,7 +59,7 @@
                         기간 설정
                     </th>
                     <tr>
-                        <td class="width:50%">
+                        <td style="width:45%">
                             <div>
                                 
                                 <div class="date-picker">
@@ -67,7 +67,10 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="width:50%">
+                        <td style="width:10%">
+                            ~
+                        </td>
+                        <td style="width:45%">
                             <div>
                                 
                                 <div class="date-picker">

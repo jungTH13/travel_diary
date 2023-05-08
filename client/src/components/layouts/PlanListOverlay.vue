@@ -68,7 +68,7 @@
         .select-plan{
             margin-bottom: 2.5rem;
             .title{
-                font-size: 2rem;
+                font-size: 2.5rem;
                 font-weight: 600;
             }
             .type{
@@ -77,7 +77,7 @@
             }
             .memo{
                 max-height: 30vh;
-                font-size:1.3rem;
+                font-size:1.8rem;
                 overflow: auto;
             }
 

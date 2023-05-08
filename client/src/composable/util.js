@@ -161,5 +161,13 @@ export const HeicToJpeg = async (file)=>{
  * @returns 
  */
 export const findPlanofDate = (obj)=>{
-  return obj.date || obj.departDate || obj.orderDate || obj.checkinDate || obj.reservationDate
+  return obj.date || obj.departDate || obj.checkinDate || obj.reservationDate
+}
+
+export const getNowDateString = (travel)=>{
+  const now = toKoreaTimeString(new Date()).split('.')[0]
+  console.log(travel)
+  if(travel.startDate && now<travel.startDate) return travel.startDate
+  if(travel.endDate && now>travel.endDate) return travel.endDate
+  return now
 }

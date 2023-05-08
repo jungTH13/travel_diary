@@ -86,7 +86,7 @@ const delPlan =async ()=>{
 
 onBeforeMount(()=>{
     bookStore.resetBook()
-    bookStore.getBook(travelId.value,planId.value,'pig')
+    if(planId.value && !isNaN(planId.value)) bookStore.getBook(travelId.value,planId.value,'pig')
 })
 
 onUnmounted(()=>{

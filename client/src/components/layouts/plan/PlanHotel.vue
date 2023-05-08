@@ -77,7 +77,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ plan['memo'] }}</td>
+                        <td><div v-html="urlParse(plan['memo']?.replaceAll('\n','<br/>'))"></div></td>
                     </tr>
                 </tbody>
             </table>
@@ -94,7 +94,7 @@
 <script setup>
 
 import { computed, ref, watch } from "vue";
-import { DateToStringFormat1, toAMPMString } from "../../../composable/util";
+import { DateToStringFormat1, toAMPMString, urlParse } from "../../../composable/util";
 
 const props = defineProps({
     modelValue: Object,
