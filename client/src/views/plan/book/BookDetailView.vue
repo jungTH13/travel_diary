@@ -34,17 +34,22 @@ import { computed } from "@vue/reactivity";
 import BookItem from "../../../components/BookItem.vue";
 import { useBookStore } from "../../../stores/plan/book";
 import { useScheduleStore } from "../../../stores/plan/schedule";
-
+import { useCodeStore} from "../../../stores/code";
+import { getNowDateString } from "../../../composable/util";
+import { useTravelStore } from "../../../stores/travel";
 
 const route = useRoute();
 const router = useRouter();
 const bookStore = useBookStore()
 const scheduleStore = useScheduleStore()
+const codeStore = useCodeStore()
+const travelStore = useTravelStore()
 
 //contents
 const travelId = computed(()=>route.params.id)
 const planId = computed(()=>route.params.planId)
 const planType = computed(()=>route.params.planType)
+const travel = computed(()=>travelStore.travel)
 const book = computed(()=>bookStore.book)
 const nowTap = ref({});
 const tapChange = (tap)=>{
@@ -91,8 +96,14 @@ onUnmounted(()=>{
     bookStore.resetBook()
 })
 
-onMounted(() => {
+onMounted(async() => {
     console.log("Mounted!");
-    if(planId.value && !isNaN(planId.value))bookStore.getBook(travelId.value,planId.value,planType.value)
+    if(planId.value && !isNaN(planId.value))await bookStore.getBook(travelId.value,planId.value,planType.value)
+    else{
+        const now = getNowDateString(travel.value)
+        for(const key of codeStore.dateNamesOfPlan[planType.value]){
+            if(!book.value[key])book.value[key] = now 
+        }
+    }
 })
 </script>

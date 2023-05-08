@@ -82,7 +82,7 @@
 
 .schedule-plan-list{
     position: relative;
-    top:75vh;
+    top:75%;
     left:0;
     .plan-list{
         position: absolute;

@@ -78,11 +78,13 @@ import { useBookStore } from "../stores/plan/book";
 import BookImageController from "./layouts/book/BookImageController.vue";
 import DateTime from "./layouts/DateTime.vue";
 import MapLocationIcon from "./layouts/MapLocationIcon.vue";
-import { toKoreaTimeString } from "../composable/util";
+import { toKoreaTimeString, getNowDateString } from "../composable/util";
 import { useTravelStore } from "../stores/travel";
+import { useCodeStore } from "../stores/code";
 
 const travelStore = useTravelStore()
 const bookStore = useBookStore()
+const codeStore = useCodeStore()
 
 const book = computed(()=>bookStore.book)
 const travel = computed(()=>travelStore.travel)
@@ -97,10 +99,10 @@ const init = ()=>{
         mapResult.value.name = book.value.title
         mapResult.value.cid = book.value.cid
     }
-    let now = toKoreaTimeString(new Date()).split('.')[0]
-    if(now <travel.value.startDate) now = travel.value.startDate
-
-    book.value.date = now
+    const now = getNowDateString(travel.value)
+    for(const key of codeStore.dateNamesOfPlan['pig']){
+        if(!book.value[key])book.value[key] = now 
+    }
 }
 
 watch(()=>mapResult.value,()=>{
