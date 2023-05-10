@@ -1,7 +1,6 @@
 package com.travelProject.travelDiary.repository;
 
 import com.travelProject.travelDiary.entity.Travel;
-import com.travelProject.travelDiary.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,7 +18,7 @@ public interface TravelRepository extends JpaRepository<Travel, Long> {
             + "\t, t_start_date AS fromDate\n"
             + "\t, t_end_date AS endDate\n"
             + "FROM tbl_travel\n"
-            + "WHERE t_start_date >= NOW()\n"
+            + "WHERE DATE(t_start_date) >= DATE(NOW())\n"
             + "\tAND id = :#{#userId}"
             ,
             nativeQuery = true)
@@ -33,7 +32,7 @@ public interface TravelRepository extends JpaRepository<Travel, Long> {
             + "\t, t_start_date AS fromDate\n"
             + "\t, t_end_date AS endDate\n"
             + "FROM tbl_travel\n"
-            + "WHERE t_end_date <= NOW()\n"
+            + "WHERE DATE(t_end_date) < DATE(NOW())\n"
             + "\tAND id = :#{#userId}"
             ,
             nativeQuery = true)
