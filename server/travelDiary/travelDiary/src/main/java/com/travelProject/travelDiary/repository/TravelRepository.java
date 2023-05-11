@@ -32,7 +32,7 @@ public interface TravelRepository extends JpaRepository<Travel, Long> {
             + "\t, t_start_date AS fromDate\n"
             + "\t, t_end_date AS endDate\n"
             + "FROM tbl_travel\n"
-            + "WHERE DATE(t_end_date) < DATE(NOW())\n"
+            + "WHERE DATE(t_start_date) < DATE(NOW())\n"
             + "\tAND id = :#{#userId}"
             ,
             nativeQuery = true)
