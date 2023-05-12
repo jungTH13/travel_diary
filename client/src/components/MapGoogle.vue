@@ -6,7 +6,7 @@
     </div>
     <div class="marker-controll">
         <div class="marker-date-controll">
-            <MapMarkerCotroll />
+            <MapMarkerCotroll @current-position="setCurrentPosition" />
         </div>
     </div>
     <div class="schedule-plan-list">
@@ -14,7 +14,11 @@
             <MapPlanList />
         </div>
     </div>
+    <div class="current-position-confirm">
+        <div v-if="isRegistration && currentPosition.x" @click="completeCurrentPosition">현재 위치로 등록하기</div>
+    </div>
     <div id="map" class="map" style="width:100%; height:120vh; overflow: visible !important;">
+    
     </div>
 </div>
 
@@ -93,6 +97,18 @@
     }
 }
 
+.current-position-confirm{
+    position:absolute;
+    z-index: 12000;
+    right:12rem;
+    top:14rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: green;
+    text-shadow: -1px 0 rgb(255, 255, 255), 0 1px rgb(255, 255, 255), 1px 0 rgb(255, 255, 255), 0 -1px rgb(255, 255, 255);
+    cursor: pointer;
+}
+
 .firstHeading{
     font-size: larger;
     font-weight: 600;
@@ -128,9 +144,18 @@ const infowindow = ref(null)
 const isOverlay = computed(()=>props.isOverlay||false)
 const isRegistration = computed(()=>props.isRegistration)
 let mapClickEventListener = null;
+const currentPosition = ref({})
 
 const complete = ()=>{
     console.log('complete')
+    emit('update:modelValue',searchInfo.value)
+}
+
+const completeCurrentPosition = ()=>{
+    if(!currentPosition.value.x || !currentPosition.value.y) return
+    searchInfo.value = {
+        geometry: [currentPosition.value.x,currentPosition.value.y]
+    }
     emit('update:modelValue',searchInfo.value)
 }
 
@@ -150,6 +175,11 @@ const setMarker = (x,y,istrace=true)=>{
         searchMarker.value = googleMap.setMarker(lat,lng,istrace)
     }
 
+}
+
+const setCurrentPosition = (x,y)=>{
+    currentPosition.value={x,y}
+    console.log("선택완료")
 }
 
 const removeMarker = ()=>{

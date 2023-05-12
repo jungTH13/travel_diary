@@ -219,6 +219,8 @@ import { useBookStore } from '../../stores/plan/book';
 import { useGoogleMapApi } from '../../composable/useGoogleMapApi';
 import { findPlanofDate } from '../../composable/util';
 
+const emits = defineEmits(['currentPosition']) // 파라미터(x,y)
+
 const mapStore = useMapStore()
 const scheduleStore = useScheduleStore()
 const travelStore = useTravelStore()
@@ -226,14 +228,16 @@ const bookStore = useBookStore()
 
 const googleAPi = useGoogleMapApi()
 
-const dailyScheduleVisibleList = ref([])
+const dailyScheduleVisibleList = ref(mapStore.dailyScheduleVisibleList)
 const dailyScheduleList = computed(()=>scheduleStore.dailyScheduleList)
 const dailyImageGroupList = computed(()=>scheduleStore.dailyImageGroupList)
 const dayList = computed(()=>travelStore.dayList)
 const nav = computed(()=>bookStore.nav)
-const nowTap = ref(nav.value[0])
-const isTrace = ref(true)
-const isCurrentPositionTrace = ref(false)
+const nowTap = ref(mapStore.nowTap)
+const isTrace = ref(mapStore.isTrace)
+const isCurrentPositionTrace = ref(mapStore.isCurrentPositionTrace)
+let isCurrentPositionTraceFirstTime = true // 좌표 추적 첫시도시 정보
+let watchPositionObj = null
 
 let currentPositionMarker = null
 const currentPositionInfo = ref({
@@ -242,16 +246,20 @@ const currentPositionInfo = ref({
 })
 
 const moveMarker = ({coords,timestamp})=>{
+    if(!coords) return
     currentPositionInfo.value = {coords,timestamp}
     const lat = coords.latitude
     const lng = coords.longitude
-    googleAPi.moveMarker(currentPositionMarker,lat,lng,isCurrentPositionTrace.value )
+    googleAPi.moveMarker(currentPositionMarker,lat,lng,isCurrentPositionTraceFirstTime )
+    isCurrentPositionTraceFirstTime = false
+
+    emits('currentPosition',coords.latitude,coords.longitude)
 }
 
 
 const tapChange = (tap)=>{
-  nowTap.value = tap
-  setDailyMarkerList()
+    nowTap.value = tap
+    setDailyMarkerList()
 }
 
 const setDailyVisible = (dailyScheduleIndex)=>{
@@ -277,29 +285,54 @@ const setDailyVisible = (dailyScheduleIndex)=>{
 }
 
 const setDailyMarkerList = ()=>{
-    const dailyList = []
+    // const dailyList = []
 
     
-    for(let index=0;index<dayList.value.length;index++){
-        const scheduleList = dailyScheduleList.value[index] || []
-        const imageList = dailyImageGroupList.value[index] || []
-        const list = [...scheduleList,...imageList]
-        list.sort((a,b)=>{
-            const aDate = findPlanofDate(a)
-            const bDate = findPlanofDate(b)
-            if(aDate > bDate) return 1
-            if(aDate < bDate) return -1
-            return 0
-        })
-        dailyList.push(list)
-    }
+    // for(let index=0;index<dayList.value.length;index++){
+    //     const scheduleList = dailyScheduleList.value[index] || []
+    //     const imageList = dailyImageGroupList.value[index] || []
+    //     const list = [...scheduleList,...imageList]
+    //     list.sort((a,b)=>{
+    //         const aDate = findPlanofDate(a)
+    //         const bDate = findPlanofDate(b)
+    //         if(aDate > bDate) return 1
+    //         if(aDate < bDate) return -1
+    //         return 0
+    //     })
+    //     dailyList.push(list)
+    // }
 
     mapStore.setDailyMarkerList(
-        dailyList,
+        dailyScheduleList.value,
+        dailyImageGroupList.value,
         dailyScheduleVisibleList.value,
         nowTap.value.type,
         isTrace.value
     )
+}
+
+const setCurrentPositionTrace = ()=>{
+    if(isCurrentPositionTrace.value === true) {
+        if(isTrace.value === true) isTrace.value = false
+        
+        isCurrentPositionTraceFirstTime = true
+
+        //디바이스의 위치정보를 수신
+        if(navigator.geolocation){
+            watchPositionObj = navigator.geolocation.watchPosition(moveMarker)
+            moveMarker(currentPositionInfo.value)
+        }
+    }
+    else {
+        //디바이스의 위치정보 수신 중지
+        if(watchPositionObj) {
+            navigator.geolocation.clearWatch(watchPositionObj)
+            watchPositionObj = null
+        }
+        googleAPi.moveMarker(currentPositionMarker,0,0 )
+
+        emits('currentPosition',null,null)
+    }
 }
 
 watch(()=>scheduleStore.scheduleList,()=>{
@@ -315,33 +348,24 @@ watch(()=>isTrace.value,(newValue,oldValue)=>{
     }
 })
 watch(()=>isCurrentPositionTrace.value,(newValue,oldValue)=>{
-    if(newValue === true) {
-        if(isTrace.value === true)
-            isTrace.value = false
-        moveMarker(currentPositionInfo.value)
-    }
-    else {
-        googleAPi.moveMarker(currentPositionMarker,0,0 )
-    }
+    setCurrentPositionTrace()
 })
 
 
 onMounted(async()=>{
     await googleAPi.init()
     await googleAPi.getMap()
-    setDailyMarkerList()
-
-    //디바이스의 위치정보를 수신
-    if(navigator.geolocation){
-
-        currentPositionMarker = googleAPi.setPositionMarker(0,0)
-        window.currentPositionMarker = currentPositionMarker
-        navigator.geolocation.getCurrentPosition(moveMarker)
-    }
+    setTimeout(setDailyMarkerList,0)
+    
+    currentPositionMarker = googleAPi.setPositionMarker(0,0)
+    setCurrentPositionTrace()
 })
 
 onUnmounted(()=>{
     currentPositionMarker.setMap(null)
+    mapStore.isTrace = isTrace.value
+    mapStore.isCurrentPositionTrace = isCurrentPositionTrace.value
+    if(watchPositionObj) navigator.geolocation.clearWatch(watchPositionObj)
 })
 
 </script>
