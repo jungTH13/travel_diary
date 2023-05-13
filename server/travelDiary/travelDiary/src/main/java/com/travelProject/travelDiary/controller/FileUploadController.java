@@ -3,6 +3,7 @@ package com.travelProject.travelDiary.controller;
 import com.travelProject.travelDiary.common.ByteArrayMultipartFile;
 import com.travelProject.travelDiary.config.exceptionCode;
 import com.travelProject.travelDiary.dto.ErrorCode;
+import com.travelProject.travelDiary.dto.ResponseBody;
 import com.travelProject.travelDiary.entity.Thumbnail;
 import com.travelProject.travelDiary.entity.Travel;
 import com.travelProject.travelDiary.entity.User;
@@ -13,7 +14,6 @@ import com.travelProject.travelDiary.service.plan.PlanCommonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.travelProject.travelDiary.dto.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -72,15 +72,23 @@ public class FileUploadController {
             for(MultipartFile originalFile :multipartFileList) {
                 if(!originalFile.isEmpty()) {
                     Map<String, Object> insertParam = new HashMap<String, Object>();
+                    InputStream inputStream = new ByteArrayInputStream(originalFile.getBytes());
+                    BufferedImage originalImage = ImageIO.read(inputStream);
 
-                    InputStream in = new ByteArrayInputStream(originalFile.getBytes());
-                    BufferedImage originalImage = ImageIO.read(in);
+                    int tWidth = 0;// 생성할 썸네일이미지의 너비
+                    int tHeight = 0; // 생성할 썸네일이미지의 높이
 
-                    int size = 240;
-                    BufferedImage resizedImage = new BufferedImage(size, size, originalImage.getType());
-                    Graphics2D g = resizedImage.createGraphics();
-                    g.drawImage(originalImage, 0, 0, size, size, null);
-                    g.dispose();
+                    for(int i = 3; i < 7; i++) {
+                        tWidth = (int) (originalImage.getWidth() / i);
+                        tHeight = (int) (originalImage.getHeight() / i);
+                        if(tWidth < 400) { break; }
+                    }
+
+                    BufferedImage resizedImage = new BufferedImage(tWidth, tHeight, BufferedImage.TYPE_3BYTE_BGR); // 썸네일이미지
+                    Graphics2D graphic = resizedImage.createGraphics();
+                    Image image = originalImage.getScaledInstance(tWidth, tHeight, Image.SCALE_SMOOTH);
+                    graphic.drawImage(image, 0, 0, tWidth, tHeight, null);
+                    graphic.dispose(); // 리소스를 모두 해제
 
                     ByteArrayOutputStream os = new ByteArrayOutputStream();
                     String formatName = originalFile.getOriginalFilename().substring(originalFile.getOriginalFilename().lastIndexOf(".") + 1);
