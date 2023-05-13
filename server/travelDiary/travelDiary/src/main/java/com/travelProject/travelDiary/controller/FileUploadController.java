@@ -1,5 +1,10 @@
 package com.travelProject.travelDiary.controller;
 
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.metadata.Directory;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.MetadataException;
+import com.drew.metadata.exif.ExifIFD0Directory;
 import com.travelProject.travelDiary.common.ByteArrayMultipartFile;
 import com.travelProject.travelDiary.config.exceptionCode;
 import com.travelProject.travelDiary.dto.ErrorCode;
@@ -22,6 +27,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,7 +93,13 @@ public class FileUploadController {
                     BufferedImage resizedImage = new BufferedImage(tWidth, tHeight, BufferedImage.TYPE_3BYTE_BGR); // 썸네일이미지
                     Graphics2D graphic = resizedImage.createGraphics();
                     Image image = originalImage.getScaledInstance(tWidth, tHeight, Image.SCALE_SMOOTH);
-                    graphic.drawImage(image, 0, 0, tWidth, tHeight, null);
+                    if(getOrientation(originalFile) != 1) {
+                        graphic.rotate(Math.toRadians(90), tWidth, tHeight);
+                        graphic.drawImage((BufferedImage) image, null, 0, 0);
+                    } else {
+                        graphic.drawImage(image, 0, 0, tWidth, tHeight, null);
+                    }
+
                     graphic.dispose(); // 리소스를 모두 해제
 
                     ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -124,11 +136,29 @@ public class FileUploadController {
                 thumbnail.setId(deleteId);
 
                 planCommonService.rtbThumbNailDelete(planType, planTypeId, deleteId, userId);
-                //배치처리로 따로 삭제예정이라서 주석처리
-                //thumbnailService.thumbnailDelete(thumbnail, userId);
             }
         }
 
         return ResponseBody.builder().code(200).msg("이미지 업로드가 완료되었습니다.").results(imagePathList).build();
+    }
+
+    public int getOrientation(MultipartFile imageMultiFile) throws MetadataException, IOException {
+        int orientation = 1; // 회전정보, 1. 0도, 3. 180도, 6. 270도, 8. 90도 회전한 정보
+
+        Metadata metadata; // 이미지 메타 데이터 객체
+        Directory directory; // 이미지의 Exif 데이터를 읽기 위한 객체
+
+        try (InputStream inputStream = imageMultiFile.getInputStream()) {
+            metadata = ImageMetadataReader.readMetadata(inputStream);
+            directory = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
+
+            if(directory != null){
+                orientation = directory.getInt(ExifIFD0Directory.TAG_ORIENTATION); // 회전정보
+            }
+        } catch (Exception e) {
+            orientation = 1;
+        }
+
+        return orientation;
     }
 }
