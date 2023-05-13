@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -93,13 +94,14 @@ public class FileUploadController {
                     BufferedImage resizedImage = new BufferedImage(tWidth, tHeight, BufferedImage.TYPE_3BYTE_BGR); // 썸네일이미지
                     Graphics2D graphic = resizedImage.createGraphics();
                     Image image = originalImage.getScaledInstance(tWidth, tHeight, Image.SCALE_SMOOTH);
-                    //if(getOrientation(originalFile) != 1) {
-                    //    BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-                    //    graphic.rotate(Math.toRadians(90), tWidth, tHeight);
-                    //    graphic.drawImage(bufferedImage, null, 0, 0);
-                    //} else {
+                    if(getOrientation(originalFile) != 1) {
+                        AffineTransform at = new AffineTransform();
+                        at.rotate(Math.toRadians(90), tWidth / 2, tHeight / 2);
+                        graphic.setTransform(at);
+                        graphic.drawImage(image, 0, 0, null);
+                    } else {
                         graphic.drawImage(image, 0, 0, tWidth, tHeight, null);
-                    //}
+                    }
 
                     graphic.dispose(); // 리소스를 모두 해제
 
