@@ -94,8 +94,9 @@ public class FileUploadController {
                     Graphics2D graphic = resizedImage.createGraphics();
                     Image image = originalImage.getScaledInstance(tWidth, tHeight, Image.SCALE_SMOOTH);
                     if(getOrientation(originalFile) != 1) {
+                        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
                         graphic.rotate(Math.toRadians(90), tWidth, tHeight);
-                        graphic.drawImage((BufferedImage) image, null, 0, 0);
+                        graphic.drawImage(bufferedImage, null, 0, 0);
                     } else {
                         graphic.drawImage(image, 0, 0, tWidth, tHeight, null);
                     }
