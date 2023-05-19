@@ -13,6 +13,7 @@ import com.travelProject.travelDiary.entity.Thumbnail;
 import com.travelProject.travelDiary.entity.Travel;
 import com.travelProject.travelDiary.entity.User;
 import com.travelProject.travelDiary.service.AWSService;
+import com.travelProject.travelDiary.service.ImageService;
 import com.travelProject.travelDiary.service.ThumbnailService;
 import com.travelProject.travelDiary.service.TravelService;
 import com.travelProject.travelDiary.service.plan.PlanCommonService;
@@ -51,6 +52,9 @@ public class FileUploadController {
     @Autowired
     private PlanCommonService planCommonService;
 
+    @Autowired
+    private ImageService imageService;
+
     @GetMapping("/")
     public String healthyCheck(){
         return "";
@@ -79,38 +83,8 @@ public class FileUploadController {
             for(MultipartFile originalFile :multipartFileList) {
                 if(!originalFile.isEmpty()) {
                     Map<String, Object> insertParam = new HashMap<String, Object>();
-                    InputStream inputStream = new ByteArrayInputStream(originalFile.getBytes());
-                    BufferedImage originalImage = ImageIO.read(inputStream);
 
-                    int tWidth = 0;// 생성할 썸네일이미지의 너비
-                    int tHeight = 0; // 생성할 썸네일이미지의 높이
-
-                    for(int i = 3; i < 7; i++) {
-                        tWidth = (int) (originalImage.getWidth() / i);
-                        tHeight = (int) (originalImage.getHeight() / i);
-                        if(tWidth < 400) { break; }
-                    }
-
-                    BufferedImage resizedImage = new BufferedImage(tWidth, tHeight, BufferedImage.TYPE_3BYTE_BGR); // 썸네일이미지
-                    Graphics2D graphic = resizedImage.createGraphics();
-                    Image image = originalImage.getScaledInstance(tWidth, tHeight, Image.SCALE_SMOOTH);
-                    if(getOrientation(originalFile) != 1) {
-                        AffineTransform at = new AffineTransform();
-                        at.rotate(Math.toRadians(90), tWidth / 2, tHeight / 2);
-                        graphic.setTransform(at);
-                        graphic.drawImage(image, 0, 0, null);
-                    } else {
-                        graphic.drawImage(image, 0, 0, tWidth, tHeight, null);
-                    }
-
-                    graphic.dispose(); // 리소스를 모두 해제
-
-                    ByteArrayOutputStream os = new ByteArrayOutputStream();
-                    String formatName = originalFile.getOriginalFilename().substring(originalFile.getOriginalFilename().lastIndexOf(".") + 1);
-                    ImageIO.write(resizedImage, formatName, os);
-
-                    byte[] bytes = os.toByteArray();
-                    MultipartFile thumbNailImage = new ByteArrayMultipartFile(bytes, originalFile.getOriginalFilename());
+                    MultipartFile thumbNailImage = imageService.createThumbnail(originalFile);
 
                     String thumbNailUrl = awsService.upload(thumbNailImage,dirName);
                     String originalUrl = awsService.upload(originalFile,dirName);
@@ -143,25 +117,5 @@ public class FileUploadController {
         }
 
         return ResponseBody.builder().code(200).msg("이미지 업로드가 완료되었습니다.").results(imagePathList).build();
-    }
-
-    public int getOrientation(MultipartFile imageMultiFile) throws MetadataException, IOException {
-        int orientation = 1; // 회전정보, 1. 0도, 3. 180도, 6. 270도, 8. 90도 회전한 정보
-
-        Metadata metadata; // 이미지 메타 데이터 객체
-        Directory directory; // 이미지의 Exif 데이터를 읽기 위한 객체
-
-        try (InputStream inputStream = imageMultiFile.getInputStream()) {
-            metadata = ImageMetadataReader.readMetadata(inputStream);
-            directory = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
-
-            if(directory != null){
-                orientation = directory.getInt(ExifIFD0Directory.TAG_ORIENTATION); // 회전정보
-            }
-        } catch (Exception e) {
-            orientation = 1;
-        }
-
-        return orientation;
     }
 }
