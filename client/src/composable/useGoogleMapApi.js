@@ -153,7 +153,7 @@ export const useGoogleMapApi = ()=>{
         return marker
     }
 
-    const setImageMarker = (x,y,isTrace,imageUrl='https://developers.google.com/maps/documentation/javascript/examples/full/images/parking_lot_maps.png')=>{
+    const setImageMarker = (x,y,isTrace,imageUrl='https://developers.google.com/maps/documentation/javascript/examples/full/images/parking_lot_maps.png',title='')=>{
 
         const content = document.createElement("div");
         const style = `
@@ -161,9 +161,21 @@ export const useGoogleMapApi = ()=>{
         border: 2px solid white;
         width:35px; 
         height:35px;
+        position:relative;
         `
+        const style2 = `
+        position: absolute;
+        left: 35px;
+        top: 5px;
+        white-space: nowrap;
+        font-size: 12px;
+        font-weight: 600;
+        text-shadow: -1px 0 rgb(255, 255, 255), 0 1px rgb(255, 255, 255), 1px 0 rgb(255, 255, 255), 0 -1px rgb(255, 255, 255);
+        `
+
         content.innerHTML = `
         <img style="${style}" src=${imageUrl}>
+        ${(title && title.length>0) ? `<div style="${style2}">${title}</div>`:''}
         `
 
         const markerView = new google.maps.marker.AdvancedMarkerView({

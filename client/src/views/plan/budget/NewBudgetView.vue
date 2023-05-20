@@ -373,7 +373,7 @@
 import { ref, reactive, computed, watch, onBeforeMount, onUnmounted } from "vue";
 import { useBudgetStore } from "../../../stores/budget";
 import { useTravelStore } from "../../../stores/travel";
-import { toComaNumberString,toKoreaTimeString } from "../../../composable/util";
+import { getNowDateString, toComaNumberString,toKoreaTimeString } from "../../../composable/util";
 import { useRoute, useRouter } from "vue-router";
 import DateTime from "../../../components/layouts/DateTime.vue";
 import { useScheduleStore } from "../../../stores/plan/schedule";
@@ -389,13 +389,8 @@ const budgetId = computed(()=>route.params.budgetId)
 const budget = computed(()=>budgetStore.budget)
 const scheduleList = computed(()=>scheduleStore.scheduleList||[])
 const selectPlan = ref({})
-const paymentTypeValue = ref(budget.value.amountOfPayment[0]==='-'?'-':'') 
-const nowDateTime = computed(()=>{
-  const endDate = travelStore.travel.endDate
-  const now = toKoreaTimeString(new Date()).split('.')[0]
-  if(endDate<now) return endDate
-  return now
-})
+const paymentTypeValue = ref('') 
+const nowDateTime = computed(()=>getNowDateString(travelStore.travel))
 const preparationDateTime = computed(()=>travelStore.travel.startDate)
 
 const categories = ref([
@@ -427,15 +422,13 @@ watch(()=>budget.value.amountOfPayment,(newValue,oldValue)=>{
   if(isNaN(newValue)){
     budget.value.amountOfPayment = oldValue
   }
+  else if(0>parseFloat(newValue)){
+    paymentTypeValue.value = '-'
+    budget.value.amountOfPayment =  budget.value.amountOfPayment.slice(1)
+  }
   else{
     budget.value.amountOfPayment = toComaNumberString(newValue)
   }
-  paymentTypeValue.value = budget.value.amountOfPayment[0]==='-'?'-':''
-})
-
-watch(()=>paymentTypeValue.value,()=>{
-  if(paymentTypeValue.value ==='' && budget.value.amountOfPayment[0] === '-') budget.value.amountOfPayment = budget.value.amountOfPayment.replace('-','') 
-  if(paymentTypeValue.value ==='-' && budget.value.amountOfPayment[0] !== '-') budget.value.amountOfPayment = '-' + budget.value.amountOfPayment 
 })
 
 const validate = ()=>{
@@ -464,6 +457,8 @@ const pretreatment = ()=>{
     budget.value.planTypeId = null
     budget.value.planType = null
   }
+
+  if(paymentTypeValue.value === '-') budget.value.amountOfPayment = '-'+budget.value.amountOfPayment
 }
 
 const postBudget = async()=>{
@@ -500,6 +495,9 @@ const delBudget = async()=>{
 onBeforeMount(async()=>{
   if(budgetId.value && !isNaN(budgetId.value)) {
     await budgetStore.getbudget(travelId.value,budgetId.value)
+  }
+  else{
+    paymentTypeValue.value='-'
   }
   //스케쥴 리스트를 불러와 일정 맵핑정보로 사용
   if(!scheduleStore.scheduleList?.length) await scheduleStore.getscheduleList(travelId.value)

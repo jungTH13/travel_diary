@@ -8,7 +8,7 @@
         <font-awesome-icon icon="fa-solid fa-plus" class="icon" />
     </div>
     <input type="file" multiple id="fileUpload" @change="addImages" :disabled="isUploading">
-    <span v-if="!useSlot">{{title}}</span>
+    <span v-if="!useSlot">{{(isUploading? `업로딩 중...${isUploading}`:title)}}</span>
 </label>
 
 </template>
@@ -59,6 +59,7 @@
 
 import { computed, onMounted, ref } from 'vue';
 import {HeicToJpeg} from '../../composable/util'
+import imageCompression from 'browser-image-compression';
 
 
 const props = defineProps({modelValue:Array,useSlot:Boolean,title:String}) // [{url:String,file:File}]
@@ -69,45 +70,58 @@ const isUploading = ref(false)
 const imageBase64List = computed(()=>props.modelValue)
 const title = computed(()=>props.title||"이미지 추가하기")
 
+const compressImage = async(file)=>{
+    const options = {
+        maxSizeMB: 0.3,
+    }
+
+    const compressFile = await imageCompression(file,options)
+
+    return new File([compressFile],file.name)
+}
+
 const addImages = async(common)=>{
     try{
-        isUploading.value = true
+        
 
         const fileList = common.target.files
         const imageReader = new FileReader()
         let newImageBase64List = []
         let itr = 0
+        isUploading.value = fileList.length
 
         for(let file of fileList){
             if(file.type.split('/')[0] !== 'image') {
-                isUploading.value = false
+                isUploading.value = 0
                 return alert("이미지 파일만 업로드 가능합니다!")
             }
             if(['HEIC','heic'].includes(file.type.split('/')[1])) file = await HeicToJpeg(file)
         }
 
-        if(fileList?.length===0) return isUploading.value = false
+        if(fileList?.length===0) return isUploading.value = 0
 
-        
-
-        imageReader.onload = (e)=>{
+        imageReader.onload = async (e)=>{
+            const compressFile = await compressImage(fileList[itr])
+            console.log(fileList[itr])
+            console.log(compressFile)
             newImageBase64List.push({
-                file : fileList[itr],
+                file : compressFile,
                 url : e.target.result
             })
             itr+=1
+            isUploading.value-=1
 
             if(itr<fileList?.length) imageReader.readAsDataURL(fileList[itr])
             else {
                 emit('update:modelValue',[...imageBase64List.value,...newImageBase64List]) 
-                isUploading.value = false
+                isUploading.value = 0
             }
         }
 
         imageReader.readAsDataURL(fileList[itr])
     }
     catch(error){
-        isUploading.value = false
+        isUploading.value = 0
         throw error
     }
 }

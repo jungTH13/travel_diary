@@ -49,7 +49,8 @@
 
     span{
         position: relative;
-        margin-right: 1rem;
+        margin-right: 0.3rem;
+        margin-left: 0.3rem;
 
         .del-icon{
             cursor: pointer;

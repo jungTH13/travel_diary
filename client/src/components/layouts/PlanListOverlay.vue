@@ -10,14 +10,16 @@
                 <div class="type">{{ bookNavCodes[selectPlan?.type] }}</div>
                 <div class="memo" v-html="urlParse(selectPlan['memo']?.replaceAll('\n','<br/>'))"></div>
                 <div class="images">
-                    <BookImageController />
+                    <BookImageController v-if="imagesModifyVisible" />
+                    <ImagesViewer v-else :thumb-nail-list="plan.thumbNailList" :image-size="'10rem'" :disabled="true" />
                 </div>
             </div>
             
 
             <div class="summit-footer">
-                <button class="font-weight-600 " @click="memoModifyVisible= true;optionsVisible=false;">메모 작성</button>
-                <button class="font-weight-600 " :class="{deactive:(!uploadImageList.length && !delBookImageList.length)}" @click="postBookImages" >사진 수정 </button>
+                <button v-if="imagesModifyVisible" class="font-weight-600 " @click="closePlanOptions">취소</button>
+                <button v-else class="font-weight-600 " @click="memoModifyVisible= true;optionsVisible=false;">메모 작성</button>
+                <button class="font-weight-600 " :class="{deactive:!imagesModifyVisible}" @click="(imagesModifyVisible? postBookImages():imagesModifyVisible=true)" >사진 수정 </button>
             </div>
         </div>
     </div>
@@ -64,6 +66,8 @@
         width: 100%;
         max-height: 0px;
         transition: all ease 0.5s 0s;
+        z-index: 10000;
+        position: absolute;
 
         .select-plan{
             margin-bottom: 2.5rem;
@@ -161,9 +165,11 @@ const bookNavCodes = computed(()=>codeStore.planCodes)
 const selectPlanSearchInfo = ref(null)
 const optionsVisible = ref(false)
 const memoModifyVisible = ref(false)
+const imagesModifyVisible = ref(false)
 const memo = ref('')
 const uploadImageList = computed(()=>bookStore.uploadImageList)
 const delBookImageList = computed(()=>bookStore.delImageList)
+const plan = computed(()=>bookStore.book)
 
 watch(()=>selectPlan.value,()=>{
     if(!selectPlan.value) return 
@@ -184,6 +190,7 @@ const closePlanOptions = (noRefresh)=>{
     selectPlanSearchInfo.value = null
     optionsVisible.value=false
     memoModifyVisible.value = false
+    imagesModifyVisible.value = false
     memo.value= ""
     bookStore.resetBook()
 }

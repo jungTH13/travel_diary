@@ -48,9 +48,9 @@ export const useMapStore = defineStore("map", () => {
             return markerList[this.itr++]
         }
 
-        getSetMarker(x,y,path,markerType='svg'|'image'){
+        getSetMarker(x,y,path,markerType='svg'|'image',title=''){
             let newMarker = null
-            if(markerType === 'image') newMarker = googleMapApi.setImageMarker(x,y,false,path)
+            if(markerType === 'image') newMarker = googleMapApi.setImageMarker(x,y,false,path,title)
             else newMarker = googleMapApi.setSvgMarker(x,y,false,path)
 
             if(markerList[this.itr])markerList[this.itr] = newMarker
@@ -197,7 +197,7 @@ export const useMapStore = defineStore("map", () => {
             const info = googleMapApi.createInfoWindow(plan.name,_createInfoForm(plan.name,cId))
             let marker = null
             if(plan.type === 'pig') 
-                marker = markerBuf.getSetMarker(x,y,path,'image') 
+                marker = markerBuf.getSetMarker(x,y,path,'image',plan.title||'') 
             else 
                 marker = markerBuf.getSetMarker(x,y,path,'svg')
             
@@ -222,7 +222,7 @@ export const useMapStore = defineStore("map", () => {
                     const newPlan = planList[index+1]
                     index+=1
                     if(!newPlan.x || !newPlan.y) continue
-                    markerProcessing(newPlan.x,newPlan.y,newPlan.cId,newPlan.thumbNailList[0].url,newPlan)
+                    markerProcessing(newPlan.x,newPlan.y,newPlan.cId,newPlan.thumbNailList[0]?.url,newPlan)
                 }
                 // TO DO : 해당 마커가 지도상에 표시되지 않음 리스트는 표시됨, 해당부분 fix 필요
                 markerProcessing(plan.x2,plan.y2,plan.cId,svgicons['de'],plan)
@@ -230,7 +230,7 @@ export const useMapStore = defineStore("map", () => {
             else{//마커 좌표가 하나만 존재하는 플랜
                 if(!plan.x || !plan.y) continue
 
-                if(plan.type==='pig') markerProcessing(plan.x,plan.y,plan.cId,plan.thumbNailList[0].url,plan)
+                if(plan.type==='pig') markerProcessing(plan.x,plan.y,plan.cId,plan.thumbNailList[0]?.url,plan)
                 else markerProcessing(plan.x,plan.y,plan.cId,svgicons['de'],plan)
             }
 

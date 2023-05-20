@@ -50,6 +50,8 @@
                 </tbody>
             </table>
 
+            <BookImageController style="margin-bottom: 3rem;" />
+
             <table>
                 <tbody>
                     <th>
@@ -60,7 +62,7 @@
                     </tr>
                 </tbody>
             </table>
-            <BookImageController />
+           
         </div>
     </div>
 </div>
