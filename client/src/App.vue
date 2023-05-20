@@ -6,6 +6,16 @@
     <div class="body">
       <RouterView />
     </div>
+    <div class="progress-circular-container" v-if="progressCount">
+      <div class="progress-circular-box">
+        <v-progress-circular
+          indeterminate
+          color="green"
+        >
+        </v-progress-circular>
+        {{ `서버 응답 수신 중(${progressCount})` }}
+      </div>
+    </div>
   </div>
 
   <div v-if="visible" class="main-sub" id="main-sub" >
@@ -30,16 +40,19 @@ const visible = ref(false)
 
 // # 인터셉터 설정 # //
 let reqeustNumber = 0;
+const progressCount = ref(0)
 API.api.interceptors.request.use(
   function (config) {
     // 요청을 보내기 전에 수행할 일
     reqeustNumber++;
 
     config.headers['Request-Number'] = `${reqeustNumber}`;
+    progressCount.value++;
     return config;
   },
   function (error) {
     // 오류 요청을 보내기전 수행할 일
+    progressCount.value--;
     return Promise.reject(error);
   });
 
@@ -47,6 +60,7 @@ let loginIgnore = 0;
 API.api.interceptors.response.use(
   function (response) {
     // 응답 데이터를 가공
+    progressCount.value--;
     const requestNumber = parseInt(response.config.headers['Request-Number']);
     if(response.data.code === 401 && loginIgnore < requestNumber){
       if(response.request.responseURL.includes('user/userInfo')) return response
@@ -63,11 +77,11 @@ API.api.interceptors.response.use(
       })
     }
     if(response.data.code !== 200) console.log(response)
-
     return response;
   },
   function (error) {
     // 오류 응답을 처리
+    progressCount.value--;
     return Promise.reject(error);
 });
 
@@ -125,6 +139,24 @@ onMounted(()=>{
     flex-direction: column;
     overflow: hidden;
     transition: all ease 1.5s 0s;
+  }
+
+  .progress-circular-container{
+    position: absolute;
+    z-index: 200000;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    overflow: hidden;
+    display: flex;
+
+    .progress-circular-box{
+      margin:auto;
+      font-weight: 600;
+      font-size: 1.5rem;
+      text-shadow: -1px 0 rgb(255, 255, 255), 0 1px rgb(255, 255, 255), 1px 0 rgb(255, 255, 255), 0 -1px rgb(255, 255, 255);
+    }
   }
 }
 .main-sub{
