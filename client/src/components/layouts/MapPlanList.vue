@@ -3,10 +3,10 @@
 <div class="schedule-plan-container">
     <div class="schedule-image-show-box" :class="{active:isBoxContentsClick}" @click="isBoxContentsClick = !isBoxContentsClick">
         <div class="image-show">
-            <ImagesViewer v-if="mappingScheduleList[nowShowPlan]?.thumbNailList" :thumb-nail-list="mappingScheduleList[nowShowPlan].thumbNailList" :disabled="true" image-size="18rem" :no-detail="true" />
+            <ImagesViewer v-if="mappingScheduleList[nowShowPlan]?.thumbNailList" :thumb-nail-list="mappingScheduleList[nowShowPlan].thumbNailList" :disabled="true" image-size="23vh" :no-detail="true" />
         </div>
     </div>
-    <v-carousel v-model="nowShowPlan" class="plan-list-box" :class="{deactive:isBoxContentsClick}" show-arrows="hover" hide-delimiter-background>
+    <v-carousel v-model="nowShowPlan" class="plan-list-box" :class="{deactive:isBoxContentsClick}" show-arrows="hover"  hide-delimiters>
     
 
         <v-carousel-item v-for="mappingData,index in mappingScheduleList" style="height:100%;">
@@ -49,9 +49,9 @@
 <style lang="scss">
 .schedule-plan-container{
     height:100%;
-    max-width: 700px;
+    max-width: 100%;
     margin:auto;
-    
+
     .schedule-image-show-box{
         transition:all ease 0.5s 0s;
         height: 0%;
@@ -72,6 +72,8 @@
     .plan-list-box{
         transition:all ease 0.5s 0s;
         height: 100% !important;
+        max-width: 700px;
+        margin:auto;
 
         &.deactive{
             height: 0% !important;
@@ -88,15 +90,15 @@
                 font-weight: 600;
                 color:black;
                 padding-right:auto;
-                width:60%;
+                width:70%;
                 padding: 0 0.3rem 0 0.3rem;
                 overflow: hidden;
                 text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
             }
 
             .plan-box-contents{
-                height:60%;
-                width:60%;
+                height:75%;
+                width:70%;
                 border-radius: 15px;
                 opacity: 0.9;
                 background-color: white;

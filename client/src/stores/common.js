@@ -17,6 +17,8 @@ export const useCommonStore = defineStore('common', () => {
         searchInfo: {},
         type:''
     })
+    //서버 통신 book에 대한 요청 
+    const progressList = ref([])
 
 
     const checkMainSub = ()=>{
@@ -28,7 +30,9 @@ export const useCommonStore = defineStore('common', () => {
     }
     const initMainSubLisner=()=> initWindowEventListener('resize',checkMainSub)
 
+    const addBookRequest = ()=>{
 
+    }
     
 
     return { 

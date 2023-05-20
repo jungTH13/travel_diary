@@ -48,9 +48,9 @@ export const useMapStore = defineStore("map", () => {
             return markerList[this.itr++]
         }
 
-        getSetMarker(x,y,path,markerType='svg'|'image'){
+        getSetMarker(x,y,path,markerType='svg'|'image',title=''){
             let newMarker = null
-            if(markerType === 'image') newMarker = googleMapApi.setImageMarker(x,y,false,path)
+            if(markerType === 'image') newMarker = googleMapApi.setImageMarker(x,y,false,path,title)
             else newMarker = googleMapApi.setSvgMarker(x,y,false,path)
 
             if(markerList[this.itr])markerList[this.itr] = newMarker
@@ -197,7 +197,7 @@ export const useMapStore = defineStore("map", () => {
             const info = googleMapApi.createInfoWindow(plan.name,_createInfoForm(plan.name,cId))
             let marker = null
             if(plan.type === 'pig') 
-                marker = markerBuf.getSetMarker(x,y,path,'image') 
+                marker = markerBuf.getSetMarker(x,y,path,'image',plan.title||'') 
             else 
                 marker = markerBuf.getSetMarker(x,y,path,'svg')
             
