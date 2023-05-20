@@ -60,15 +60,17 @@ public class User {
     private LocalDateTime modifiedDate;
 
     @Builder
-    public User(String id,String auth,String email,String publisher,String picture){
+    public User(String id,String auth,String email,String publisher,String picture,Long loginCount){
         this.id = id;
         this.auth = auth;
         this.email = email;
         this.publisher = publisher;
         this.picture = picture;
+        this.loginCount = loginCount;
     }
 
     public void addLoginCount(){
+        if(this.loginCount == null) this.loginCount = 0L;
         this.loginCount = this.loginCount+1;
     }
 }

@@ -38,7 +38,7 @@ public class ImageService {
                 .size(targetWidth, targetHeight)
                 .keepAspectRatio(true)
                 .outputFormat("JPEG")
-                .outputQuality(0.7)
+                .outputQuality(1)
                 .rotate(360-orientation)
                 .toOutputStream(outputStream);
         byte[] data = outputStream.toByteArray();
