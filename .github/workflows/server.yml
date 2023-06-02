@@ -37,7 +37,11 @@ jobs:
     # Jar 파일 복사
     - name: Jar file Copy
       run: cp -r ./server/travelDiary/travelDiary/build/libs/*.jar ./travelServer
-    
+
+    # java code 파일 복사
+    - name: Java code Copy
+      run: cp -r ./server/* ./travelServer
+
     # appspec.yml 파일 복사
     - name: appspec.yml Copy
       run: cp ./appspec.yml ./travelServer
