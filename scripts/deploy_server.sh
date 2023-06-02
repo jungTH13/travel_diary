@@ -1,4 +1,4 @@
-REPOSITORY=/home/ubuntu/server
+
 
 # echo "> 현재 구동 중인 애플리케이션 pid 확인"
 
@@ -14,12 +14,6 @@ REPOSITORY=/home/ubuntu/server
 #   sleep 5
 # fi
 
-echo "프로젝트 빌드"
-
-./travelDiary/travelDiary/gradlew clean build
-
-cp -r ./travelDiary/travelDiary/build/libs/*.jar ./
-
 echo "java process 종료"
 
 ps -ef | grep java | awk '{print $2}' | sudo xargs kill -9
@@ -27,6 +21,19 @@ ps -ef | grep java | awk '{print $2}' | sudo xargs kill -9
 # awk '{print $2}' => 앞 명령어의 결과 컬럼에서 두 번째 필드만 출력
 # xargs kill -9 => 앞에서 출력된 값을 인자로 kill -9 을 실행
 
+echo "프로젝트 빌드"
+
+cd travelDiary/travelDiary
+
+./gradlew clean build
+
+cd ..
+cd ..
+
+cp -r ./travelDiary/travelDiary/build/libs/*.jar ./
+
+
+REPOSITORY=/home/ubuntu/server
 
 echo "> 새 애플리케이션 배포"
 
@@ -40,4 +47,5 @@ chmod +x $JAR_NAME
 
 echo "> $JAR_NAME 실행"
 
-sudo nohup java -jar -Duser.timezone=Asia/Seoul $JAR_NAME >> $REPOSITORY/nohup.out 2>&1 &
+# sudo nohup java -jar -Duser.timezone=Asia/Seoul $JAR_NAME >> $REPOSITORY/nohup.log 2>&1 &
+sudo nohup java -jar -Duser.timezone=Asia/Seoul $JAR_NAME >/dev/null 2>&1 &
