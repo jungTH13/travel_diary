@@ -36,7 +36,7 @@ dependencies {
 	implementation 'com.drewnoakes:metadata-extractor:2.18.0'
 	implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.1'
 	// aws cloudwatch log 저장을 위한 의존성 추가
-//	implementation group: 'ca.pjer', name: 'logback-awslogs-appender', version: '1.6.0'
+	implementation group: 'ca.pjer', name: 'logback-awslogs-appender', version: '1.6.0'
 }
 
 tasks.named('test') {

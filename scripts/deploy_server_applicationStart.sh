@@ -14,6 +14,11 @@ REPOSITORY=/home/ubuntu/server
 #   sleep 5
 # fi
 
+echo "java process 종료"
+
+ps -ef | grep java | awk '{print $2}' | sudo xargs kill -9
+
+
 echo "프로젝트 빌드"
 
 cd $REPOSITORY/travelDiary/travelDiary
@@ -23,6 +28,12 @@ cd $REPOSITORY/travelDiary/travelDiary
 cd $REPOSITORY
 
 cp -r $REPOSITORY/travelDiary/travelDiary/build/libs/*.jar ./
+
+
+echo "java process 종료"
+
+ps -ef | grep java | awk '{print $2}' | sudo xargs kill -9
+
 
 echo "> 새 애플리케이션 배포"
 

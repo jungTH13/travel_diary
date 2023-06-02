@@ -13,9 +13,9 @@ permissions:
 
 hooks:
 
-  ApplicationStop:
-    - location: ./deploy_server_applicationStop.sh
-      runas: ubuntu
+#  ApplicationStop:
+#    - location: ./deploy_server_applicationStop.sh
+#      runas: ubuntu
 
   ApplicationStart:
     - location: ./deploy_server_applicationStart.sh
