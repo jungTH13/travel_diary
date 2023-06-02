@@ -14,6 +14,12 @@ REPOSITORY=/home/ubuntu/server
 #   sleep 5
 # fi
 
+echo "프로젝트 빌드"
+
+./travelDiary/travelDiary/gradlew clean build
+
+cp -r ./travelDiary/travelDiary/build/libs/*.jar ./
+
 echo "java process 종료"
 
 ps -ef | grep java | awk '{print $2}' | sudo xargs kill -9
