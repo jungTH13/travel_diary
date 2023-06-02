@@ -38,5 +38,6 @@ out/
 .vscode/
 
 ### resources ###
-src/main/resources/**
+src/main/resources/application.properties
+src/main/resources/logback-develop.xml
 logs
