@@ -1,4 +1,4 @@
-
+REPOSITORY=/home/ubuntu/server
 
 # echo "> 현재 구동 중인 애플리케이션 pid 확인"
 
@@ -23,17 +23,13 @@ ps -ef | grep java | awk '{print $2}' | sudo xargs kill -9
 
 echo "프로젝트 빌드"
 
-cd travelDiary/travelDiary
+cd $REPOSITORY/travelDiary/travelDiary
 
 ./gradlew clean build
 
-cd ..
-cd ..
+cd $REPOSITORY
 
-cp -r ./travelDiary/travelDiary/build/libs/*.jar ./
-
-
-REPOSITORY=/home/ubuntu/server
+cp -r $REPOSITORY/travelDiary/travelDiary/build/libs/*.jar ./
 
 echo "> 새 애플리케이션 배포"
 
