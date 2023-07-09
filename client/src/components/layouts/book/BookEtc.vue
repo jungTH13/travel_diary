@@ -126,7 +126,7 @@ const init = ()=>{
 
 watch(()=>mapResult.value,()=>{
     book.value.name = mapResult.value.name
-    book.value.address = mapResult.value.address.join(' ')
+    if(Array.isArray(mapResult.value.address)) book.value.address = mapResult.value.address.join(' ')
     book.value.x = mapResult.value.geometry[0]
     book.value.y = mapResult.value.geometry[1]
     book.value.cid = mapResult.value.cid
