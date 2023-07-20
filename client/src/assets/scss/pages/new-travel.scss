@@ -1,0 +1,96 @@
+.plan-container {
+  margin: 0px 0px 0;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  section{
+    overflow: auto;
+
+    #travel-country{
+      margin-top:2rem;
+      font-size: 2rem;
+      font-weight: 600;
+    }
+  }
+
+  .icon{
+    display: inline;
+    width: 2rem;
+    height: 2rem;
+    margin-right: 1rem;
+  }
+
+  .plan-title {
+    font-size: 2rem;
+    line-height: 27px;
+    padding: 10px;
+    border-bottom: 1px solid #dddddd;
+
+    input{
+      width: 100%;
+      display: inline;
+    }
+    img {
+      margin: 0 10px;
+    }
+  }
+
+  p {
+    font-size: 2rem;
+    line-height: 22px;
+    padding: 10px;
+    border-bottom: 1px solid #dddddd;
+  }
+
+  .plan-date {
+    height: 100%;
+
+    .plan-date-range{
+      font-size:2rem;
+      width: 100%;
+      padding: 10px;
+      border-bottom: 1px solid #dddddd;
+      
+    }
+
+    .plan-date-picker{
+      height:100%;
+
+      .datePicker{
+        padding: 10px;
+      }
+    }
+
+    input {
+      margin-left: 10px;
+      font-size: 16px;
+      line-height: 22px;
+    }
+  }
+
+  // .plan-footer {
+  //   bottom: 0%;
+  //   width: 100%;
+  //   overflow: hidden;
+  //   display: flex;
+  //   justify-content: space-between;
+
+  //   button {
+  //     padding: 1rem 1rem;
+  //     margin: 0px 5px 0px 5px;
+  //     border: 1px solid $green;
+  //     background-color: $green;
+  //     border-radius: 5px;
+  //     width: 100%;
+  //     font-size:1.2rem;
+
+  //     &:hover {
+  //       background-color: white;
+  //       border: 1px solid $green;
+  //     }
+  //   }
+  // }
+}

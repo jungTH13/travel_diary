@@ -1,0 +1,27 @@
+.font-bold {
+  font-weight: bold;
+}
+
+.font-weight-600 {
+  font-weight:600;
+}
+
+.full-hidden{
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.col{
+  display:flex;
+  flex-direction: column;
+}
+
+.row{
+  display: flex;
+  flex-direction: row;
+}
+
+.default-shadow{
+  box-shadow: 0.05rem 0.05rem 0.5rem 0rem gray;
+}

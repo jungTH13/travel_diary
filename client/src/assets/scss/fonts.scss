@@ -1,0 +1,15 @@
+@font-face {
+  font-family: "Pretendard-Regular";
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Noto+Sans&display=swap");
+
+* {
+  font-family: "Pretendard-Regular", "Noto Sans", sans-serif;
+  font-weight: normal;
+  word-break: keep-all;
+}

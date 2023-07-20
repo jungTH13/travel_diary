@@ -1,0 +1,104 @@
+.plan{
+    width:100%;
+    // background-color: $gray;
+    border-radius: 5px;
+    min-height:8rem;
+    padding:1.5rem;
+    overflow-x: auto;
+
+    &.etc{
+        box-shadow: 0.05rem 0.05rem 0.5rem 0rem gray;
+    }
+
+    &.ph{
+        box-shadow: 0.05rem 0.05rem 0.5rem 0rem rgba(93, 0, 129, 0.486);
+    }
+
+    &.pa{
+        box-shadow: 0.05rem 0.05rem 0.5rem 0rem rgba(4, 0, 255, 0.267);
+    }
+
+    &.pr{
+        box-shadow: 0.05rem 0.05rem 0.5rem 0rem rgba(1, 128, 8, 0.247);
+    }
+
+    &.pt{
+        box-shadow: 0.05rem 0.05rem 0.5rem 0rem rgba(2, 0, 143, 0.315);
+    }
+
+    .plan-head{
+
+        border-bottom: 0.2rem solid $gray;
+        padding-bottom: 1vh;
+        display: flex;
+        flex-direction: row;
+        min-height:3rem;
+        font-size:2rem;
+
+        #name{
+            width: 100%;
+            text-align: left;
+            margin:auto;
+            font-size:2rem;
+            font-weight:900;
+            p{
+                // margin-left: 10px;
+                font-size:1.2rem;
+                // display: inline;
+            }
+        }
+
+        #checkinDate,#departLocation{
+            width:40%;
+            text-align: left;
+            margin:auto;
+            font-weight:900;
+            p{
+                font-size:1.2rem;
+            }
+        }
+        #progress-ico{
+            width:20%;
+            text-align: center;
+            margin:auto;
+            font-weight:900;
+
+            #plane-img {
+                width: 2rem;
+                height: 2rem;
+                margin: 0 1.5vh;
+            }
+        }
+        #checkoutDate,#arriveLocation{
+            width:40%;
+            text-align: right;
+            margin:auto;
+            font-weight:900;
+            p{
+                font-size:1.2rem;
+            }
+        }
+        
+    }
+
+    .plan-contents{
+        padding-top:1.8rem;
+
+        table{
+            width:100%;
+            margin-bottom: 2rem;
+
+            th{
+                width:33%;
+                font-size: 1.7rem;
+                text-align: left;
+                font-weight: 600;
+                padding-bottom: 0.2rem;
+            }
+            td{
+                font-size: 1.4rem;
+            }
+        }
+    }
+}
+

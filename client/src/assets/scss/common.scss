@@ -1,0 +1,178 @@
+/*! minireset.css v0.0.6 | MIT License | github.com/jgthms/minireset.css */
+blockquote,
+body,
+dd,
+dl,
+dt,
+fieldset,
+figure,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+html,
+iframe,
+legend,
+li,
+ol,
+p,
+pre,
+textarea,
+ul {
+  margin: 0;
+  padding: 0;
+}
+h1,
+h2{
+ 
+}
+h3{
+  font-size: 2.2rem;
+}
+h4{
+  font-size:medium;
+  font-weight: 600;
+}
+h5{
+  font-size:small;
+  font-weight: 600;
+}
+h6 {
+  font-size: 100%;
+  font-weight: 500;
+}
+ul {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+  color: #000 !important;
+}
+button,
+input,
+select {
+  margin: 0;
+}
+html {
+  box-sizing: border-box;
+}
+*,
+:after,
+:before {
+  box-sizing: inherit;
+}
+img,
+video {
+  height: auto;
+  max-width: 100%;
+}
+iframe {
+  border: 0;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+td,
+th {
+  padding: 0;
+}
+
+div{
+
+  &.full-hidden{
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+  // box-sizing: border-box;
+  // overflow-x: clip;
+}
+
+div::-webkit-scrollbar {
+  width: 0px; /*스크롤바의 너비*/
+  height: 0.5rem;
+  border-radius: 25px;
+}
+
+div::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.527); /*스크롤바의 색상*/
+}
+
+div::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0); /*스크롤바 트랙 색상*/
+}
+
+
+// 화면 사이즈에 따른 크기 설정
+
+//화면 비율이 4대3 이하일 경우
+@media( min-height: 128vw){
+  // @media (max-width: 600px){
+
+    @media (max-width: 400px){
+      html{
+        font-size:8px !important;
+      }
+    }
+    
+    @media (min-width: 400px) and (max-width: 719px){
+      html{
+        font-size:2vw !important;
+      }
+    }
+    
+    @media (min-width: 720px){
+      html{
+        font-size:14.4px !important;
+      }
+    }
+  // }
+}
+
+@media (max-height: 128vw){
+  @media (min-width: 600px){
+    html{
+      font-size:5px !important;
+    }
+  }
+}
+
+
+//화면 비율이 4대3을 넘길 경우
+@media ( max-height: 133vw){
+  @media (min-width: 600px){
+    @media (max-width: 800px){
+      html{
+        font-size:8px !important;
+      }
+    }
+    
+    @media (min-width: 800px) and (max-width: 1438px){
+      html{
+        font-size:1vw !important;
+      }
+    }
+    
+    @media (min-width: 1439px){
+      html{
+        font-size:14.4px !important;
+      }
+    }
+    #app{
+      display: flex;
+      flex-direction: row;
+    }
+  
+    .main-sub{
+      display: block;
+      height:100%;
+      width: 100%;
+      display: flex; 
+      flex-direction: column;
+    }
+  }
+}

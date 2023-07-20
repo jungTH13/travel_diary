@@ -1,0 +1,29 @@
+#selected-country-wrapper {
+  padding: 2rem 0px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: #fff;
+
+  .selected-country {
+    display: flex;
+    align-items: center;
+
+    span {
+      margin:1rem;
+      cursor: pointer;
+      font-size:2rem;
+      font-weight: bold;
+    }
+
+    #plane-img {
+      width: 2rem;
+      height: 2rem;
+      margin: 0 1.5rem;
+    }
+    &:last-of-type > #plane-img {
+      display: none;
+    }
+  }
+}

@@ -2,6 +2,20 @@ version: 0.0
 os: linux
 files:
   - source: /
+    destination: /home/ubuntu/client
+    overwrite: yes
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+
+hooks:
+version: 0.0
+os: linux
+files:
+  - source: /
     destination: /home/ubuntu/server
     overwrite: yes
 
@@ -14,6 +28,10 @@ permissions:
 hooks:
 
 
+  ApplicationStart:
+    - location: ./deploy_client.sh
+      timeout: 120
+      runas: ubuntu
   ApplicationStart:
     - location: ./deploy_server_applicationStart.sh
       timeout: 180
