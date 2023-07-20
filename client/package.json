@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 3000 ",
+    "start": "pm2 start ./server.js --watch && pm2 log",
     "serve": "vite preview --host 0.0.0.0 --port 3000",
     "build": "vite build",
     "preview": "vite preview"
@@ -19,7 +20,13 @@
     "ant-design-vue": "^3.2.16",
     "axios": "^1.3.4",
     "browser-image-compression": "^2.0.2",
+    "connect-history-api-fallback": "^2.0.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
     "heic2any": "^0.0.4",
+    "morgan": "^1.10.0",
     "pinia": "^2.0.32",
     "roboto-fontface": "*",
     "vue": "^3.2.47",
