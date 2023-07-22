@@ -5,13 +5,15 @@ import * as API from "../composable/api";
 export const useUserStore = defineStore("user", () => {
 
   const userInfo = ref({})
-
+  const env = import.meta.env.VITE_ENVIRONMENT
 
   function resetUserInfo (){
     userInfo.value = {}
   }
 
   async function examUserLogin() {
+    if(env === 'production') return;
+    
     const {data} = await API.get("/user/examCookie");
 
     return data
@@ -39,6 +41,7 @@ export const useUserStore = defineStore("user", () => {
 
   return { 
     userInfo,
+    env,
     examUserLogin, 
     googleOAuthLogin,
     getUserInfo,

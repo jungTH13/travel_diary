@@ -6,7 +6,7 @@
           <div id="login-button" >
               <button @click="oauthSignIn">구글 계정으로 로그인 하기</button>
           </div>
-          <div id="login-button" >
+          <div v-if="env !== 'production'" id="login-button" >
               <button @click="examLogin">테스트 계정으로 로그인 하기</button>
           </div>
         </div>
@@ -59,6 +59,8 @@ import { useUserStore } from "../stores/user";
 const router = useRouter();
 const route = useRoute()
 const store = useUserStore();
+
+const env = store.env
 
 async function examLogin() {
   const response = await store.examUserLogin();
