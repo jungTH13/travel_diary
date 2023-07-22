@@ -40,7 +40,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             }
         }
 
-        if(request.getRequestURI().equals("/user/examCookie") || request.getRequestURI().equals("/user/cookie") || request.getRequestURI().equals("/user/googleOAuthLogin")){
+        if(request.getRequestURI().equals("/") || request.getRequestURI().equals("/user/examCookie") || request.getRequestURI().equals("/user/cookie") || request.getRequestURI().equals("/user/googleOAuthLogin")){
             return true;
         }
         exceptionCode code = new exceptionCode(ErrorCode.INVALID_JWT_ERROR);

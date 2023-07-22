@@ -40,4 +40,5 @@ out/
 ### resources ###
 src/main/resources/application.properties
 src/main/resources/logback-develop.xml
+src/main/resources/logback-production.xml
 logs
