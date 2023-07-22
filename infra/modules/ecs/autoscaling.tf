@@ -81,10 +81,10 @@ resource "aws_autoscaling_group" "ecs_autoscaling_group" {
 
   name = "ECS-Cluster-${var.cluster_name}"
   vpc_zone_identifier = [var.autoscaling_subnet_id] # var.subnet_ids
-  desired_capacity = var.auto_scaling.min + 1
+  desired_capacity = var.auto_scaling.min
   min_size = var.auto_scaling.min
   max_size = var.auto_scaling.max + 1
-  termination_policies = [ "NewestInstance" ]
+  termination_policies = [ "OldestInstance" ] # OldestInstance, NewestInstance, OldestLaunchConfiguration, ClosestToNextInstanceHour, OldestLaunchTemplate, AllocationStrategy
 
   enabled_metrics = [
     "GroupDesiredCapacity",

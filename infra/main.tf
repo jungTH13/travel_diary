@@ -99,7 +99,6 @@ module "codebuild" {
   aws_s3_name           = local.aws.s3_infra
   aws_s3_id             = aws_s3_bucket.s3_infra.id
 
-  github_token          = var.github_token
   github_repository     = var.github_repository[var.infra_names[count.index]]
   github_branch         = var.github_branch[var.infra_names[count.index]]
 
@@ -128,7 +127,7 @@ module "codedeploy_deploy" {
   target_groups                     = local.network_outputs["target_groups_${var.infra_names[count.index]}"] # local.network_outputs.target_groups_server
   aws_id                            = local.aws.id
   aws_lb                            = local.network_outputs.lb
-  listener_port                     = var.ECS.container_spec[var.infra_names[count.index]].port
+  listener_port                     = var.network[var.infra_names[count.index]].listener_ports[0] # var.ECS.container_spec[var.infra_names[count.index]].listener_ports[0]
 
   codedeploy_app                    = module.codedeploy_app.app
   codedeploy_deploy_role            = module.codedeploy_app.deploy_role
@@ -153,7 +152,6 @@ module "codepipeline" {
   aws_s3_name          = local.aws.s3_infra
   aws_s3_id            = aws_s3_bucket.s3_infra.id
 
-  github_token         = var.github_token
   github_repository    = var.github_repository[var.infra_names[count.index]]
   github_branch        = var.github_branch[var.infra_names[count.index]]
   github_connection    = aws_codestarconnections_connection.github_connection
@@ -161,3 +159,28 @@ module "codepipeline" {
   notification_events  = var.notification_events["codepipeline"]
   notification_name     = var.notification_events.name
 }
+
+
+# ElasticSearch
+# module "elasticsearch" {
+#   # kibana = 5601 port, elasticSearch = 9200port / 9300port를 사용
+#   depends_on = [ module.network ]
+
+#   source                = "./modules/elasticSearch"
+
+#   env                   = var.project.name
+#   node_count            = var.ELK.elastic_search.node_count
+#   node_eip_ids          = var.ELK.elastic_search.allocation_ids
+#   node_instance_type    = var.ELK.elastic_search.instance_type
+
+#   kibana_instance_type  = var.ELK.kibana.instance_type
+#   kibana_eip_id         = var.ELK.kibana.allocation_id
+#   kibana_target_group   = local.network_outputs.target_groups_kibana[0]
+
+#   vpc                   = local.network_outputs.vpc
+#   subnet_id             = local.network_outputs.public_subnet1.id
+#   key_pair              = var.aws_data.key_pair_name
+#   access_ips            = concat(var.ELK.security.access_ips,[data.aws_eip.private_network_allocation.public_ip])
+
+#   batch_envs            = var.ELK.batch.envs
+# }

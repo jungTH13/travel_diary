@@ -11,7 +11,7 @@ resource "aws_lb_target_group" "admin" {
   health_check {
     healthy_threshold   = 3
     unhealthy_threshold = 3
-	timeout             = 10
+	  timeout             = 10
     interval            = 15
     matcher             = var.admin.health_check.matcher
     path                = var.admin.health_check.path
@@ -80,23 +80,23 @@ resource "aws_lb_listener" "admin" {
 }
 
 # 타겟 그룹 알람 설정
-resource "aws_cloudwatch_metric_alarm" "admin_health_check" {
-  count = length(aws_lb_target_group.admin)
+# resource "aws_cloudwatch_metric_alarm" "admin_health_check" {
+#   count = length(aws_lb_target_group.admin)
 
-  alarm_name          = "${aws_lb_target_group.admin[count.index].name} is not Healthy"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = 1
-  threshold           = 0
+#   alarm_name          = "${aws_lb_target_group.admin[count.index].name} is not Healthy"
+#   comparison_operator = "GreaterThanThreshold"
+#   evaluation_periods  = 1
+#   threshold           = 0
 
-  alarm_description   = "admin 상태 감시"
-  alarm_actions       = [aws_sns_topic.network_alarms.arn]
-  ok_actions          = [aws_sns_topic.network_alarms.arn]
+#   alarm_description   = "admin 상태 감시"
+#   alarm_actions       = [aws_sns_topic.network_alarms.arn]
+#   ok_actions          = [aws_sns_topic.network_alarms.arn]
 
-  metric_query {
-    id          = "m1"
-    expression  = "SELECT MAX(UnHealthyHostCount) FROM \"AWS/ApplicationELB\" WHERE TargetGroup = '${aws_lb_target_group.admin[count.index].arn_suffix}'"
-    label       = "test"
-    period      = 60
-    return_data = "true"
-  }
-}
+#   metric_query {
+#     id          = "m1"
+#     expression  = "SELECT MAX(UnHealthyHostCount) FROM \"AWS/ApplicationELB\" WHERE TargetGroup = '${aws_lb_target_group.admin[count.index].arn_suffix}'"
+#     label       = "test"
+#     period      = 60
+#     return_data = "true"
+#   }
+# }

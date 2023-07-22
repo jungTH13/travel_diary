@@ -11,7 +11,7 @@ resource "aws_lb_target_group" "server" {
   health_check {
     healthy_threshold   = 3
     unhealthy_threshold = 3
-	timeout             = 10
+	  timeout             = 10
     interval            = 15
     matcher             = var.server.health_check.matcher
     path                = var.server.health_check.path
@@ -56,7 +56,7 @@ resource "aws_lb_listener" "server" {
   certificate_arn   = aws_acm_certificate.cert.arn
   default_action {
     type = "forward"
-    
+    # target_group_arn = aws_lb_target_group.server[0].arn
     forward {
       target_group{
 		arn = aws_lb_target_group.server[0].arn

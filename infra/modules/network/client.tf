@@ -11,8 +11,9 @@ resource "aws_lb_target_group" "client" {
   health_check {
     healthy_threshold   = 3
     unhealthy_threshold = 3
-	timeout             = 10
+	  timeout             = 10
     interval            = 15
+    port                = var.client.port
     matcher             = var.client.health_check.matcher
     path                = var.client.health_check.path
     protocol            = "HTTP"

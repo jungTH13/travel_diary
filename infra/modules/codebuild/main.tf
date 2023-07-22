@@ -110,11 +110,11 @@ resource "aws_codebuild_project" "codebuild" {
       type  = "PLAINTEXT"
     }
 
-	environment_variable {
-	  name = "AWS_S3_NAME"
-	  value = var.aws_s3_name
-	  type  = "PLAINTEXT"
-	}
+    environment_variable {
+      name = "AWS_S3_NAME"
+      value = var.aws_s3_name
+      type  = "PLAINTEXT"
+    }
 
     environment_variable {
       name  = "AWS_ID"
@@ -122,22 +122,22 @@ resource "aws_codebuild_project" "codebuild" {
       type  = "PLAINTEXT"
     }
 
-	environment_variable {
-      name  = "AWS_ACCESS_KEY"
-      value = var.aws_access_key
-      type  = "PLAINTEXT"
-    }
+    environment_variable {
+        name  = "AWS_ACCESS_KEY"
+        value = var.aws_access_key
+        type  = "PLAINTEXT"
+      }
 
-	environment_variable {
-      name  = "AWS_SECRET_KEY"
-      value = var.aws_secret_key
-      type  = "PLAINTEXT"
-    }
+    environment_variable {
+        name  = "AWS_SECRET_KEY"
+        value = var.aws_secret_key
+        type  = "PLAINTEXT"
+      }
 
-	environment_variable {
-	  name = "ECR_NAME"
-	  value = local.ecr_name
-	}
+    environment_variable {
+      name = "ECR_NAME"
+      value = local.ecr_name
+    }
 
     environment_variable {
       name = "ENV"
@@ -145,27 +145,32 @@ resource "aws_codebuild_project" "codebuild" {
       type = "PLAINTEXT"
     }
 
-	environment_variable {
-	  name = "GROUP_NAME"
-	  value = var.group_name
-	}
+    environment_variable {
+      name = "GROUP_NAME"
+      value = var.group_name
+    }
 
-	environment_variable {
-	  name = "CONTRAINER_PORT"
-	  value = var.container_port
-	}
+    environment_variable {
+      name = "CONTRAINER_PORT"
+      value = var.container_port
+    }
 
-	environment_variable {
-	  name = "CONTRAINER_MEMORY"
-	  value = var.container_memory
-	}
-	environment_variable {
-	  name = "CONTRAINER_CPU"
-	  value = var.container_cpu
-	}
+    environment_variable {
+      name = "CONTRAINER_MEMORY"
+      value = var.container_memory
+    }
+    environment_variable {
+      name = "CONTRAINER_CPU"
+      value = var.container_cpu
+    }
     environment_variable {
       name = "INFRA_FILE_PATH"
       value = "${var.aws_s3_name}/${local.infra_file_path}"
+      type = "PLAINTEXT"
+    }
+    environment_variable {
+      name = "RESOURCE_FILE_PATH"
+      value = "${var.aws_s3_name}/${local.resource_file_path}"
       type = "PLAINTEXT"
     }
   }

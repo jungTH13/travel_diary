@@ -25,7 +25,7 @@ resource "aws_ecs_service" "service" {
 #   depends_on      = [aws_iam_policy.ecs_service_policy]
 
 
-  health_check_grace_period_seconds = 30
+  health_check_grace_period_seconds = 120
   network_configuration{
     subnets = var.subnet_ids
     security_groups = [var.security_group.id]
@@ -101,32 +101,32 @@ resource "aws_ecs_task_definition" "service" {
 ## ECS 오토스케일링 설정
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/appautoscaling_policy#policy_type
 
-# ECS service의 배포 task 개수 오토스케일링 설정
-resource "aws_appautoscaling_target" "ecs_service" {
-  max_capacity       = var.auto_scaling.max
-  min_capacity       = var.auto_scaling.min
-  resource_id        = "service/${aws_ecs_cluster.cluster.name}/${aws_ecs_service.service.name}"
-  scalable_dimension = "ecs:service:DesiredCount"
-  service_namespace  = "ecs"
-}
+# # ECS service의 배포 task 개수 오토스케일링 설정
+# resource "aws_appautoscaling_target" "ecs_service" {
+#   max_capacity       = var.auto_scaling.max
+#   min_capacity       = var.auto_scaling.min
+#   resource_id        = "service/${aws_ecs_cluster.cluster.name}/${aws_ecs_service.service.name}"
+#   scalable_dimension = "ecs:service:DesiredCount"
+#   service_namespace  = "ecs"
+# }
 
-# ECS service 오토스케일링 인스턴스 조정 규칙
-resource "aws_appautoscaling_policy" "ecs_up_policy" {
-  name               = "scale-up"
-  policy_type        = "TargetTrackingScaling"
-  resource_id        = aws_appautoscaling_target.ecs_service.resource_id
-  scalable_dimension = aws_appautoscaling_target.ecs_service.scalable_dimension
-  service_namespace  = aws_appautoscaling_target.ecs_service.service_namespace
+# # ECS service 오토스케일링 인스턴스 조정 규칙
+# resource "aws_appautoscaling_policy" "ecs_up_policy" {
+#   name               = "scale-up"
+#   policy_type        = "TargetTrackingScaling"
+#   resource_id        = aws_appautoscaling_target.ecs_service.resource_id
+#   scalable_dimension = aws_appautoscaling_target.ecs_service.scalable_dimension
+#   service_namespace  = aws_appautoscaling_target.ecs_service.service_namespace
 
-  target_tracking_scaling_policy_configuration {
-    predefined_metric_specification {
-      predefined_metric_type = "ECSServiceAverageCPUUtilization"
-    }
+#   target_tracking_scaling_policy_configuration {
+#     predefined_metric_specification {
+#       predefined_metric_type = "ECSServiceAverageCPUUtilization"
+#     }
 
-    target_value       = var.auto_scaling.CPUUtilization_level
-    scale_in_cooldown  = 300
-    scale_out_cooldown = 180
-  }
-}
+#     target_value       = var.auto_scaling.CPUUtilization_level
+#     scale_in_cooldown  = 300
+#     scale_out_cooldown = 180
+#   }
+# }
 
 ## END
