@@ -14,7 +14,7 @@ REPOSITORY=/home/ubuntu/client
 #   sleep 5
 # fi
 
-echo "> java process 종료"
+echo "> process 종료"
 
 ps -ef | grep node | awk '{print $2}' | sudo xargs kill -9
 # ps -ef | grep java => java 라는 이름을 가지는 프로세스 전부 출력
@@ -28,17 +28,8 @@ echo "> 새 애플리케이션 배포"
 
 cd $REPOSITORY
 
-sudo npm install
+sudo docker-compose up -d
 
-sudo nohup npm run dev >> $REPOSITORY/nohup.out 2>&1 &
+# sudo npm install
 
-# echo "> JAR NAME: $JAR_NAME"
-
-# echo "> $JAR_NAME 에 실행권한 추가"
-
-# chmod +x $JAR_NAME
-
-# echo "> $JAR_NAME 실행"
-
-# sudo nohup java -jar -Duser.timezone=Asia/Seoul $JAR_NAME >> $REPOSITORY/nohup.out 2>&1 &
-
+# sudo nohup npm run dev >> $REPOSITORY/nohup.out 2>&1 &
