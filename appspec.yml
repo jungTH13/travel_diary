@@ -15,5 +15,5 @@ hooks:
 
   ApplicationStart:
     - location: ./deploy_client.sh
-      timeout: 120
+      timeout: 240
       runas: ubuntu
