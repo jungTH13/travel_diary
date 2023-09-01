@@ -74,7 +74,6 @@ const compressImage = async(file)=>{
     const options = {
         maxSizeMB: 0.3,
     }
-
     const compressFile = await imageCompression(file,options)
 
     return new File([compressFile],file.name)
