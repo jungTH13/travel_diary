@@ -82,7 +82,6 @@ const compressImage = async(file)=>{
 
 const addImages = async(common)=>{
     try{
-        
 
         const fileList = common.target.files
         const imageReader = new FileReader()
@@ -100,10 +99,15 @@ const addImages = async(common)=>{
 
         if(fileList?.length===0) return isUploading.value = 0
 
+        const compressFileList = {}
+        for(let itr=0;itr<fileList.length;itr++){
+            compressFileList[itr] = compressImage(fileList[itr])
+        }
+
         imageReader.onload = async (e)=>{
-            const compressFile = await compressImage(fileList[itr])
-            console.log(fileList[itr])
-            console.log(compressFile)
+            const compressFile = await compressFileList[itr]
+            // console.log(fileList[itr])
+            // console.log(compressFile)
             newImageBase64List.push({
                 file : compressFile,
                 url : e.target.result
