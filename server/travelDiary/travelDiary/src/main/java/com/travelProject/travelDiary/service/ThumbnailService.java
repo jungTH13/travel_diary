@@ -42,68 +42,68 @@ public class ThumbnailService {
 
     public List<Map<String, Object>> rtbPlanThumbNailSelect(String planType, Long planTypeId) {
         List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
+        List<Long> IdList = null;
         if(planType.equals("pa")) {
+            IdList = new ArrayList<>();
             List<RtbPlanAirplaneThumbNail> list = rtbPlanAirplaneThumbNailRepository.findAllByPlanAirPlane_Id(planTypeId);
             for(RtbPlanAirplaneThumbNail param: list) {
-                Map<String, Object> insertParam = new HashMap<String, Object>();
-                Optional<Thumbnail> thumbnail = thumbnailRepository.findById(param.getThId().getId());
-                insertParam.put("id", thumbnail.get().getId());
-                insertParam.put("url", thumbnail.get().getUrl());
-                insertParam.put("originalUrl", thumbnail.get().getOriginalUrl());
-                resultList.add(insertParam);
+                IdList.add(param.getThId().getId());
             }
+
+            thumbnailListInsert(IdList, resultList);
         } else if(planType.equals("pe")) {
+            IdList = new ArrayList<>();
             List<RtbPlanEtcThumbNail> list = rtbPlanEtcThumbNailRepository.findAllByPlanEtc_Id(planTypeId);
             for(RtbPlanEtcThumbNail param: list) {
-                Map<String, Object> insertParam = new HashMap<String, Object>();
-                Optional<Thumbnail> thumbnail = thumbnailRepository.findById(param.getThId().getId());
-                insertParam.put("id", thumbnail.get().getId());
-                insertParam.put("url", thumbnail.get().getUrl());
-                insertParam.put("originalUrl", thumbnail.get().getOriginalUrl());
-                resultList.add(insertParam);
+                IdList.add(param.getThId().getId());
             }
+
+            thumbnailListInsert(IdList, resultList);
         } else if(planType.equals("ph")) {
+            IdList = new ArrayList<>();
             List<RtbPlanHotelThumbNail> list = rtbPlanHotelThumbNailRepository.findAllByPlanHotel_Id(planTypeId);
             for(RtbPlanHotelThumbNail param: list) {
-                Map<String, Object> insertParam = new HashMap<String, Object>();
-                Optional<Thumbnail> thumbnail = thumbnailRepository.findById(param.getThId().getId());
-                insertParam.put("id", thumbnail.get().getId());
-                insertParam.put("url", thumbnail.get().getUrl());
-                insertParam.put("originalUrl", thumbnail.get().getOriginalUrl());
-                resultList.add(insertParam);
+                IdList.add(param.getThId().getId());
             }
+
+            thumbnailListInsert(IdList, resultList);
         } else if(planType.equals("pr")) {
+            IdList = new ArrayList<>();
             List<RtbPlanRestaurantThumbNail> list = rtbPlanRestaurantThumbNailRepository.findAllByPlanRestaurant_Id(planTypeId);
             for(RtbPlanRestaurantThumbNail param: list) {
-                Map<String, Object> insertParam = new HashMap<String, Object>();
-                Optional<Thumbnail> thumbnail = thumbnailRepository.findById(param.getThId().getId());
-                insertParam.put("id", thumbnail.get().getId());
-                insertParam.put("url", thumbnail.get().getUrl());
-                insertParam.put("originalUrl", thumbnail.get().getOriginalUrl());
-                resultList.add(insertParam);
+                IdList.add(param.getThId().getId());
             }
+
+            thumbnailListInsert(IdList, resultList);
         } else if(planType.equals("pt")) {
+            IdList = new ArrayList<>();
             List<RtbPlanTransportThumbNail> list = rtbPlanTransportThumbNailRepository.findAllByPlanTransPort_Id(planTypeId);
             for(RtbPlanTransportThumbNail param: list) {
-                Map<String, Object> insertParam = new HashMap<String, Object>();
-                Optional<Thumbnail> thumbnail = thumbnailRepository.findById(param.getThId().getId());
-                insertParam.put("id", thumbnail.get().getId());
-                insertParam.put("url", thumbnail.get().getUrl());
-                insertParam.put("originalUrl", thumbnail.get().getOriginalUrl());
-                resultList.add(insertParam);
+                IdList.add(param.getThId().getId());
             }
+
+            thumbnailListInsert(IdList, resultList);
         } else if(planType.equals("pig")) {
+            IdList = new ArrayList<>();
             List<RtbPlanImageGroupThumbNail> list = rtbPlanImageGroupThumbNailRepository.findAllByPlanImageGroup_Id(planTypeId);
             for(RtbPlanImageGroupThumbNail param: list) {
-                Map<String, Object> insertParam = new HashMap<String, Object>();
-                Optional<Thumbnail> thumbnail = thumbnailRepository.findById(param.getThId().getId());
-                insertParam.put("id", thumbnail.get().getId());
-                insertParam.put("url", thumbnail.get().getUrl());
-                insertParam.put("originalUrl", thumbnail.get().getOriginalUrl());
-                resultList.add(insertParam);
+                IdList.add(param.getThId().getId());
             }
+
+            thumbnailListInsert(IdList, resultList);
         }
         return resultList;
+    }
+
+    public void thumbnailListInsert(List<Long> idList, List<Map<String, Object>> reusltList){
+        List<Thumbnail> thumbnailList = thumbnailRepository.findByIdIn(idList);
+        for(Thumbnail thumbnail: thumbnailList) {
+            Map<String, Object> insertParam = new HashMap<String, Object>();
+            insertParam.put("id", thumbnail.getId());
+            insertParam.put("url", thumbnail.getUrl());
+            insertParam.put("originalUrl", thumbnail.getOriginalUrl());
+            reusltList.add(insertParam);
+        }
     }
 
     public Long thumbnailInsert(Thumbnail thumbnail) {

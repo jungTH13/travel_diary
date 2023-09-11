@@ -6,6 +6,8 @@ import com.travelProject.travelDiary.dto.ResponseBody;
 import com.travelProject.travelDiary.dto.TravelDto;
 import com.travelProject.travelDiary.entity.Travel;
 import com.travelProject.travelDiary.entity.User;
+import com.travelProject.travelDiary.entity.plan.PlanAccountBook;
+import com.travelProject.travelDiary.entity.plan.PlanCheckListTitle;
 import com.travelProject.travelDiary.service.TravelCountryService;
 import com.travelProject.travelDiary.service.TravelService;
 import com.travelProject.travelDiary.service.plan.PlanCommonService;
@@ -41,14 +43,25 @@ public class TravelController {
         User user = (User) request.getAttribute("user");
 
         Map<String, Object> result = new HashMap<>();
-        Travel travelOne = travelService.selectPlanTravelOne(user.getId(), travelDto.getId());
-        String[] travelCountryList = travelCountryService.travelCountrySelect(travelDto.getId());
-        Map<String,Object> planList = planCommonService.getUserPlan(user.getId(), travelDto.getId());
+        Long travelId = travelDto.getId();
+        Travel travelOne = travelService.selectPlanTravelOne(user.getId(), travelId);
+        String[] travelCountryList = travelCountryService.travelCountrySelect(travelId);
+
+        Map<String,Object> results = new HashMap<>();
+
+        List<Map<String, Object>> planList = planCommonService.getUserPlanList(user.getId(), travelId);
+        List<PlanAccountBook> planAccountBookList = planCommonService.getUserPlanAccountBookList(user.getId(), travelId);
+        List<PlanCheckListTitle> planCheckListTitle = planCommonService.getUserPlanCheckListTitleList(user.getId(), travelId);
+
+        Map<String, Object> userDataMap = planCommonService.getUserData(planList, planAccountBookList, planCheckListTitle);
+
+        List<Map<String, Object>> planUserList = (List<Map<String, Object>>) userDataMap.get("planList");
+        results.put("planList", planCommonService.getUserThumbNailList(planUserList));
 
         Date minDate = null;
         Date maxDate = null;
 
-        List<Map<String, Object>> listValue = (List<Map<String, Object>>) planList.get("planList");
+        List<Map<String, Object>> listValue = planUserList;
 
         if(listValue.size() > 0) {
             minDate = (Date) listValue.get(0).getOrDefault("orderDate", "");
@@ -59,6 +72,7 @@ public class TravelController {
         result.put("minDate", minDate == null ? "" : minDate);
         result.put("maxDate", maxDate == null ? "" : maxDate);
         result.put("travelCountryList", travelCountryList);
+
 
         return ResponseBody.builder().code(200).msg("조회 성공 했습니다.").results(result).build();
     }

@@ -5,14 +5,17 @@ import com.travelProject.travelDiary.dto.ErrorCode;
 import com.travelProject.travelDiary.dto.ResponseBody;
 import com.travelProject.travelDiary.entity.Travel;
 import com.travelProject.travelDiary.entity.User;
+import com.travelProject.travelDiary.entity.plan.PlanAccountBook;
+import com.travelProject.travelDiary.entity.plan.PlanCheckListTitle;
 import com.travelProject.travelDiary.service.TravelService;
-import com.travelProject.travelDiary.service.plan.PlanCommonService;
+import com.travelProject.travelDiary.service.plan.Impl.PlanCommonServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -23,8 +26,9 @@ public class PlanController {
     private TravelService travelService;
 
     @Autowired
-    private PlanCommonService planCommonService;
+    private PlanCommonServiceImpl planCommonService;
 
+    @SuppressWarnings("unchecked")
     @GetMapping("/travel/{travelId}/plan/userPlaneList")
     public ResponseBody getUserPlaneList (HttpServletRequest request, @PathVariable Long travelId){
         User user = (User) request.getAttribute("user");
@@ -35,10 +39,15 @@ public class PlanController {
         }
 
         Map<String,Object> results = new HashMap<>();
-        Map<String, Object> planList = planCommonService.getUserPlan(user.getId(), travelId);
+        List<Map<String, Object>> planList = planCommonService.getUserPlanList(user.getId(), travelId);
+        List<PlanAccountBook> planAccountBookList = planCommonService.getUserPlanAccountBookList(user.getId(), travelId);
+        List<PlanCheckListTitle> planCheckListTitle = planCommonService.getUserPlanCheckListTitleList(user.getId(), travelId);
 
-        results.put("planList", planList.get("planList"));
-        results.put("planAccountBookList", planList.get("planAccountBookList"));
+        Map<String, Object> userDataMap = planCommonService.getUserData(planList, planAccountBookList, planCheckListTitle);
+        results.put("planAccountBookList", userDataMap.get("planAccountBookList"));
+
+        List<Map<String, Object>> planUserList = (List<Map<String, Object>>) userDataMap.get("planList");
+        results.put("planList", planCommonService.getUserThumbNailList((List<Map<String, Object>>) userDataMap.get("planList")));
         return ResponseBody.builder().code(200).msg("success").results(results).build();
     }
 
