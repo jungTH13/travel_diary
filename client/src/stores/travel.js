@@ -7,6 +7,7 @@ import { convertTimeFormat } from "../composable/util";
 const defaultTravel = ()=> ({
   title:"",
   countryList: [],
+  userList: [],
   startDate:'',
   endDate:'',
 });

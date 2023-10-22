@@ -18,6 +18,7 @@
       <div v-else id="edit-item">
         <font-awesome-icon icon="fa-solid fa-trash-can" id="edit-item-img" @click="delTravel" class="icon" />
         <font-awesome-icon icon="fa-solid fa-pen" id="edit-item-img" @click="editTravel" class="icon"/>
+        <font-awesome-icon icon="fa fa-share-alt-square" id="edit-item-img" @click="shareTravel" class="icon"/>
       </div>
     </div>
   </div>
@@ -94,6 +95,7 @@
 import { defineProps, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useTravelStore } from "../stores/travel";
+import { useShareStore } from "../stores/share";
 
 const props = defineProps({
   planItem: Object,
@@ -101,6 +103,7 @@ const props = defineProps({
 
 const router = useRouter()
 const travelStore = useTravelStore()
+const userShareStore = useShareStore();
 
 const planSettingState = ref(false)
 
@@ -120,6 +123,13 @@ const editTravel = async()=>{
     // params:{
     //   id:props.planItem.id
     // }
+  })
+}
+
+const shareTravel = async()=>{
+  await userShareStore.getUserList(props.planItem.id)
+  router.push({
+    name:'new-share',
   })
 }
 

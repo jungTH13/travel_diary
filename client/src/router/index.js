@@ -15,12 +15,15 @@ import BookHomeView from "../views/plan/book/BookHomeView.vue";
 import BookDetailView from "../views/plan/book/BookDetailView.vue";
 import MapGoogle from "../components/MapGoogle.vue";
 
+import NewShareView from "../views/share/NewShareView.vue";
+import ShareListView from "../views/plan/PlanHomeView.vue";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path:"/map",
-      name:"map",
+      path: "/map",
+      name: "map",
       component: MapGoogle
     },
     {
@@ -32,10 +35,10 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: LoginView,
-      children:[
+      children: [
         {
-          path:'callback',
-          name:'login-callback',
+          path: 'callback',
+          name: 'login-callback',
           component: LoginCallbackView
         }
       ]
@@ -51,11 +54,27 @@ const router = createRouter({
           component: NewCountryView,
         },
         {
+          path: "share",
+          name: "new-share",
+          component: NewShareView,
+        },
+          {
+            path: ":id/shareList",
+            name: "shareList",
+            component: PlanHomeView,
+            children: [
+              {
+                path: "",
+                name: "schedule",
+                component: ScheduleListView,
+              },
+            ],
+          },
+        {
           path: "new",
           name: "new-travel",
           component: NewTravelView,
         },
-        
         {
           path: ":id/plan",
           name: "plan",
@@ -67,8 +86,8 @@ const router = createRouter({
               component: ScheduleListView,
             },
             {
-              path:"imageGroup/pig/:planId",
-              name:"imageGroup",
+              path: "imageGroup/pig/:planId",
+              name: "imageGroup",
               component: ImageGroupView,
             },
             {
@@ -77,8 +96,8 @@ const router = createRouter({
               component: BookHomeView,
             },
             {
-              path:"book/:planType/:planId",
-              name:"book-detail",
+              path: "book/:planType/:planId",
+              name: "book-detail",
               component: BookDetailView,
             },
             {
@@ -100,7 +119,7 @@ const router = createRouter({
         },
       ],
     },
-    
+
   ],
 });
 
